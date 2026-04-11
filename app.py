@@ -54,6 +54,10 @@ model = load_model()
 
 if "step" not in st.session_state:
     st.session_state.step = 1
+else:
+    # Ensure fresh load always starts at step 1 unless returning from results
+    if st.session_state.get("page", "form") == "form" and st.session_state.step > 1:
+        st.session_state.step = 1
 
 if "page" not in st.session_state:
     st.session_state.page = "form"
@@ -294,14 +298,19 @@ if st.session_state.page == "form":
 
     TOTAL_STEPS = 5
 
-    progress = (st.session_state.step - 1) / TOTAL_STEPS
-    progress = max(0, min(progress, 1))
+    progress_map = {
+    1: 0.0,
+    2: 0.2,
+    3: 0.4,
+    4: 0.6,
+    5: 0.8
+}
 
-    st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
+    progress = progress_map.get(st.session_state.step, 0)
 
     st.progress(progress)
 
-    st.write(f"Profile completion: {int(progress*100)}%")
+    st.write(f"Profile completion: {int(progress * 100)}%")
 
 
     if st.session_state.step == 1:

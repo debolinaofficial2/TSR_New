@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 # ------------------------------------------------
-# LOAD DATA
+# LOAD DATASET
 # ------------------------------------------------
 
 @st.cache_data
@@ -60,7 +60,7 @@ if "page" not in st.session_state:
 
 
 # ------------------------------------------------
-# GLOBAL CSS (TUTRAIN STYLE + MOTION)
+# GLOBAL CSS (TUTRAIN BRANDING + MOTION)
 # ------------------------------------------------
 
 st.markdown("""
@@ -121,7 +121,7 @@ animation: shimmer 2s linear infinite;
 }
 
 
-/* RECOMMENDATION CARD */
+/* TEACHER CARD */
 
 .recommendation-container{
 background:#ffffff;
@@ -278,7 +278,6 @@ for Your Child Instantly
 </div>
 """, unsafe_allow_html=True)
 
-
 with right:
 
     st.image(
@@ -295,15 +294,14 @@ if st.session_state.page == "form":
 
     TOTAL_STEPS = 5
 
-    current_step = st.session_state.step
+    progress = (st.session_state.step - 1) / TOTAL_STEPS
+    progress = max(0, min(progress, 1))
 
-    progress = (current_step - 1) / TOTAL_STEPS
-
-    progress = max(0, min(progress, 1))  # safety clamp
+    st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
 
     st.progress(progress)
 
-    st.write(f"Profile completion: {int(progress * 100)}%")
+    st.write(f"Profile completion: {int(progress*100)}%")
 
 
     if st.session_state.step == 1:
@@ -387,61 +385,66 @@ if st.session_state.page == "form":
 # RESULTS PAGE
 # ------------------------------------------------
 
-if st.session_state.page=="results":
+if st.session_state.page == "results":
+
+    st.progress(1.0)
+    st.write("Profile completion: 100%")
 
     st.markdown("## 🎯 Top 3 Recommended Teachers")
 
-    student={
-        "subject":st.session_state.subject,
-        "board":st.session_state.board,
-        "experience":st.session_state.experience
+
+    student = {
+        "subject": st.session_state.subject,
+        "board": st.session_state.board,
+        "experience": st.session_state.experience
     }
 
-    ranked=[]
 
-    for _,teacher in teachers.iterrows():
+    ranked = []
 
-        subject_score=35 if student["subject"] in teacher["subject_specialization"] else 0
-        board_score=20 if student["board"] in teacher["boards"] else 0
-        exp_score=10 if teacher["teaching_experience_years"]>=student["experience"] else 0
+    for _, teacher in teachers.iterrows():
 
-        teacher_profile=" ".join([
+        subject_score = 35 if student["subject"] in teacher["subject_specialization"] else 0
+        board_score = 20 if student["board"] in teacher["boards"] else 0
+        exp_score = 10 if teacher["teaching_experience_years"] >= student["experience"] else 0
+
+        teacher_profile = " ".join([
             str(teacher["description"]),
             str(teacher["highest_qualification"]),
             str(teacher["field_of_study"])
         ])
 
-        semantic=util.cos_sim(
+        semantic = util.cos_sim(
             model.encode(st.session_state.expectation),
             model.encode(teacher_profile)
         ).item()
 
-        semantic=((semantic+1)/2)*30
+        semantic = ((semantic + 1) / 2) * 30
 
-        total=subject_score+board_score+exp_score+semantic
+        total = subject_score + board_score + exp_score + semantic
 
-        teacher_dict=teacher.to_dict()
-        teacher_dict["score"]=total
+        teacher_dict = teacher.to_dict()
+        teacher_dict["score"] = total
 
-        teacher_dict["reasons"]={
-            "Subject alignment":subject_score,
-            "Curriculum familiarity":board_score,
-            "Matches experience requirement":exp_score,
-            "Aligned with learner expectations":semantic
+        teacher_dict["reasons"] = {
+            "Subject alignment": subject_score,
+            "Curriculum familiarity": board_score,
+            "Matches experience requirement": exp_score,
+            "Aligned with learner expectations": semantic
         }
 
         ranked.append(teacher_dict)
 
-    ranked=sorted(ranked,key=lambda x:x["score"],reverse=True)[:3]
+    ranked = sorted(ranked, key=lambda x: x["score"], reverse=True)[:3]
 
 
     for teacher in ranked:
 
-        score=int(min(teacher["score"],100))
+        score = int(min(teacher["score"], 100))
 
-        st.markdown('<div class="recommendation-container">',unsafe_allow_html=True)
+        st.markdown('<div class="recommendation-container">', unsafe_allow_html=True)
 
-        left,right=st.columns([5,1])
+        left, right = st.columns([5,1])
 
         with left:
 
@@ -469,11 +472,11 @@ if st.session_state.page=="results":
         )
 
 
-        for label,val in teacher["reasons"].items():
+        for label, val in teacher["reasons"].items():
 
-            if val>0:
+            if val > 0:
 
-                confidence=int((val/35)*100)
+                confidence = int((val / 35) * 100)
 
                 st.markdown(
                     f'<div class="reason-row">{confidence}% — {label}</div>',
@@ -486,24 +489,12 @@ if st.session_state.page=="results":
             unsafe_allow_html=True
         )
 
-        st.markdown('</div>',unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
     st.divider()
 
-    col1,col2=st.columns(2)
+    if st.button("Start New Search"):
 
-    with col1:
-
-        if st.button("Modify Requirements"):
-
-            st.session_state.page="form"
-            st.session_state.step=1
-            st.rerun()
-
-    with col2:
-
-        if st.button("Start New Search"):
-
-            st.session_state.clear()
-            st.rerun()
+        st.session_state.clear()
+        st.rerun()

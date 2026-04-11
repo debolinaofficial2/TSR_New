@@ -1,0 +1,7 @@
+sentence-transformers
+torch
+transformers
+scikit-learn
+scipy
+numpy
+python-3.11

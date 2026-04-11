@@ -15,6 +15,17 @@ st.set_page_config(
 
 
 # ------------------------------------------------
+# SESSION STATE INIT (FIXED PROGRESS BUG)
+# ------------------------------------------------
+
+if "page" not in st.session_state:
+    st.session_state.page = "form"
+
+if "step" not in st.session_state:
+    st.session_state.step = 1
+
+
+# ------------------------------------------------
 # LOAD DATASET
 # ------------------------------------------------
 
@@ -49,28 +60,11 @@ model = load_model()
 
 
 # ------------------------------------------------
-# SESSION STATE CONTROL
-# ------------------------------------------------
-
-if "step" not in st.session_state:
-    st.session_state.step = 1
-else:
-    # Ensure fresh load always starts at step 1 unless returning from results
-    if st.session_state.get("page", "form") == "form" and st.session_state.step > 1:
-        st.session_state.step = 1
-
-if "page" not in st.session_state:
-    st.session_state.page = "form"
-
-
-# ------------------------------------------------
-# GLOBAL CSS (TUTRAIN BRANDING + MOTION)
+# TUTRAIN UI STYLE
 # ------------------------------------------------
 
 st.markdown("""
 <style>
-
-/* NAVBAR */
 
 .navbar {
 background: linear-gradient(270deg,#2fa4a9,#1e7f80,#2fa4a9);
@@ -85,9 +79,6 @@ display:flex;
 justify-content:space-between;
 }
 
-
-/* HERO TITLE */
-
 .hero-title {
 font-size:56px;
 font-weight:700;
@@ -99,33 +90,12 @@ animation: floatTitle 4s ease-in-out infinite;
 color:#ff7a18;
 }
 
-
-/* PROGRESS PANEL */
-
 .intake-panel {
 background:white;
 padding:28px;
 border-radius:18px;
 box-shadow:0px 12px 35px rgba(0,0,0,0.12);
-animation: glowPanel 3s infinite ease-in-out;
 }
-
-
-/* PROGRESS BAR SHIMMER */
-
-div[data-testid="stProgress"] > div > div > div {
-background: linear-gradient(
-90deg,
-#2fa4a9,
-#6be0da,
-#2fa4a9
-);
-background-size:200% 100%;
-animation: shimmer 2s linear infinite;
-}
-
-
-/* TEACHER CARD */
 
 .recommendation-container{
 background:#ffffff;
@@ -133,11 +103,7 @@ padding:32px;
 border-radius:18px;
 box-shadow:0px 10px 40px rgba(0,0,0,0.08);
 margin-bottom:28px;
-animation:fadeIn 0.8s ease-in;
 }
-
-
-/* TEACHER NAME */
 
 .teacher-name{
 font-size:26px;
@@ -145,28 +111,18 @@ font-weight:600;
 color:#1f2937;
 }
 
-
-/* SCORE */
-
 .score{
 font-size:42px;
 font-weight:700;
 color:#2fa4a9;
 text-align:right;
-animation:pulseScore 2s infinite;
 }
-
-
-/* DESCRIPTION */
 
 .description{
 font-size:16px;
 color:#4b5563;
 margin-top:6px;
 }
-
-
-/* WHY SECTION */
 
 .section-title{
 font-size:18px;
@@ -176,9 +132,6 @@ margin-bottom:10px;
 color:#111827;
 }
 
-
-/* MATCH ROW */
-
 .reason-row{
 background:#f8fafc;
 border-left:5px solid #2fa4a9;
@@ -187,11 +140,7 @@ border-radius:10px;
 margin-bottom:10px;
 font-size:15px;
 color:#374151;
-animation:slideIn 0.6s ease-in;
 }
-
-
-/* CTA BUTTON */
 
 .cta-button{
 background:#ff7a18;
@@ -202,15 +151,7 @@ font-weight:600;
 display:inline-block;
 margin-top:14px;
 text-decoration:none;
-transition:0.3s ease;
 }
-
-.cta-button:hover{
-background:#e66a0f;
-}
-
-
-/* ANIMATIONS */
 
 @keyframes gradientMove {
 0%{background-position:0% 50%;}
@@ -218,37 +159,10 @@ background:#e66a0f;
 100%{background-position:0% 50%;}
 }
 
-@keyframes shimmer {
-0%{background-position:200% 0;}
-100%{background-position:-200% 0;}
-}
-
-@keyframes pulseScore {
-0%{opacity:1;}
-50%{opacity:.6;}
-100%{opacity:1;}
-}
-
-@keyframes glowPanel {
-0%{box-shadow:0px 12px 35px rgba(0,0,0,0.12);}
-50%{box-shadow:0px 12px 55px rgba(47,164,169,0.35);}
-100%{box-shadow:0px 12px 35px rgba(0,0,0,0.12);}
-}
-
-@keyframes fadeIn {
-from{opacity:0;}
-to{opacity:1;}
-}
-
 @keyframes floatTitle {
 0%{transform:translateY(0);}
 50%{transform:translateY(-6px);}
 100%{transform:translateY(0);}
-}
-
-@keyframes slideIn{
-from{opacity:0; transform:translateX(-12px);}
-to{opacity:1; transform:translateX(0);}
 }
 
 </style>
@@ -291,14 +205,10 @@ with right:
 
 
 # ------------------------------------------------
-# FORM PAGE
+# PROGRESS BAR CONTROL (FIXED)
 # ------------------------------------------------
 
-if st.session_state.page == "form":
-
-    TOTAL_STEPS = 5
-
-    progress_map = {
+progress_lookup = {
     1: 0.0,
     2: 0.2,
     3: 0.4,
@@ -306,22 +216,30 @@ if st.session_state.page == "form":
     5: 0.8
 }
 
-    progress = progress_map.get(st.session_state.step, 0)
+
+# ------------------------------------------------
+# FORM PAGE
+# ------------------------------------------------
+
+if st.session_state.page == "form":
+
+    progress = progress_lookup.get(st.session_state.step, 0)
+
+    st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
 
     st.progress(progress)
-
-    st.write(f"Profile completion: {int(progress * 100)}%")
+    st.write(f"Profile completion: {int(progress*100)}%")
 
 
     if st.session_state.step == 1:
 
         subject = st.selectbox(
             "Select subject",
-            sorted(teachers["subject"].dropna().unique())
+            sorted(teachers["subject"].dropna().unique()),
+            index=None
         )
 
         if subject:
-
             st.session_state.subject = subject
             st.session_state.step = 2
             st.rerun()
@@ -334,10 +252,9 @@ if st.session_state.page == "form":
         for b in teachers["boards"].dropna():
             boards.update([x.strip() for x in b.split(",")])
 
-        board = st.selectbox("Select curriculum board", sorted(boards))
+        board = st.selectbox("Select curriculum board", sorted(boards), index=None)
 
         if board:
-
             st.session_state.board = board
             st.session_state.step = 3
             st.rerun()
@@ -352,11 +269,11 @@ if st.session_state.page == "form":
                 "Exam Preparation",
                 "Assignment Support",
                 "Research Guidance"
-            ]
+            ],
+            index=None
         )
 
         if goal:
-
             st.session_state.goal = goal
             st.session_state.step = 4
             st.rerun()
@@ -380,11 +297,9 @@ if st.session_state.page == "form":
             st.session_state.expectation = expectation
 
             with st.spinner("Matching best tutors using AI engine..."):
-
                 time.sleep(2)
 
-            st.session_state.page="results"
-
+            st.session_state.page = "results"
             st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
@@ -409,9 +324,9 @@ if st.session_state.page == "results":
     }
 
 
-    ranked = []
+    ranked=[]
 
-    for _, teacher in teachers.iterrows():
+    for _,teacher in teachers.iterrows():
 
         subject_score = 35 if student["subject"] in teacher["subject_specialization"] else 0
         board_score = 20 if student["board"] in teacher["boards"] else 0
@@ -428,7 +343,7 @@ if st.session_state.page == "results":
             model.encode(teacher_profile)
         ).item()
 
-        semantic = ((semantic + 1) / 2) * 30
+        semantic = ((semantic + 1)/2)*30
 
         total = subject_score + board_score + exp_score + semantic
 
@@ -444,18 +359,19 @@ if st.session_state.page == "results":
 
         ranked.append(teacher_dict)
 
-    ranked = sorted(ranked, key=lambda x: x["score"], reverse=True)[:3]
+
+    ranked = sorted(ranked,key=lambda x:x["score"],reverse=True)[:3]
 
 
     for teacher in ranked:
 
-        score = int(min(teacher["score"], 100))
+        score=int(min(teacher["score"],100))
 
         st.markdown('<div class="recommendation-container">', unsafe_allow_html=True)
 
-        left, right = st.columns([5,1])
+        col1,col2 = st.columns([5,1])
 
-        with left:
+        with col1:
 
             st.markdown(
                 f'<div class="teacher-name">👩‍🏫 {teacher["name"]}</div>',
@@ -467,7 +383,7 @@ if st.session_state.page == "results":
                 unsafe_allow_html=True
             )
 
-        with right:
+        with col2:
 
             st.markdown(
                 f'<div class="score">{score}%</div>',
@@ -481,11 +397,11 @@ if st.session_state.page == "results":
         )
 
 
-        for label, val in teacher["reasons"].items():
+        for label,val in teacher["reasons"].items():
 
-            if val > 0:
+            if val>0:
 
-                confidence = int((val / 35) * 100)
+                confidence=int((val/35)*100)
 
                 st.markdown(
                     f'<div class="reason-row">{confidence}% — {label}</div>',

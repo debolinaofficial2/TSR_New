@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 # ------------------------------------------------
-# LOAD DATASET
+# LOAD DATA
 # ------------------------------------------------
 
 @st.cache_data
@@ -60,12 +60,11 @@ if "page" not in st.session_state:
 
 
 # ------------------------------------------------
-# GLOBAL CSS (TUTRAIN BRANDING + MOTION UI)
+# GLOBAL CSS (TUTRAIN STYLE + MOTION)
 # ------------------------------------------------
 
 st.markdown("""
 <style>
-
 
 /* NAVBAR */
 
@@ -100,7 +99,7 @@ color:#ff7a18;
 /* PROGRESS PANEL */
 
 .intake-panel {
-background: rgba(255,255,255,0.95);
+background:white;
 padding:28px;
 border-radius:18px;
 box-shadow:0px 12px 35px rgba(0,0,0,0.12);
@@ -296,7 +295,7 @@ if st.session_state.page == "form":
 
     TOTAL_STEPS = 5
 
-    progress = min((st.session_state.step - 1)/TOTAL_STEPS,1.0)
+    progress = min((st.session_state.step-1)/TOTAL_STEPS,1.0)
 
     st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
 
@@ -326,10 +325,7 @@ if st.session_state.page == "form":
         for b in teachers["boards"].dropna():
             boards.update([x.strip() for x in b.split(",")])
 
-        board = st.selectbox(
-            "Select curriculum board",
-            sorted(boards)
-        )
+        board = st.selectbox("Select curriculum board", sorted(boards))
 
         if board:
 
@@ -359,10 +355,7 @@ if st.session_state.page == "form":
 
     elif st.session_state.step == 4:
 
-        exp = st.slider(
-            "Minimum experience required",
-            0,20,5
-        )
+        exp = st.slider("Minimum experience required",0,20,5)
 
         st.session_state.experience = exp
         st.session_state.step = 5
@@ -371,9 +364,7 @@ if st.session_state.page == "form":
 
     elif st.session_state.step == 5:
 
-        expectation = st.text_area(
-            "Describe learner expectations"
-        )
+        expectation = st.text_area("Describe learner expectations")
 
         if st.button("Generate Recommendations"):
 
@@ -383,7 +374,7 @@ if st.session_state.page == "form":
 
                 time.sleep(2)
 
-            st.session_state.page = "results"
+            st.session_state.page="results"
 
             st.rerun()
 
@@ -394,76 +385,61 @@ if st.session_state.page == "form":
 # RESULTS PAGE
 # ------------------------------------------------
 
-if st.session_state.page == "results":
+if st.session_state.page=="results":
 
     st.markdown("## 🎯 Top 3 Recommended Teachers")
 
-
-    student = {
-        "subject": st.session_state.subject,
-        "board": st.session_state.board,
-        "experience": st.session_state.experience
+    student={
+        "subject":st.session_state.subject,
+        "board":st.session_state.board,
+        "experience":st.session_state.experience
     }
 
+    ranked=[]
 
-    ranked = []
+    for _,teacher in teachers.iterrows():
 
+        subject_score=35 if student["subject"] in teacher["subject_specialization"] else 0
+        board_score=20 if student["board"] in teacher["boards"] else 0
+        exp_score=10 if teacher["teaching_experience_years"]>=student["experience"] else 0
 
-    for _, teacher in teachers.iterrows():
-
-        subject_score = 35 if student["subject"] in teacher["subject_specialization"] else 0
-
-        board_score = 20 if student["board"] in teacher["boards"] else 0
-
-        exp_score = 10 if teacher["teaching_experience_years"] >= student["experience"] else 0
-
-
-        teacher_profile = " ".join([
+        teacher_profile=" ".join([
             str(teacher["description"]),
             str(teacher["highest_qualification"]),
             str(teacher["field_of_study"])
         ])
 
-
-        semantic = util.cos_sim(
+        semantic=util.cos_sim(
             model.encode(st.session_state.expectation),
             model.encode(teacher_profile)
         ).item()
 
-        semantic = ((semantic + 1) / 2) * 30
+        semantic=((semantic+1)/2)*30
 
+        total=subject_score+board_score+exp_score+semantic
 
-        total = subject_score + board_score + exp_score + semantic
+        teacher_dict=teacher.to_dict()
+        teacher_dict["score"]=total
 
-
-        teacher_dict = teacher.to_dict()
-
-        teacher_dict["score"] = total
-
-        teacher_dict["reasons"] = {
-            "Subject alignment": subject_score,
-            "Curriculum familiarity": board_score,
-            "Matches experience requirement": exp_score,
-            "Aligned with learner expectations": semantic
+        teacher_dict["reasons"]={
+            "Subject alignment":subject_score,
+            "Curriculum familiarity":board_score,
+            "Matches experience requirement":exp_score,
+            "Aligned with learner expectations":semantic
         }
-
 
         ranked.append(teacher_dict)
 
-
-    ranked = sorted(ranked, key=lambda x: x["score"], reverse=True)[:3]
+    ranked=sorted(ranked,key=lambda x:x["score"],reverse=True)[:3]
 
 
     for teacher in ranked:
 
-        score = int(min(teacher["score"], 100))
+        score=int(min(teacher["score"],100))
 
+        st.markdown('<div class="recommendation-container">',unsafe_allow_html=True)
 
-        st.markdown('<div class="recommendation-container">', unsafe_allow_html=True)
-
-
-        left, right = st.columns([5,1])
-
+        left,right=st.columns([5,1])
 
         with left:
 
@@ -476,7 +452,6 @@ if st.session_state.page == "results":
                 f'<div class="description">{teacher["description"]}</div>',
                 unsafe_allow_html=True
             )
-
 
         with right:
 
@@ -492,11 +467,11 @@ if st.session_state.page == "results":
         )
 
 
-        for label, val in teacher["reasons"].items():
+        for label,val in teacher["reasons"].items():
 
-            if val > 0:
+            if val>0:
 
-                confidence = int((val / 35) * 100)
+                confidence=int((val/35)*100)
 
                 st.markdown(
                     f'<div class="reason-row">{confidence}% — {label}</div>',
@@ -509,5 +484,24 @@ if st.session_state.page == "results":
             unsafe_allow_html=True
         )
 
+        st.markdown('</div>',unsafe_allow_html=True)
 
-        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    col1,col2=st.columns(2)
+
+    with col1:
+
+        if st.button("Modify Requirements"):
+
+            st.session_state.page="form"
+            st.session_state.step=1
+            st.rerun()
+
+    with col2:
+
+        if st.button("Start New Search"):
+
+            st.session_state.clear()
+            st.rerun()

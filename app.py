@@ -295,13 +295,15 @@ if st.session_state.page == "form":
 
     TOTAL_STEPS = 5
 
-    progress = min((st.session_state.step-1)/TOTAL_STEPS,1.0)
+    current_step = st.session_state.step
 
-    st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
+    progress = (current_step - 1) / TOTAL_STEPS
+
+    progress = max(0, min(progress, 1))  # safety clamp
 
     st.progress(progress)
 
-    st.write(f"Profile completion: {int(progress*100)}%")
+    st.write(f"Profile completion: {int(progress * 100)}%")
 
 
     if st.session_state.step == 1:

@@ -3,5 +3,5 @@ torch==2.2.2
 transformers>=4.41.0
 scikit-learn
 scipy
-numpy
+numpy==1.26.4
 openpyxl

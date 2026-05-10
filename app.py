@@ -1,6 +1,6 @@
 # =========================================================
 # SMARTLEARN CONNECT
-# FULL FINAL WORKING CODE
+# COMPLETE FINAL WORKING VERSION
 # =========================================================
 
 import streamlit as st
@@ -30,7 +30,7 @@ st.set_page_config(
 
 
 # =========================================================
-# SESSION STATES
+# SESSION STATE
 # =========================================================
 
 if "page" not in st.session_state:
@@ -100,7 +100,7 @@ def send_demo_email(
     try:
 
         sender_email = (
-            "debolinaofficial2@gmail.com"
+            "debolinaofficial1@gmail.com"
         )
 
         sender_password = (
@@ -298,12 +298,9 @@ def send_demo_email(
 st.markdown("""
 <style>
 
-/* MAIN */
-
 .main{
 background:#f5f7fb;
 }
-
 
 /* NAVBAR */
 
@@ -324,10 +321,10 @@ justify-content:space-between;
 
 align-items:center;
 
+margin-bottom:25px;
+
 box-shadow:
 0px 10px 35px rgba(0,0,0,0.08);
-
-margin-bottom:25px;
 }
 
 .nav-title{
@@ -376,7 +373,7 @@ color:#4b5563;
 }
 
 
-/* TAG */
+/* TAGS */
 
 .tag{
 display:inline-block;
@@ -394,9 +391,6 @@ margin-top:20px;
 font-weight:700;
 
 color:#167b7f;
-
-box-shadow:
-0px 5px 15px rgba(0,0,0,0.05);
 }
 
 
@@ -411,8 +405,6 @@ border-radius:24px;
 
 box-shadow:
 0px 12px 40px rgba(0,0,0,0.08);
-
-margin-top:25px;
 }
 
 
@@ -437,69 +429,14 @@ border-radius:20px;
 }
 
 @keyframes moveProgress{
+
 0%{
 background-position:200% 0;
 }
+
 100%{
 background-position:-200% 0;
 }
-}
-
-
-/* CARD */
-
-.teacher-card{
-background:white;
-
-padding:35px;
-
-border-radius:26px;
-
-box-shadow:
-0px 12px 35px rgba(0,0,0,0.08);
-
-margin-bottom:35px;
-
-border:1px solid #eef2f7;
-}
-
-.teacher-name{
-font-size:38px;
-font-weight:800;
-color:#1f2937;
-}
-
-.teacher-desc{
-font-size:17px;
-line-height:1.8;
-color:#4b5563;
-margin-top:14px;
-}
-
-.score{
-font-size:60px;
-font-weight:800;
-color:#167b7f;
-text-align:right;
-}
-
-
-/* WHY */
-
-.reason{
-background:#f8fbfc;
-
-padding:14px 18px;
-
-border-left:6px solid #2fa4a9;
-
-border-radius:12px;
-
-margin-bottom:12px;
-
-font-size:16px;
-
-color:#374151;
 }
 
 
@@ -529,6 +466,67 @@ transition:0.3s;
 background:#ff8f38;
 
 transform:translateY(-2px);
+}
+
+
+/* TEACHER CARD */
+
+.teacher-card{
+
+background:white;
+
+padding:35px;
+
+border-radius:26px;
+
+box-shadow:
+0px 12px 35px rgba(0,0,0,0.08);
+
+margin-bottom:35px;
+}
+
+.teacher-name{
+
+font-size:38px;
+
+font-weight:800;
+
+color:#1f2937;
+}
+
+.teacher-desc{
+
+font-size:17px;
+
+line-height:1.8;
+
+color:#4b5563;
+
+margin-top:14px;
+}
+
+.score{
+
+font-size:60px;
+
+font-weight:800;
+
+color:#167b7f;
+
+text-align:right;
+}
+
+.reason{
+
+background:#f8fbfc;
+
+padding:14px 18px;
+
+border-left:6px solid #2fa4a9;
+
+border-radius:12px;
+
+margin-bottom:12px;
 }
 
 
@@ -677,7 +675,7 @@ with right:
 
 
 # =========================================================
-# PROGRESS
+# PROGRESS LOOKUP
 # =========================================================
 
 progress_lookup = {
@@ -821,6 +819,231 @@ if st.session_state.page == "form":
         '</div>',
         unsafe_allow_html=True
     )
+
+
+# =========================================================
+# RESULTS PAGE
+# =========================================================
+
+if st.session_state.page == "results":
+
+    st.markdown("""
+    <h1 style="
+    font-size:52px;
+    font-weight:800;
+    color:#1f2937;
+    margin-top:20px;
+    ">
+    🎯 Top 3 Recommended Teachers
+    </h1>
+    """, unsafe_allow_html=True)
+
+    query_text = f"""
+
+    Subject:
+    {st.session_state.subject}
+
+    Board:
+    {st.session_state.board}
+
+    Goal:
+    {st.session_state.goal}
+
+    Expectations:
+    {st.session_state.expectation}
+
+    """
+
+    query_embedding = model.encode(
+        query_text,
+        convert_to_tensor=True
+    )
+
+    scores = []
+
+    for idx,row in teachers.iterrows():
+
+        teacher_text = f"""
+
+        Subject:
+        {row.get('subject','')}
+
+        Boards:
+        {row.get('boards','')}
+
+        Experience:
+        {row.get('experience','')}
+
+        Description:
+        {row.get('description','')}
+
+        """
+
+        teacher_embedding = model.encode(
+            teacher_text,
+            convert_to_tensor=True
+        )
+
+        semantic_score = (
+            util.cos_sim(
+                query_embedding,
+                teacher_embedding
+            ).item()
+        )
+
+        semantic_score = max(
+            semantic_score,
+            0
+        )
+
+        final_score = (
+            semantic_score * 100
+        )
+
+        scores.append(final_score)
+
+    teachers["match_score"] = scores
+
+    top_teachers = (
+        teachers
+        .sort_values(
+            by="match_score",
+            ascending=False
+        )
+        .head(3)
+    )
+
+
+    for i,row in top_teachers.iterrows():
+
+        score = int(
+            min(row["match_score"],95)
+        )
+
+        col1,col2 = st.columns([4,1])
+
+        with col1:
+
+            st.markdown(f"""
+            <div class="teacher-card">
+
+            <div class="teacher-name">
+
+            👩‍🏫 Teacher
+            {row.get('teacher_name','Tutor')}
+
+            </div>
+
+            <div class="teacher-desc">
+
+            {row.get('description','')}
+
+            </div>
+
+            <br>
+
+            <h3>
+            Why recommended
+            </h3>
+
+            <div class="reason">
+            ✅ Subject alignment
+            </div>
+
+            <div class="reason">
+            ✅ Curriculum familiarity
+            </div>
+
+            <div class="reason">
+            ✅ Experience compatibility
+            </div>
+
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col2:
+
+            st.markdown(f"""
+            <div class="score">
+            {score}%
+            </div>
+            """, unsafe_allow_html=True)
+
+
+        st.markdown("### 📅 Book Demo Session")
+
+        c1,c2,c3 = st.columns(3)
+
+        with c1:
+
+            parent_name = st.text_input(
+                "Parent Name",
+                key=f"name_{i}"
+            )
+
+        with c2:
+
+            parent_email = st.text_input(
+                "Email",
+                key=f"email_{i}"
+            )
+
+        with c3:
+
+            selected_date = st.date_input(
+                "Select Date",
+                min_value=date.today(),
+                key=f"date_{i}"
+            )
+
+        selected_time = st.selectbox(
+            "Select Time",
+            [
+                "10:00 AM",
+                "12:00 PM",
+                "03:00 PM",
+                "06:00 PM"
+            ],
+            key=f"time_{i}"
+        )
+
+        button_disabled = (
+            st.session_state.global_booking_done
+        )
+
+        if st.button(
+            f"Book Demo with {row.get('teacher_name','Tutor')}",
+            key=f"book_{i}",
+            disabled=button_disabled
+        ):
+
+            with st.spinner(
+                "Booking demo session..."
+            ):
+
+                success = send_demo_email(
+                    parent_name,
+                    parent_email,
+                    row.get("teacher_name","Tutor"),
+                    selected_date,
+                    selected_time
+                )
+
+                time.sleep(2)
+
+            if success:
+
+                st.session_state.booking_success = True
+
+                st.session_state.global_booking_done = True
+
+                st.rerun()
+
+            else:
+
+                st.error(
+                    "Email sending failed."
+                )
 
 
 # =========================================================

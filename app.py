@@ -401,6 +401,25 @@ font-weight:800;
 text-decoration:none;
 }
 
+            /* POPUP BUTTON */
+
+.popup-btn{
+display:inline-block;
+background:white;
+color:#167b7f !important;
+padding:16px 34px;
+border-radius:14px;
+font-size:18px;
+font-weight:800;
+text-decoration:none;
+margin-top:15px;
+transition:0.3s;
+}
+
+.popup-btn:hover{
+transform:translateY(-2px);
+background:#f7f7f7;
+}
 
 /* ANIMATIONS */
 
@@ -983,46 +1002,51 @@ if st.session_state.page == "results":
 
 if st.session_state.show_popup:
 
-    st.markdown(
-        """
-        <div class="popup-overlay">
+    popup_html = f"""
+    <div class="popup-overlay">
 
-            <div class="popup-modal">
+        <div class="popup-modal">
 
-                <div class="popup-title">
-                ✅ Demo Booked Successfully!
-                </div>
-
-                <div class="popup-sub">
-                Demo confirmation email has been
-                sent successfully.
-                <br><br>
-                Your Google Meet session
-                is now ready.
-                </div>
-
-                <a
-                href="https://meet.google.com/ypj-jhkz-gta"
-                target="_blank"
-                class="popup-btn"
-                >
-                Join Google Meet
-                </a>
-
+            <div class="popup-title">
+            ✅ Demo Booked Successfully!
             </div>
 
+            <div class="popup-sub">
+            Demo confirmation email has been sent successfully.
+            <br><br>
+            Your Google Meet session is now ready.
+            </div>
+
+            <a
+            href="https://meet.google.com/ypj-jhkz-gta"
+            target="_blank"
+            class="popup-btn"
+            >
+            Join Google Meet
+            </a>
+
         </div>
-        """,
+
+    </div>
+    """
+
+    st.markdown(
+        popup_html,
         unsafe_allow_html=True
     )
 
-    _,center,_ = st.columns([2,1,2])
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
-    with center:
+    col1, col2, col3 = st.columns([2,1,2])
 
-        if st.button("Close"):
+    with col2:
 
-            st.session_state.show_popup = False
+        if st.button(
+            "Start New Search",
+            key="popup_reset"
+        ):
+
+            st.session_state.clear()
 
             st.rerun()
 

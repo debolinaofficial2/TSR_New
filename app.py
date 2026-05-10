@@ -7,6 +7,7 @@ import streamlit as st
 import pandas as pd
 import time
 import smtplib
+import streamlit.components.v1 as components
 
 from datetime import (
     date,
@@ -627,21 +628,21 @@ for teacher in ranked:
             ):
 
                 scheduled_card = f"""
-                <div style="
+                <div style='
                 background:#f8fbfc;
                 border:1px solid #e5e7eb;
                 border-radius:16px;
                 padding:20px;
                 margin-top:18px;
-                ">
+                '>
 
-                    <div style="
+                    <div style='
                     display:flex;
                     align-items:center;
                     gap:14px;
-                    ">
+                    '>
 
-                        <div style="
+                        <div style='
                         width:44px;
                         height:44px;
                         border-radius:12px;
@@ -652,7 +653,7 @@ for teacher in ranked:
                         font-size:22px;
                         color:#167b7f;
                         flex-shrink:0;
-                        ">
+                        '>
 
                         📅
 
@@ -660,14 +661,14 @@ for teacher in ranked:
 
                         <div>
 
-                            <div style="
+                            <div style='
                             font-size:22px;
                             font-weight:800;
                             color:#374151;
-                            ">
+                            '>
 
                             Demo Scheduled:
-                            <span style="color:#4b5563;">
+                            <span style='color:#4b5563;'>
 
                             {st.session_state.booked_date}
 
@@ -679,11 +680,11 @@ for teacher in ranked:
 
                             </div>
 
-                            <div style="
+                            <div style='
                             margin-top:5px;
                             font-size:16px;
                             color:#6b7280;
-                            ">
+                            '>
 
                             Confirmed with
                             <strong>
@@ -699,9 +700,9 @@ for teacher in ranked:
                 </div>
                 """
 
-                st.markdown(
+                st.components.v1.html(
                     scheduled_card,
-                    unsafe_allow_html=True
+                    height=120
                 )
 
         else:

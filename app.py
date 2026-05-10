@@ -117,7 +117,7 @@ def send_demo_email(
     try:
 
         sender_email = (
-            "debolinaofficial1@gmail.com"
+            "debolinaofficial2@gmail.com"
         )
 
         sender_password = (

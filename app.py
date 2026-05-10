@@ -1,7 +1,12 @@
 import streamlit as st
 import pandas as pd
 import time
+import smtplib
+
 from sentence_transformers import SentenceTransformer, util
+
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 # ------------------------------------------------
@@ -15,7 +20,7 @@ st.set_page_config(
 
 
 # ------------------------------------------------
-# SESSION STATE INIT
+# SESSION STATE
 # ------------------------------------------------
 
 if "page" not in st.session_state:
@@ -57,6 +62,73 @@ def load_model():
 
 
 model = load_model()
+
+
+# ------------------------------------------------
+# EMAIL FUNCTION
+# ------------------------------------------------
+
+def send_demo_email(
+    parent_name,
+    parent_email,
+    teacher_name,
+    selected_date,
+    selected_time
+):
+
+    sender_email = "debolinaofficial1@gmail.com"
+
+    sender_password = "YOUR_APP_PASSWORD"
+
+    meet_link = "https://meet.google.com/ypj-jhkz-gta"
+
+
+    subject = "SmartLearn Connect Demo Session Confirmation"
+
+
+    body = f"""
+Hello {parent_name},
+
+Your demo session has been successfully booked.
+
+Teacher: {teacher_name}
+
+Date: {selected_date}
+
+Time: {selected_time}
+
+Google Meet Link:
+{meet_link}
+
+Regards,
+SmartLearn Connect
+"""
+
+
+    msg = MIMEMultipart()
+
+    msg["From"] = sender_email
+
+    msg["To"] = parent_email
+
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, "plain"))
+
+
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+
+    server.starttls()
+
+    server.login(sender_email, sender_password)
+
+    server.sendmail(
+        sender_email,
+        parent_email,
+        msg.as_string()
+    )
+
+    server.quit()
 
 
 # ------------------------------------------------
@@ -160,7 +232,7 @@ margin-top:6px;
 }
 
 
-/* SECTION */
+/* WHY SECTION */
 
 .section-title{
 font-size:18px;
@@ -260,7 +332,7 @@ with right:
 
 
 # ------------------------------------------------
-# PROGRESS BAR
+# PROGRESS
 # ------------------------------------------------
 
 progress_lookup = {
@@ -278,7 +350,7 @@ progress_lookup = {
 
 if st.session_state.page == "form":
 
-    progress = progress_lookup.get(st.session_state.step, 0)
+    progress = progress_lookup.get(st.session_state.step,0)
 
     st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
 
@@ -451,7 +523,7 @@ if st.session_state.page == "results":
         ranked.append(teacher_dict)
 
 
-    ranked = sorted(ranked, key=lambda x: x["score"], reverse=True)[:3]
+    ranked = sorted(ranked,key=lambda x:x["score"],reverse=True)[:3]
 
 
     for teacher in ranked:
@@ -488,11 +560,11 @@ if st.session_state.page == "results":
         )
 
 
-        for label, val in teacher["reasons"].items():
+        for label,val in teacher["reasons"].items():
 
             if val > 0:
 
-                confidence = int((val / 35) * 100)
+                confidence = int((val/35)*100)
 
                 st.markdown(
                     f'<div class="reason-row">{confidence}% — {label}</div>',
@@ -501,7 +573,7 @@ if st.session_state.page == "results":
 
 
         # ------------------------------------------------
-        # BOOK DEMO SECTION
+        # BOOK DEMO
         # ------------------------------------------------
 
         with st.expander(f"📅 Book Demo with {teacher['name']}"):
@@ -536,6 +608,14 @@ if st.session_state.page == "results":
 
                     time.sleep(2)
 
+                    send_demo_email(
+                        parent_name,
+                        parent_email,
+                        teacher['name'],
+                        selected_date,
+                        selected_time
+                    )
+
                 st.success("Demo booked successfully!")
 
                 st.markdown("### 📍 Google Meet Link")
@@ -544,17 +624,6 @@ if st.session_state.page == "results":
                     "[Join Google Meet](https://meet.google.com/ypj-jhkz-gta)"
                 )
 
-                st.info(
-                    f"""
-Demo details sent successfully.
-
-Teacher: {teacher['name']}
-Date: {selected_date}
-Time: {selected_time}
-Meeting Link:
-https://meet.google.com/ypj-jhkz-gta
-"""
-                )
 
         st.markdown('</div>', unsafe_allow_html=True)
 

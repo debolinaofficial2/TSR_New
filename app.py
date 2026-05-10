@@ -1049,157 +1049,173 @@ if st.session_state.page == "results":
             unsafe_allow_html=True
         )
 
+import streamlit.components.v1 as components
+
+
 # =========================================================
-# WORKING FLOATING POPUP
+# REAL WORKING POPUP
 # =========================================================
 
 if st.session_state.show_popup:
 
     popup_html = """
+    <!DOCTYPE html>
+
+    <html>
+
+    <head>
+
     <style>
 
-    .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-
-        background: rgba(0,0,0,0.55);
-
-        backdrop-filter: blur(8px);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        z-index: 999999;
+    body{
+        margin:0;
+        overflow:hidden;
+        font-family:Arial, sans-serif;
     }
 
-    .popup-box {
+    .overlay{
 
-        width: 650px;
+        position:fixed;
 
-        background: white;
+        top:0;
+        left:0;
 
-        border-radius: 28px;
+        width:100vw;
+        height:100vh;
 
-        padding: 50px;
+        background:rgba(0,0,0,0.55);
 
-        text-align: center;
+        backdrop-filter:blur(8px);
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+    }
+
+    .popup-box{
+
+        width:650px;
+
+        background:white;
+
+        border-radius:28px;
+
+        padding:55px;
+
+        text-align:center;
 
         box-shadow:
-        0px 20px 60px rgba(0,0,0,0.25);
+        0px 20px 70px rgba(0,0,0,0.25);
 
-        border: 3px solid #2fa4a9;
+        border:3px solid #2fa4a9;
 
-        animation: popupScale 0.35s ease;
+        animation:popupScale 0.35s ease;
     }
 
-    .popup-title {
+    .popup-title{
 
-        font-size: 42px;
-        font-weight: 800;
+        font-size:42px;
 
-        color: #167b7f;
+        font-weight:800;
 
-        margin-bottom: 22px;
+        color:#167b7f;
+
+        margin-bottom:22px;
     }
 
-    .popup-sub {
+    .popup-sub{
 
-        font-size: 20px;
+        font-size:20px;
 
-        line-height: 1.8;
+        line-height:1.8;
 
-        color: #4b5563;
+        color:#4b5563;
 
-        margin-bottom: 35px;
+        margin-bottom:35px;
     }
 
-    .popup-link {
+    .popup-link{
 
-        display: inline-block;
+        display:inline-block;
 
-        background: #ff7a18;
+        background:#ff7a18;
 
-        color: white !important;
+        color:white;
 
-        text-decoration: none;
+        text-decoration:none;
 
-        padding: 16px 34px;
+        padding:16px 34px;
 
-        border-radius: 14px;
+        border-radius:14px;
 
-        font-size: 18px;
+        font-size:18px;
 
-        font-weight: 700;
-
-        transition: 0.3s;
+        font-weight:700;
     }
 
-    .popup-link:hover {
+    @keyframes popupScale{
 
-        background: #ff8f38;
-
-        transform: translateY(-2px);
-    }
-
-    @keyframes popupScale {
-
-        from {
-            opacity: 0;
-            transform: scale(0.7);
+        from{
+            opacity:0;
+            transform:scale(0.7);
         }
 
-        to {
-            opacity: 1;
-            transform: scale(1);
+        to{
+            opacity:1;
+            transform:scale(1);
         }
     }
 
     </style>
 
+    </head>
 
-    <div class="popup-overlay">
+    <body>
 
-        <div class="popup-box">
+        <div class="overlay">
 
-            <div class="popup-title">
-            ✅ Demo Booked Successfully!
+            <div class="popup-box">
+
+                <div class="popup-title">
+                ✅ Demo Booked Successfully!
+                </div>
+
+                <div class="popup-sub">
+
+                Demo confirmation email has been sent successfully.
+
+                <br><br>
+
+                Your Google Meet session is now ready.
+
+                </div>
+
+                <a
+                href="https://meet.google.com/ypj-jhkz-gta"
+                target="_blank"
+                class="popup-link"
+                >
+
+                Join Google Meet
+
+                </a>
+
             </div>
-
-            <div class="popup-sub">
-
-            Demo confirmation email has been sent successfully.
-
-            <br><br>
-
-            Your Google Meet session is now ready.
-
-            </div>
-
-            <a
-            href="https://meet.google.com/ypj-jhkz-gta"
-            target="_blank"
-            class="popup-link"
-            >
-
-            Join Google Meet
-
-            </a>
 
         </div>
 
-    </div>
+    </body>
+
+    </html>
     """
 
-    st.markdown(
+    components.html(
         popup_html,
-        unsafe_allow_html=True
+        height=700,
+        scrolling=False
     )
-
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
 
     col1,col2,col3 = st.columns([2,1,2])
 

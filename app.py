@@ -1049,107 +1049,117 @@ if st.session_state.page == "results":
             unsafe_allow_html=True
         )
 
-
 # =========================================================
-# TRUE FLOATING POPUP MODAL
+# TRUE FLOATING POPUP
 # =========================================================
 
 if st.session_state.show_popup:
 
-    st.markdown("""
+    popup_html = f"""
     <style>
 
-    .popup-overlay{
-        position:fixed;
-        top:0;
-        left:0;
-        width:100vw;
-        height:100vh;
-        background:rgba(0,0,0,0.55);
-        backdrop-filter:blur(8px);
-        z-index:999999;
+    .popup-overlay {{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
 
-        display:flex;
-        justify-content:center;
-        align-items:center;
+        background: rgba(0,0,0,0.55);
 
-        animation:fadeIn 0.4s ease;
-    }
+        backdrop-filter: blur(8px);
 
-    .popup-box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        width:650px;
-        background:white;
-        border-radius:30px;
-        padding:55px;
-        text-align:center;
+        z-index: 999999;
+    }}
+
+    .popup-box {{
+
+        width: 650px;
+
+        background: white;
+
+        border-radius: 28px;
+
+        padding: 50px;
+
+        text-align: center;
 
         box-shadow:
-        0px 25px 70px rgba(0,0,0,0.25);
+        0px 20px 60px rgba(0,0,0,0.25);
 
-        border:3px solid #2fa4a9;
+        border: 3px solid #2fa4a9;
 
-        animation:popupScale 0.35s ease;
-    }
+        animation: popupScale 0.35s ease;
+    }}
 
-    .popup-title{
-        font-size:42px;
-        font-weight:800;
-        color:#167b7f;
-        margin-bottom:22px;
-    }
+    .popup-title {{
 
-    .popup-sub{
-        font-size:21px;
-        line-height:1.8;
-        color:#4b5563;
-        margin-bottom:35px;
-    }
+        font-size: 42px;
+        font-weight: 800;
 
-    .popup-link{
-        display:inline-block;
+        color: #167b7f;
 
-        background:#ff7a18;
-        color:white !important;
+        margin-bottom: 22px;
+    }}
 
-        text-decoration:none;
+    .popup-sub {{
 
-        padding:16px 34px;
+        font-size: 20px;
 
-        border-radius:14px;
+        line-height: 1.8;
 
-        font-size:18px;
-        font-weight:700;
+        color: #4b5563;
 
-        transition:0.3s;
-    }
+        margin-bottom: 35px;
+    }}
 
-    .popup-link:hover{
-        background:#ff8f38;
-        transform:translateY(-2px);
-    }
+    .popup-link {{
 
-    @keyframes popupScale{
-        from{
-            opacity:0;
-            transform:scale(0.7);
-        }
-        to{
-            opacity:1;
-            transform:scale(1);
-        }
-    }
+        display: inline-block;
 
-    @keyframes fadeIn{
-        from{
-            opacity:0;
-        }
-        to{
-            opacity:1;
-        }
-    }
+        background: #ff7a18;
+
+        color: white !important;
+
+        text-decoration: none;
+
+        padding: 16px 34px;
+
+        border-radius: 14px;
+
+        font-size: 18px;
+
+        font-weight: 700;
+
+        transition: 0.3s;
+    }}
+
+    .popup-link:hover {{
+
+        background: #ff8f38;
+
+        transform: translateY(-2px);
+    }}
+
+    @keyframes popupScale {{
+
+        from {{
+            opacity: 0;
+            transform: scale(0.7);
+        }}
+
+        to {{
+            opacity: 1;
+            transform: scale(1);
+        }}
+    }}
 
     </style>
+
 
     <div class="popup-overlay">
 
@@ -1160,9 +1170,13 @@ if st.session_state.show_popup:
             </div>
 
             <div class="popup-sub">
+
             Demo confirmation email has been sent successfully.
+
             <br><br>
+
             Your Google Meet session is now ready.
+
             </div>
 
             <a
@@ -1170,14 +1184,20 @@ if st.session_state.show_popup:
             target="_blank"
             class="popup-link"
             >
+
             Join Google Meet
+
             </a>
 
         </div>
 
     </div>
+    """
 
-    """, unsafe_allow_html=True)
+    st.markdown(
+        popup_html,
+        unsafe_allow_html=True
+    )
 
     st.markdown("<br><br><br>", unsafe_allow_html=True)
 
@@ -1186,8 +1206,7 @@ if st.session_state.show_popup:
     with col2:
 
         if st.button(
-            "Start New Search",
-            key="new_search_btn"
+            "Start New Search"
         ):
 
             st.session_state.clear()

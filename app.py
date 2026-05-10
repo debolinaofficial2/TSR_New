@@ -362,10 +362,8 @@ for _,teacher in teachers.iterrows():
         teacher["subject_specialization"]
     ).lower()
 
-    student_subject = (
-        st.session_state.subject
-        .lower()
-    )
+    student_subject = str(
+    st.session_state.subject or "").lower()
 
     subject_score = 35 if (
         student_subject
@@ -373,10 +371,12 @@ for _,teacher in teachers.iterrows():
     ) else 0
 
     board_score = 20 if (
-        st.session_state.board.lower()
-        in str(
-            teacher["boards"]
-        ).lower()
+    str(
+        st.session_state.board or ""
+    ).lower()
+    in str(
+        teacher["boards"]
+    ).lower()
     ) else 0
 
     teacher_exp = teacher.get(

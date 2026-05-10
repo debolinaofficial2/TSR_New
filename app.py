@@ -85,7 +85,7 @@ def send_demo_email(
 
     sender_email = "debolinaofficial2@gmail.com"
 
-    sender_password = st.secrets["yimy xwuw rrns cagh"]
+    sender_password = st.secrets["EMAIL_PASSWORD"]
 
     meet_link = "https://meet.google.com/ypj-jhkz-gta"
 

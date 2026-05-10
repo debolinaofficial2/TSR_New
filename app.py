@@ -76,9 +76,16 @@ def send_demo_email(
     selected_time
 ):
 
+    parent_email = parent_email.strip()
+
+    if not parent_email or "@" not in parent_email:
+
+        return False
+
+
     sender_email = "debolinaofficial2@gmail.com"
 
-    sender_password = "yimy xwuw rrns cagh"
+    sender_password = st.secrets["yimy xwuw rrns cagh"]
 
     meet_link = "https://meet.google.com/ypj-jhkz-gta"
 
@@ -116,19 +123,32 @@ SmartLearn Connect
     msg.attach(MIMEText(body, "plain"))
 
 
-    server = smtplib.SMTP("smtp.gmail.com", 587)
+    try:
 
-    server.starttls()
+        server = smtplib.SMTP("smtp.gmail.com", 587)
 
-    server.login(sender_email, sender_password)
+        server.starttls()
 
-    server.sendmail(
-        sender_email,
-        parent_email,
-        msg.as_string()
-    )
+        server.login(
+            sender_email,
+            sender_password
+        )
 
-    server.quit()
+        server.sendmail(
+            sender_email,
+            [parent_email],
+            msg.as_string()
+        )
+
+        server.quit()
+
+        return True
+
+    except Exception as e:
+
+        print("EMAIL ERROR:", e)
+
+        return False
 
 
 # ------------------------------------------------
@@ -432,7 +452,9 @@ if st.session_state.page == "form":
         )
 
         st.session_state.experience = exp
+
         st.session_state.step = 5
+
         st.rerun()
 
 
@@ -523,14 +545,21 @@ if st.session_state.page == "results":
         ranked.append(teacher_dict)
 
 
-    ranked = sorted(ranked,key=lambda x:x["score"],reverse=True)[:3]
+    ranked = sorted(
+        ranked,
+        key=lambda x:x["score"],
+        reverse=True
+    )[:3]
 
 
     for teacher in ranked:
 
         score = int(min(teacher["score"],100))
 
-        st.markdown('<div class="recommendation-container">', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="recommendation-container">',
+            unsafe_allow_html=True
+        )
 
         left, right = st.columns([5,1])
 
@@ -604,25 +633,37 @@ if st.session_state.page == "results":
                 key=f"confirm_{teacher['name']}"
             ):
 
-                with st.spinner("Booking your demo session..."):
+                if not parent_name or not parent_email:
 
-                    time.sleep(2)
+                    st.error("Please fill all fields")
 
-                    send_demo_email(
-                        parent_name,
-                        parent_email,
-                        teacher['name'],
-                        selected_date,
-                        selected_time
-                    )
+                else:
 
-                st.success("Demo booked successfully!")
+                    with st.spinner("Booking your demo session..."):
 
-                st.markdown("### 📍 Google Meet Link")
+                        time.sleep(2)
 
-                st.markdown(
-                    "[Join Google Meet](https://meet.google.com/ypj-jhkz-gta)"
-                )
+                        success = send_demo_email(
+                            parent_name,
+                            parent_email,
+                            teacher['name'],
+                            selected_date,
+                            selected_time
+                        )
+
+                    if success:
+
+                        st.success("Demo booked successfully!")
+
+                        st.markdown("### 📍 Google Meet Link")
+
+                        st.markdown(
+                            "[Join Google Meet](https://meet.google.com/ypj-jhkz-gta)"
+                        )
+
+                    else:
+
+                        st.error("Email sending failed")
 
 
         st.markdown('</div>', unsafe_allow_html=True)

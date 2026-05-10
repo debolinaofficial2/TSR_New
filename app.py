@@ -1,6 +1,7 @@
-# ------------------------------------------------
-# IMPORTS
-# ------------------------------------------------
+# =========================================================
+# SMARTLEARN CONNECT
+# FULL FINAL APP
+# =========================================================
 
 import streamlit as st
 import pandas as pd
@@ -18,9 +19,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-# ------------------------------------------------
+# =========================================================
 # PAGE CONFIG
-# ------------------------------------------------
+# =========================================================
 
 st.set_page_config(
     page_title="SmartLearn Connect",
@@ -28,9 +29,9 @@ st.set_page_config(
 )
 
 
-# ------------------------------------------------
-# SESSION STATE
-# ------------------------------------------------
+# =========================================================
+# SESSION STATES
+# =========================================================
 
 if "page" not in st.session_state:
     st.session_state.page = "form"
@@ -45,9 +46,9 @@ if "global_booking_done" not in st.session_state:
     st.session_state.global_booking_done = False
 
 
-# ------------------------------------------------
-# LOAD DATA
-# ------------------------------------------------
+# =========================================================
+# LOAD DATASET
+# =========================================================
 
 @st.cache_data
 def load_data():
@@ -69,9 +70,9 @@ def load_data():
 teachers = load_data()
 
 
-# ------------------------------------------------
-# LOAD MODEL
-# ------------------------------------------------
+# =========================================================
+# LOAD SEMANTIC MODEL
+# =========================================================
 
 @st.cache_resource
 def load_model():
@@ -84,9 +85,9 @@ def load_model():
 model = load_model()
 
 
-# ------------------------------------------------
+# =========================================================
 # EMAIL FUNCTION
-# ------------------------------------------------
+# =========================================================
 
 def send_demo_email(
     parent_name,
@@ -99,7 +100,7 @@ def send_demo_email(
     try:
 
         sender_email = (
-            "debolinaofficial2@gmail.com"
+            "debolinaofficial1@gmail.com"
         )
 
         sender_password = (
@@ -296,9 +297,9 @@ def send_demo_email(
         return False
 
 
-# ------------------------------------------------
+# =========================================================
 # CSS
-# ------------------------------------------------
+# =========================================================
 
 st.markdown("""
 <style>
@@ -325,6 +326,7 @@ justify-content:space-between;
 align-items:center;
 box-shadow:0px 10px 35px rgba(0,0,0,0.08);
 margin-bottom:20px;
+animation:navbarGlow 5s ease infinite;
 }
 
 .nav-title{
@@ -392,6 +394,7 @@ padding:35px;
 border-radius:24px;
 margin-top:25px;
 box-shadow:0px 12px 40px rgba(0,0,0,0.08);
+animation:fadeIn 0.7s ease;
 }
 
 
@@ -411,7 +414,7 @@ border-radius:20px;
 }
 
 
-/* CARD */
+/* TEACHER CARD */
 
 .teacher-card{
 background:white;
@@ -457,7 +460,7 @@ color:#374151;
 }
 
 
-/* BUTTONS */
+/* BUTTON */
 
 .stButton>button{
 background:#ff7a18;
@@ -476,46 +479,7 @@ background:#ff8f38;
 }
 
 
-/* POPUP */
-
-.popup-box{
-background:white;
-padding:50px;
-border-radius:30px;
-text-align:center;
-box-shadow:0px 15px 45px rgba(0,0,0,0.15);
-margin-top:40px;
-border:2px solid #2fa4a9;
-animation:cardUp 0.5s ease;
-}
-
-.popup-title{
-font-size:42px;
-font-weight:800;
-color:#167b7f;
-margin-bottom:20px;
-}
-
-.popup-sub{
-font-size:20px;
-line-height:1.8;
-color:#4b5563;
-margin-bottom:35px;
-}
-
-.popup-link{
-display:inline-block;
-background:#ff7a18;
-color:white !important;
-padding:16px 28px;
-border-radius:14px;
-font-size:18px;
-font-weight:700;
-text-decoration:none;
-}
-
-
-/* ANIMATION */
+/* ANIMATIONS */
 
 @keyframes cardUp{
 from{
@@ -539,13 +503,30 @@ transform:translateY(0px);
 100%{transform:translateY(0px);}
 }
 
+@keyframes navbarGlow{
+0%{filter:brightness(1);}
+50%{filter:brightness(1.08);}
+100%{filter:brightness(1);}
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0px);
+}
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 
-# ------------------------------------------------
+# =========================================================
 # NAVBAR
-# ------------------------------------------------
+# =========================================================
 
 st.markdown("""
 <div class="navbar">
@@ -565,9 +546,9 @@ Mentors
 """, unsafe_allow_html=True)
 
 
-# ------------------------------------------------
+# =========================================================
 # HERO
-# ------------------------------------------------
+# =========================================================
 
 left, right = st.columns([1.2,1])
 
@@ -608,9 +589,9 @@ with right:
     )
 
 
-# ------------------------------------------------
-# PROGRESS MAP
-# ------------------------------------------------
+# =========================================================
+# PROGRESS
+# =========================================================
 
 progress_lookup = {
     1:0.0,
@@ -621,9 +602,9 @@ progress_lookup = {
 }
 
 
-# ------------------------------------------------
+# =========================================================
 # FORM PAGE
-# ------------------------------------------------
+# =========================================================
 
 if st.session_state.page == "form":
 
@@ -768,9 +749,9 @@ if st.session_state.page == "form":
     )
 
 
-# ------------------------------------------------
+# =========================================================
 # RESULTS
-# ------------------------------------------------
+# =========================================================
 
 if st.session_state.page == "results":
 
@@ -1069,37 +1050,98 @@ if st.session_state.page == "results":
         )
 
 
-# ------------------------------------------------
-# POPUP
-# ------------------------------------------------
+# =========================================================
+# FLOATING POPUP
+# =========================================================
 
 if st.session_state.show_popup:
 
-    st.markdown("""
-    <div class="popup-box">
+    popup_html = """
+    <style>
 
-    <div class="popup-title">
-    ✅ Demo Booked Successfully!
+    .overlay{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100vw;
+        height:100vh;
+        background:rgba(0,0,0,0.55);
+        backdrop-filter:blur(8px);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        z-index:999999;
+    }
+
+    .modal-box{
+        width:650px;
+        background:white;
+        border-radius:28px;
+        padding:50px;
+        text-align:center;
+        box-shadow:0px 20px 70px rgba(0,0,0,0.25);
+        animation:popupScale 0.35s ease;
+        border:3px solid #2fa4a9;
+    }
+
+    .modal-title{
+        font-size:42px;
+        font-weight:800;
+        color:#167b7f;
+        margin-bottom:20px;
+    }
+
+    .modal-sub{
+        font-size:20px;
+        line-height:1.8;
+        color:#4b5563;
+        margin-bottom:35px;
+    }
+
+    .meet-btn{
+        display:inline-block;
+        background:#ff7a18;
+        color:white !important;
+        text-decoration:none;
+        padding:16px 30px;
+        border-radius:14px;
+        font-size:18px;
+        font-weight:700;
+    }
+
+    </style>
+
+    <div class="overlay">
+
+        <div class="modal-box">
+
+            <div class="modal-title">
+            ✅ Demo Booked Successfully!
+            </div>
+
+            <div class="modal-sub">
+            Demo confirmation email has been sent successfully.
+            <br><br>
+            Your Google Meet session is now ready.
+            </div>
+
+            <a
+            href="https://meet.google.com/ypj-jhkz-gta"
+            target="_blank"
+            class="meet-btn"
+            >
+            Join Google Meet
+            </a>
+
+        </div>
+
     </div>
+    """
 
-    <div class="popup-sub">
-    Demo confirmation email has been sent successfully.
-    <br><br>
-    Your Google Meet session is now ready.
-    </div>
-
-    <a
-    href="https://meet.google.com/ypj-jhkz-gta"
-    target="_blank"
-    class="popup-link"
-    >
-    Join Google Meet
-    </a>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.components.v1.html(
+        popup_html,
+        height=700
+    )
 
     col1,col2,col3 = st.columns([2,1,2])
 

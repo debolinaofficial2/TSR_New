@@ -76,9 +76,9 @@ def send_demo_email(
     selected_time
 ):
 
-    sender_email = "debolinaofficial1@gmail.com"
+    sender_email = "debolinaofficial2@gmail.com"
 
-    sender_password = "YOUR_APP_PASSWORD"
+    sender_password = "yimy xwuw rrns cagh"
 
     meet_link = "https://meet.google.com/ypj-jhkz-gta"
 

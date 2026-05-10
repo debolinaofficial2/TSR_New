@@ -7,7 +7,13 @@ import pandas as pd
 import time
 import smtplib
 
-from sentence_transformers import SentenceTransformer, util
+from datetime import date
+
+from sentence_transformers import (
+    SentenceTransformer,
+    util
+)
+
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -23,7 +29,7 @@ st.set_page_config(
 
 
 # ------------------------------------------------
-# SESSION STATES
+# SESSION STATE
 # ------------------------------------------------
 
 if "page" not in st.session_state:
@@ -40,13 +46,15 @@ if "global_booking_done" not in st.session_state:
 
 
 # ------------------------------------------------
-# LOAD DATASET
+# LOAD DATA
 # ------------------------------------------------
 
 @st.cache_data
 def load_data():
 
-    df = pd.read_excel("Dataset_TSR.xlsx")
+    df = pd.read_excel(
+        "Dataset_TSR.xlsx"
+    )
 
     df.columns = (
         df.columns
@@ -90,39 +98,161 @@ def send_demo_email(
 
     try:
 
-        parent_email = parent_email.strip()
+        sender_email = (
+            "debolinaofficial2@gmail.com"
+        )
 
-        sender_email = "debolinaofficial2@gmail.com"
-
-        sender_password = st.secrets["EMAIL_PASSWORD"]
+        sender_password = (
+            st.secrets["EMAIL_PASSWORD"]
+        )
 
         meet_link = (
             "https://meet.google.com/ypj-jhkz-gta"
         )
 
         subject = (
-            "SmartLearn Connect Demo Confirmation"
+            "SmartLearn Connect Demo Session Confirmation"
         )
 
-        body = f"""
-Hello {parent_name},
+        html_body = f"""
+        <html>
 
-Your demo session has been booked successfully.
+        <body style="
+        font-family:Arial;
+        background:#f5f7fb;
+        padding:20px;
+        ">
 
-Teacher: {teacher_name}
+        <div style="
+        max-width:650px;
+        margin:auto;
+        background:white;
+        border-radius:20px;
+        overflow:hidden;
+        box-shadow:0px 10px 35px rgba(0,0,0,0.08);
+        ">
 
-Date: {selected_date}
+            <div style="
+            background:linear-gradient(
+            90deg,
+            #2fa4a9,
+            #167b7f
+            );
+            padding:30px;
+            text-align:center;
+            color:white;
+            ">
 
-Time: {selected_time}
+                <h1 style="
+                margin:0;
+                font-size:34px;
+                ">
+                🎓 SmartLearn Connect
+                </h1>
 
-Google Meet Link:
-{meet_link}
+                <p style="
+                margin-top:10px;
+                font-size:18px;
+                ">
+                Demo Session Confirmation
+                </p>
 
-Regards,
-SmartLearn Connect
-"""
+            </div>
 
-        msg = MIMEMultipart()
+
+            <div style="
+            padding:35px;
+            color:#1f2937;
+            ">
+
+                <h2>
+                Hello {parent_name},
+                </h2>
+
+                <p style="
+                font-size:18px;
+                line-height:1.8;
+                ">
+                Your demo session has been booked successfully.
+                </p>
+
+                <div style="
+                background:#f8fbfc;
+                padding:22px;
+                border-radius:16px;
+                margin-top:25px;
+                ">
+
+                    <p>
+                    <strong>Teacher:</strong>
+                    {teacher_name}
+                    </p>
+
+                    <p>
+                    <strong>Date:</strong>
+                    {selected_date}
+                    </p>
+
+                    <p>
+                    <strong>Time:</strong>
+                    {selected_time}
+                    </p>
+
+                </div>
+
+
+                <div style="
+                text-align:center;
+                margin-top:35px;
+                ">
+
+                    <a
+                    href="{meet_link}"
+                    target="_blank"
+                    style="
+                    background:#ff7a18;
+                    color:white;
+                    padding:16px 28px;
+                    border-radius:12px;
+                    text-decoration:none;
+                    font-weight:700;
+                    font-size:18px;
+                    "
+                    >
+
+                    Join Google Meet
+
+                    </a>
+
+                </div>
+
+
+                <p style="
+                margin-top:40px;
+                font-size:17px;
+                line-height:1.8;
+                ">
+
+                Regards,
+                <br>
+                <strong>
+                SmartLearn Connect
+                </strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+        </body>
+
+        </html>
+        """
+
+        msg = MIMEMultipart(
+            "alternative"
+        )
 
         msg["From"] = sender_email
 
@@ -131,7 +261,10 @@ SmartLearn Connect
         msg["Subject"] = subject
 
         msg.attach(
-            MIMEText(body, "plain")
+            MIMEText(
+                html_body,
+                "html"
+            )
         )
 
         server = smtplib.SMTP(
@@ -170,9 +303,9 @@ SmartLearn Connect
 st.markdown("""
 <style>
 
-/* APP */
+/* MAIN */
 
-.main {
+.main{
 background:#f5f7fb;
 }
 
@@ -190,8 +323,8 @@ border-radius:18px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0px 10px 30px rgba(0,0,0,0.08);
-animation:navbarGlow 6s ease infinite;
+box-shadow:0px 10px 35px rgba(0,0,0,0.08);
+margin-bottom:20px;
 }
 
 .nav-title{
@@ -211,15 +344,14 @@ color:white;
 
 .hero{
 background:white;
-padding:50px;
-border-radius:26px;
-margin-top:25px;
+padding:55px;
+border-radius:28px;
 box-shadow:0px 12px 40px rgba(0,0,0,0.08);
-overflow:hidden;
+margin-bottom:25px;
 }
 
 .hero-title{
-font-size:68px;
+font-size:72px;
 font-weight:800;
 line-height:1.1;
 color:#1f2937;
@@ -242,10 +374,10 @@ color:#4b5563;
 .tag{
 display:inline-block;
 padding:12px 22px;
-border-radius:30px;
 background:#f8fbfc;
-margin-right:10px;
-margin-top:22px;
+border-radius:30px;
+margin-right:12px;
+margin-top:20px;
 font-weight:700;
 color:#167b7f;
 box-shadow:0px 5px 15px rgba(0,0,0,0.05);
@@ -260,7 +392,6 @@ padding:35px;
 border-radius:24px;
 margin-top:25px;
 box-shadow:0px 12px 40px rgba(0,0,0,0.08);
-animation:fadeIn 0.8s ease;
 }
 
 
@@ -280,20 +411,20 @@ border-radius:20px;
 }
 
 
-/* RECOMMENDATION CARD */
+/* CARD */
 
 .teacher-card{
 background:white;
 padding:35px;
-border-radius:24px;
+border-radius:26px;
 box-shadow:0px 12px 35px rgba(0,0,0,0.08);
-margin-bottom:30px;
+margin-bottom:35px;
+border:1px solid #eef2f7;
 animation:cardUp 0.8s ease;
-border:1px solid #edf2f7;
 }
 
 .teacher-name{
-font-size:34px;
+font-size:36px;
 font-weight:800;
 color:#1f2937;
 }
@@ -306,7 +437,7 @@ margin-top:12px;
 }
 
 .score{
-font-size:52px;
+font-size:56px;
 font-weight:800;
 color:#167b7f;
 text-align:right;
@@ -347,97 +478,44 @@ background:#ff8f38;
 
 /* POPUP */
 
-.popup-overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.55);
-backdrop-filter:blur(8px);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:999999;
-animation:fadeOverlay 0.4s ease;
-}
-
-.popup-modal{
-width:650px;
-background:linear-gradient(
-135deg,
-#2fa4a9,
-#167b7f
-);
-padding:55px;
+.popup-box{
+background:white;
+padding:50px;
 border-radius:30px;
 text-align:center;
-box-shadow:0px 25px 80px rgba(0,0,0,0.35);
-animation:popupScale 0.4s ease;
+box-shadow:0px 15px 45px rgba(0,0,0,0.15);
+margin-top:40px;
+border:2px solid #2fa4a9;
+animation:cardUp 0.5s ease;
 }
 
 .popup-title{
-font-size:46px;
+font-size:42px;
 font-weight:800;
-color:white;
-margin-bottom:18px;
+color:#167b7f;
+margin-bottom:20px;
 }
 
 .popup-sub{
-font-size:21px;
-color:white;
-line-height:1.7;
+font-size:20px;
+line-height:1.8;
+color:#4b5563;
 margin-bottom:35px;
 }
 
-.popup-btn{
+.popup-link{
 display:inline-block;
-background:white;
-color:#167b7f !important;
-padding:16px 30px;
+background:#ff7a18;
+color:white !important;
+padding:16px 28px;
 border-radius:14px;
 font-size:18px;
-font-weight:800;
+font-weight:700;
 text-decoration:none;
 }
 
-            /* POPUP BUTTON */
 
-.popup-btn{
-display:inline-block;
-background:white;
-color:#167b7f !important;
-padding:16px 34px;
-border-radius:14px;
-font-size:18px;
-font-weight:800;
-text-decoration:none;
-margin-top:15px;
-transition:0.3s;
-}
-
-.popup-btn:hover{
-transform:translateY(-2px);
-background:#f7f7f7;
-}
-
-/* ANIMATIONS */
-
-@keyframes popupScale{
-from{
-opacity:0;
-transform:scale(0.75);
-}
-to{
-opacity:1;
-transform:scale(1);
-}
-}
-
-@keyframes fadeOverlay{
-from{opacity:0;}
-to{opacity:1;}
-}
+/* ANIMATION */
 
 @keyframes cardUp{
 from{
@@ -461,12 +539,6 @@ transform:translateY(0px);
 100%{transform:translateY(0px);}
 }
 
-@keyframes navbarGlow{
-0%{filter:brightness(1);}
-50%{filter:brightness(1.08);}
-100%{filter:brightness(1);}
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -477,6 +549,7 @@ transform:translateY(0px);
 
 st.markdown("""
 <div class="navbar">
+
 <div class="nav-title">
 🎓 SmartLearn Connect
 </div>
@@ -487,6 +560,7 @@ Academic &nbsp;&nbsp;&nbsp;
 Exam Prep &nbsp;&nbsp;&nbsp;
 Mentors
 </div>
+
 </div>
 """, unsafe_allow_html=True)
 
@@ -535,7 +609,7 @@ with right:
 
 
 # ------------------------------------------------
-# PROGRESS LOOKUP
+# PROGRESS MAP
 # ------------------------------------------------
 
 progress_lookup = {
@@ -695,7 +769,7 @@ if st.session_state.page == "form":
 
 
 # ------------------------------------------------
-# RESULTS PAGE
+# RESULTS
 # ------------------------------------------------
 
 if st.session_state.page == "results":
@@ -901,9 +975,7 @@ if st.session_state.page == "results":
                 )
 
 
-        # ----------------------------------------
         # BOOK DEMO
-        # ----------------------------------------
 
         with st.expander(
             f"📅 Book Demo with {teacher_name}"
@@ -921,6 +993,7 @@ if st.session_state.page == "results":
 
             selected_date = st.date_input(
                 "Preferred Date",
+                min_value=date.today(),
                 key=f"date_{teacher_name}"
             )
 
@@ -997,68 +1070,45 @@ if st.session_state.page == "results":
 
 
 # ------------------------------------------------
-# POPUP MODAL
+# POPUP
 # ------------------------------------------------
 
 if st.session_state.show_popup:
 
-    popup_html = f"""
-    <div class="popup-overlay">
+    st.markdown("""
+    <div class="popup-box">
 
-        <div class="popup-modal">
+    <div class="popup-title">
+    ✅ Demo Booked Successfully!
+    </div>
 
-            <div class="popup-title">
-            ✅ Demo Booked Successfully!
-            </div>
+    <div class="popup-sub">
+    Demo confirmation email has been sent successfully.
+    <br><br>
+    Your Google Meet session is now ready.
+    </div>
 
-            <div class="popup-sub">
-            Demo confirmation email has been sent successfully.
-            <br><br>
-            Your Google Meet session is now ready.
-            </div>
-
-            <a
-            href="https://meet.google.com/ypj-jhkz-gta"
-            target="_blank"
-            class="popup-btn"
-            >
-            Join Google Meet
-            </a>
-
-        </div>
+    <a
+    href="https://meet.google.com/ypj-jhkz-gta"
+    target="_blank"
+    class="popup-link"
+    >
+    Join Google Meet
+    </a>
 
     </div>
-    """
+    """, unsafe_allow_html=True)
 
-    st.markdown(
-        popup_html,
-        unsafe_allow_html=True
-    )
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([2,1,2])
+    col1,col2,col3 = st.columns([2,1,2])
 
     with col2:
 
         if st.button(
-            "Start New Search",
-            key="popup_reset"
+            "Start New Search"
         ):
 
             st.session_state.clear()
 
             st.rerun()
-
-
-# ------------------------------------------------
-# RESET
-# ------------------------------------------------
-
-st.divider()
-
-if st.button("Start New Search"):
-
-    st.session_state.clear()
-
-    st.rerun()

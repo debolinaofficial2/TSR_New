@@ -1050,15 +1050,15 @@ if st.session_state.page == "results":
         )
 
 # =========================================================
-# TRUE FLOATING POPUP
+# WORKING FLOATING POPUP
 # =========================================================
 
 if st.session_state.show_popup:
 
-    popup_html = f"""
+    popup_html = """
     <style>
 
-    .popup-overlay {{
+    .popup-overlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -1074,9 +1074,9 @@ if st.session_state.show_popup:
         align-items: center;
 
         z-index: 999999;
-    }}
+    }
 
-    .popup-box {{
+    .popup-box {
 
         width: 650px;
 
@@ -1094,9 +1094,9 @@ if st.session_state.show_popup:
         border: 3px solid #2fa4a9;
 
         animation: popupScale 0.35s ease;
-    }}
+    }
 
-    .popup-title {{
+    .popup-title {
 
         font-size: 42px;
         font-weight: 800;
@@ -1104,9 +1104,9 @@ if st.session_state.show_popup:
         color: #167b7f;
 
         margin-bottom: 22px;
-    }}
+    }
 
-    .popup-sub {{
+    .popup-sub {
 
         font-size: 20px;
 
@@ -1115,9 +1115,9 @@ if st.session_state.show_popup:
         color: #4b5563;
 
         margin-bottom: 35px;
-    }}
+    }
 
-    .popup-link {{
+    .popup-link {
 
         display: inline-block;
 
@@ -1136,27 +1136,27 @@ if st.session_state.show_popup:
         font-weight: 700;
 
         transition: 0.3s;
-    }}
+    }
 
-    .popup-link:hover {{
+    .popup-link:hover {
 
         background: #ff8f38;
 
         transform: translateY(-2px);
-    }}
+    }
 
-    @keyframes popupScale {{
+    @keyframes popupScale {
 
-        from {{
+        from {
             opacity: 0;
             transform: scale(0.7);
-        }}
+        }
 
-        to {{
+        to {
             opacity: 1;
             transform: scale(1);
-        }}
-    }}
+        }
+    }
 
     </style>
 

@@ -1051,15 +1051,15 @@ if st.session_state.page == "results":
 
 
 # =========================================================
-# FLOATING POPUP
+# TRUE FLOATING POPUP MODAL
 # =========================================================
 
 if st.session_state.show_popup:
 
-    popup_html = """
+    st.markdown("""
     <style>
 
-    .overlay{
+    .popup-overlay{
         position:fixed;
         top:0;
         left:0;
@@ -1067,59 +1067,99 @@ if st.session_state.show_popup:
         height:100vh;
         background:rgba(0,0,0,0.55);
         backdrop-filter:blur(8px);
+        z-index:999999;
+
         display:flex;
         justify-content:center;
         align-items:center;
-        z-index:999999;
+
+        animation:fadeIn 0.4s ease;
     }
 
-    .modal-box{
+    .popup-box{
+
         width:650px;
         background:white;
-        border-radius:28px;
-        padding:50px;
+        border-radius:30px;
+        padding:55px;
         text-align:center;
-        box-shadow:0px 20px 70px rgba(0,0,0,0.25);
-        animation:popupScale 0.35s ease;
+
+        box-shadow:
+        0px 25px 70px rgba(0,0,0,0.25);
+
         border:3px solid #2fa4a9;
+
+        animation:popupScale 0.35s ease;
     }
 
-    .modal-title{
+    .popup-title{
         font-size:42px;
         font-weight:800;
         color:#167b7f;
-        margin-bottom:20px;
+        margin-bottom:22px;
     }
 
-    .modal-sub{
-        font-size:20px;
+    .popup-sub{
+        font-size:21px;
         line-height:1.8;
         color:#4b5563;
         margin-bottom:35px;
     }
 
-    .meet-btn{
+    .popup-link{
         display:inline-block;
+
         background:#ff7a18;
         color:white !important;
+
         text-decoration:none;
-        padding:16px 30px;
+
+        padding:16px 34px;
+
         border-radius:14px;
+
         font-size:18px;
         font-weight:700;
+
+        transition:0.3s;
+    }
+
+    .popup-link:hover{
+        background:#ff8f38;
+        transform:translateY(-2px);
+    }
+
+    @keyframes popupScale{
+        from{
+            opacity:0;
+            transform:scale(0.7);
+        }
+        to{
+            opacity:1;
+            transform:scale(1);
+        }
+    }
+
+    @keyframes fadeIn{
+        from{
+            opacity:0;
+        }
+        to{
+            opacity:1;
+        }
     }
 
     </style>
 
-    <div class="overlay">
+    <div class="popup-overlay">
 
-        <div class="modal-box">
+        <div class="popup-box">
 
-            <div class="modal-title">
+            <div class="popup-title">
             ✅ Demo Booked Successfully!
             </div>
 
-            <div class="modal-sub">
+            <div class="popup-sub">
             Demo confirmation email has been sent successfully.
             <br><br>
             Your Google Meet session is now ready.
@@ -1128,7 +1168,7 @@ if st.session_state.show_popup:
             <a
             href="https://meet.google.com/ypj-jhkz-gta"
             target="_blank"
-            class="meet-btn"
+            class="popup-link"
             >
             Join Google Meet
             </a>
@@ -1136,19 +1176,18 @@ if st.session_state.show_popup:
         </div>
 
     </div>
-    """
 
-    st.components.v1.html(
-        popup_html,
-        height=700
-    )
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
 
     col1,col2,col3 = st.columns([2,1,2])
 
     with col2:
 
         if st.button(
-            "Start New Search"
+            "Start New Search",
+            key="new_search_btn"
         ):
 
             st.session_state.clear()

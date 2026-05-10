@@ -1178,7 +1178,7 @@ if st.session_state.page == "results":
                     == teacher_name
                 ):
 
-                    st.markdown(f"""
+                    success_html = f"""
                     <div style="
                     background:#f8fbfc;
                     border:1px solid #e5e7eb;
@@ -1249,7 +1249,12 @@ if st.session_state.page == "results":
                         </div>
 
                     </div>
-                    """, unsafe_allow_html=True)
+                    """
+
+                    st.markdown(
+                        success_html,
+                        unsafe_allow_html=True
+                    )
 
                     st.markdown("<br>", unsafe_allow_html=True)
 

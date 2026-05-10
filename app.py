@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 # ------------------------------------------------
-# SESSION STATE INIT (FIXED PROGRESS BUG)
+# SESSION STATE INIT
 # ------------------------------------------------
 
 if "page" not in st.session_state:
@@ -48,7 +48,7 @@ teachers = load_data()
 
 
 # ------------------------------------------------
-# LOAD SEMANTIC MODEL
+# LOAD MODEL
 # ------------------------------------------------
 
 @st.cache_resource
@@ -60,11 +60,13 @@ model = load_model()
 
 
 # ------------------------------------------------
-# TUTRAIN UI STYLE
+# GLOBAL CSS
 # ------------------------------------------------
 
 st.markdown("""
 <style>
+
+/* NAVBAR */
 
 .navbar {
 background: linear-gradient(270deg,#2fa4a9,#1e7f80,#2fa4a9);
@@ -79,6 +81,9 @@ display:flex;
 justify-content:space-between;
 }
 
+
+/* HERO TITLE */
+
 .hero-title {
 font-size:56px;
 font-weight:700;
@@ -90,6 +95,9 @@ animation: floatTitle 4s ease-in-out infinite;
 color:#ff7a18;
 }
 
+
+/* PANEL */
+
 .intake-panel {
 background:white;
 padding:28px;
@@ -97,19 +105,43 @@ border-radius:18px;
 box-shadow:0px 12px 35px rgba(0,0,0,0.12);
 }
 
+
+/* PROGRESS BAR */
+
+div[data-testid="stProgress"] > div > div > div {
+background: linear-gradient(
+90deg,
+#2fa4a9,
+#6be0da,
+#2fa4a9
+);
+background-size:200% 100%;
+animation: shimmer 2s linear infinite;
+}
+
+
+/* RECOMMENDATION CARD */
+
 .recommendation-container{
 background:#ffffff;
 padding:32px;
 border-radius:18px;
 box-shadow:0px 10px 40px rgba(0,0,0,0.08);
 margin-bottom:28px;
+animation:fadeIn 0.8s ease-in;
 }
+
+
+/* TEACHER NAME */
 
 .teacher-name{
 font-size:26px;
 font-weight:600;
 color:#1f2937;
 }
+
+
+/* SCORE */
 
 .score{
 font-size:42px;
@@ -118,11 +150,17 @@ color:#2fa4a9;
 text-align:right;
 }
 
+
+/* DESCRIPTION */
+
 .description{
 font-size:16px;
 color:#4b5563;
 margin-top:6px;
 }
+
+
+/* SECTION */
 
 .section-title{
 font-size:18px;
@@ -131,6 +169,9 @@ margin-top:18px;
 margin-bottom:10px;
 color:#111827;
 }
+
+
+/* MATCH ROW */
 
 .reason-row{
 background:#f8fafc;
@@ -142,21 +183,35 @@ font-size:15px;
 color:#374151;
 }
 
-.cta-button{
+
+/* BUTTONS */
+
+.stButton>button {
 background:#ff7a18;
-padding:12px 22px;
-border-radius:10px;
 color:white;
+border-radius:10px;
 font-weight:600;
-display:inline-block;
-margin-top:14px;
-text-decoration:none;
+height:45px;
+border:none;
 }
+
+
+/* ANIMATIONS */
 
 @keyframes gradientMove {
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
+}
+
+@keyframes shimmer {
+0%{background-position:200% 0;}
+100%{background-position:-200% 0;}
+}
+
+@keyframes fadeIn {
+from{opacity:0;}
+to{opacity:1;}
 }
 
 @keyframes floatTitle {
@@ -205,7 +260,7 @@ with right:
 
 
 # ------------------------------------------------
-# PROGRESS BAR CONTROL (FIXED)
+# PROGRESS BAR
 # ------------------------------------------------
 
 progress_lookup = {
@@ -228,8 +283,11 @@ if st.session_state.page == "form":
     st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
 
     st.progress(progress)
+
     st.write(f"Profile completion: {int(progress*100)}%")
 
+
+    # STEP 1
 
     if st.session_state.step == 1:
 
@@ -240,25 +298,35 @@ if st.session_state.page == "form":
         )
 
         if subject:
+
             st.session_state.subject = subject
             st.session_state.step = 2
             st.rerun()
 
 
+    # STEP 2
+
     elif st.session_state.step == 2:
 
-        boards=set()
+        boards = set()
 
         for b in teachers["boards"].dropna():
             boards.update([x.strip() for x in b.split(",")])
 
-        board = st.selectbox("Select curriculum board", sorted(boards), index=None)
+        board = st.selectbox(
+            "Select curriculum board",
+            sorted(boards),
+            index=None
+        )
 
         if board:
+
             st.session_state.board = board
             st.session_state.step = 3
             st.rerun()
 
+
+    # STEP 3
 
     elif st.session_state.step == 3:
 
@@ -274,32 +342,46 @@ if st.session_state.page == "form":
         )
 
         if goal:
+
             st.session_state.goal = goal
             st.session_state.step = 4
             st.rerun()
 
 
+    # STEP 4
+
     elif st.session_state.step == 4:
 
-        exp = st.slider("Minimum experience required",0,20,5)
+        exp = st.slider(
+            "Minimum experience required",
+            0,
+            20,
+            5
+        )
 
         st.session_state.experience = exp
         st.session_state.step = 5
         st.rerun()
 
 
+    # STEP 5
+
     elif st.session_state.step == 5:
 
-        expectation = st.text_area("Describe learner expectations")
+        expectation = st.text_area(
+            "Describe learner expectations"
+        )
 
         if st.button("Generate Recommendations"):
 
             st.session_state.expectation = expectation
 
             with st.spinner("Matching best tutors using AI engine..."):
+
                 time.sleep(2)
 
             st.session_state.page = "results"
+
             st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
@@ -312,6 +394,7 @@ if st.session_state.page == "form":
 if st.session_state.page == "results":
 
     st.progress(1.0)
+
     st.write("Profile completion: 100%")
 
     st.markdown("## 🎯 Top 3 Recommended Teachers")
@@ -324,13 +407,17 @@ if st.session_state.page == "results":
     }
 
 
-    ranked=[]
+    ranked = []
 
-    for _,teacher in teachers.iterrows():
+
+    for _, teacher in teachers.iterrows():
 
         subject_score = 35 if student["subject"] in teacher["subject_specialization"] else 0
+
         board_score = 20 if student["board"] in teacher["boards"] else 0
+
         exp_score = 10 if teacher["teaching_experience_years"] >= student["experience"] else 0
+
 
         teacher_profile = " ".join([
             str(teacher["description"]),
@@ -338,16 +425,20 @@ if st.session_state.page == "results":
             str(teacher["field_of_study"])
         ])
 
+
         semantic = util.cos_sim(
             model.encode(st.session_state.expectation),
             model.encode(teacher_profile)
         ).item()
 
-        semantic = ((semantic + 1)/2)*30
+        semantic = ((semantic + 1) / 2) * 30
+
 
         total = subject_score + board_score + exp_score + semantic
 
+
         teacher_dict = teacher.to_dict()
+
         teacher_dict["score"] = total
 
         teacher_dict["reasons"] = {
@@ -360,18 +451,18 @@ if st.session_state.page == "results":
         ranked.append(teacher_dict)
 
 
-    ranked = sorted(ranked,key=lambda x:x["score"],reverse=True)[:3]
+    ranked = sorted(ranked, key=lambda x: x["score"], reverse=True)[:3]
 
 
     for teacher in ranked:
 
-        score=int(min(teacher["score"],100))
+        score = int(min(teacher["score"],100))
 
         st.markdown('<div class="recommendation-container">', unsafe_allow_html=True)
 
-        col1,col2 = st.columns([5,1])
+        left, right = st.columns([5,1])
 
-        with col1:
+        with left:
 
             st.markdown(
                 f'<div class="teacher-name">👩‍🏫 {teacher["name"]}</div>',
@@ -383,7 +474,7 @@ if st.session_state.page == "results":
                 unsafe_allow_html=True
             )
 
-        with col2:
+        with right:
 
             st.markdown(
                 f'<div class="score">{score}%</div>',
@@ -397,11 +488,11 @@ if st.session_state.page == "results":
         )
 
 
-        for label,val in teacher["reasons"].items():
+        for label, val in teacher["reasons"].items():
 
-            if val>0:
+            if val > 0:
 
-                confidence=int((val/35)*100)
+                confidence = int((val / 35) * 100)
 
                 st.markdown(
                     f'<div class="reason-row">{confidence}% — {label}</div>',
@@ -409,17 +500,70 @@ if st.session_state.page == "results":
                 )
 
 
-        st.markdown(
-            f'<a class="cta-button">📅 Book Demo with {teacher["name"]}</a>',
-            unsafe_allow_html=True
-        )
+        # ------------------------------------------------
+        # BOOK DEMO SECTION
+        # ------------------------------------------------
+
+        with st.expander(f"📅 Book Demo with {teacher['name']}"):
+
+            parent_name = st.text_input(
+                "Parent Name",
+                key=f"name_{teacher['name']}"
+            )
+
+            parent_email = st.text_input(
+                "Parent Email",
+                key=f"email_{teacher['name']}"
+            )
+
+            selected_date = st.date_input(
+                "Preferred Date",
+                key=f"date_{teacher['name']}"
+            )
+
+            selected_time = st.time_input(
+                "Preferred Time",
+                key=f"time_{teacher['name']}"
+            )
+
+
+            if st.button(
+                f"Confirm Demo with {teacher['name']}",
+                key=f"confirm_{teacher['name']}"
+            ):
+
+                with st.spinner("Booking your demo session..."):
+
+                    time.sleep(2)
+
+                st.success("Demo booked successfully!")
+
+                st.markdown("### 📍 Google Meet Link")
+
+                st.markdown(
+                    "[Join Google Meet](https://meet.google.com/ypj-jhkz-gta)"
+                )
+
+                st.info(
+                    f"""
+Demo details sent successfully.
+
+Teacher: {teacher['name']}
+Date: {selected_date}
+Time: {selected_time}
+Meeting Link:
+https://meet.google.com/ypj-jhkz-gta
+"""
+                )
 
         st.markdown('</div>', unsafe_allow_html=True)
 
 
     st.divider()
 
+
     if st.button("Start New Search"):
 
         st.session_state.clear()
+
         st.rerun()

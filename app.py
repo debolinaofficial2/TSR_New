@@ -628,21 +628,22 @@ for teacher in ranked:
             ):
 
                 scheduled_card = f"""
-                <div style='
+                <div style="
                 background:#f8fbfc;
                 border:1px solid #e5e7eb;
                 border-radius:16px;
                 padding:20px;
                 margin-top:18px;
-                '>
+                font-family:'Source Sans Pro', sans-serif;
+                ">
 
-                    <div style='
+                    <div style="
                     display:flex;
                     align-items:center;
                     gap:14px;
-                    '>
+                    ">
 
-                        <div style='
+                        <div style="
                         width:44px;
                         height:44px;
                         border-radius:12px;
@@ -653,7 +654,7 @@ for teacher in ranked:
                         font-size:22px;
                         color:#167b7f;
                         flex-shrink:0;
-                        '>
+                        ">
 
                         📅
 
@@ -661,14 +662,18 @@ for teacher in ranked:
 
                         <div>
 
-                            <div style='
-                            font-size:22px;
-                            font-weight:800;
+                            <div style="
+                            font-size:24px;
+                            font-weight:700;
                             color:#374151;
-                            '>
+                            line-height:1.3;
+                            ">
 
                             Demo Scheduled:
-                            <span style='color:#4b5563;'>
+                            <span style="
+                            color:#4b5563;
+                            font-weight:600;
+                            ">
 
                             {st.session_state.booked_date}
 
@@ -680,16 +685,26 @@ for teacher in ranked:
 
                             </div>
 
-                            <div style='
-                            margin-top:5px;
-                            font-size:16px;
+                            <div style="
+                            margin-top:6px;
+                            font-size:17px;
                             color:#6b7280;
-                            '>
+                            ">
 
                             Confirmed with
                             <strong>
                             {st.session_state.booked_teacher}
                             </strong>
+
+                            </div>
+
+                            <div style="
+                            margin-top:6px;
+                            font-size:15px;
+                            color:#9ca3af;
+                            ">
+
+                            Confirmation email sent successfully.
 
                             </div>
 

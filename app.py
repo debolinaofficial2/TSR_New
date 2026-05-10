@@ -7,6 +7,7 @@ import streamlit as st
 import pandas as pd
 import time
 import smtplib
+import streamlit.components.v1 as components
 
 from datetime import (
     date,
@@ -1176,15 +1177,14 @@ if st.session_state.page == "results":
                     == teacher_name
                 ):
 
-                    st.markdown("<br>", unsafe_allow_html=True)
-
-                    st.markdown(f"""
+                    scheduled_card = f"""
                     <div style="
                     background:#f8fbfc;
                     border:1px solid #e5e7eb;
                     border-radius:16px;
                     padding:20px;
-                    margin-top:10px;
+                    margin-top:18px;
+                    font-family:'Source Sans Pro', sans-serif;
                     ">
 
                         <div style="
@@ -1213,7 +1213,7 @@ if st.session_state.page == "results":
                             <div>
 
                                 <div style="
-                                font-size:22px;
+                                font-size:24px;
                                 font-weight:700;
                                 color:#374151;
                                 line-height:1.3;
@@ -1237,7 +1237,7 @@ if st.session_state.page == "results":
 
                                 <div style="
                                 margin-top:6px;
-                                font-size:16px;
+                                font-size:17px;
                                 color:#6b7280;
                                 ">
 
@@ -1263,7 +1263,12 @@ if st.session_state.page == "results":
                         </div>
 
                     </div>
-                    """, unsafe_allow_html=True)
+                    """
+
+                    st.components.v1.html(
+                        scheduled_card,
+                        height=120
+                    )
 
             else:
 

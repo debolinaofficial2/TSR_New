@@ -1,6 +1,6 @@
 # =========================================================
 # SMARTLEARN CONNECT
-# FINAL DISSERTATION VERSION
+# FINAL STABLE VERSION
 # =========================================================
 
 import streamlit as st
@@ -112,7 +112,7 @@ def send_demo_email(
         )
 
         subject = (
-            "SmartLearn Connect Demo Session Confirmation"
+            "SmartLearn Connect Demo Confirmation"
         )
 
         html_body = f"""
@@ -121,14 +121,14 @@ def send_demo_email(
         <body style="
         font-family:Arial;
         background:#f5f7fb;
-        padding:20px;
+        padding:30px;
         ">
 
         <div style="
         max-width:650px;
         margin:auto;
         background:white;
-        border-radius:20px;
+        border-radius:22px;
         overflow:hidden;
         box-shadow:0px 10px 35px rgba(0,0,0,0.08);
         ">
@@ -292,7 +292,7 @@ def send_demo_email(
 
 
 # =========================================================
-# GLOBAL CSS
+# CSS
 # =========================================================
 
 st.markdown("""
@@ -711,9 +711,6 @@ if st.session_state.page == "form":
         f"Profile completion: {int(progress*100)}%"
     )
 
-
-    # STEP 1
-
     if st.session_state.step == 1:
 
         subject = st.selectbox(
@@ -732,8 +729,6 @@ if st.session_state.page == "form":
 
             st.rerun()
 
-
-    # STEP 2
 
     elif st.session_state.step == 2:
 
@@ -760,8 +755,6 @@ if st.session_state.page == "form":
             st.rerun()
 
 
-    # STEP 3
-
     elif st.session_state.step == 3:
 
         goal = st.selectbox(
@@ -784,8 +777,6 @@ if st.session_state.page == "form":
             st.rerun()
 
 
-    # STEP 4
-
     elif st.session_state.step == 4:
 
         exp = st.slider(
@@ -801,8 +792,6 @@ if st.session_state.page == "form":
 
         st.rerun()
 
-
-    # STEP 5
 
     elif st.session_state.step == 5:
 
@@ -835,314 +824,12 @@ if st.session_state.page == "form":
 
 
 # =========================================================
-# RESULTS
-# =========================================================
-
-if st.session_state.page == "results":
-
-    st.progress(1.0)
-
-    st.write(
-        "Profile completion: 100%"
-    )
-
-    st.markdown(
-        "## 🎯 Top 3 Recommended Teachers"
-    )
-
-    student = {
-        "subject":
-        st.session_state.subject,
-
-        "board":
-        st.session_state.board,
-
-        "experience":
-        st.session_state.experience
-    }
-
-    ranked = []
-
-    for _, teacher in teachers.iterrows():
-
-        subject_score = 35 if (
-            student["subject"]
-            in str(
-                teacher[
-                    "subject_specialization"
-                ]
-            )
-        ) else 0
-
-        board_score = 20 if (
-            student["board"]
-            in str(
-                teacher["boards"]
-            )
-        ) else 0
-
-        exp_score = 10 if (
-            teacher[
-                "teaching_experience_years"
-            ]
-            >= student["experience"]
-        ) else 0
-
-
-        teacher_profile = " ".join([
-
-            str(teacher["description"]),
-
-            str(
-                teacher[
-                    "highest_qualification"
-                ]
-            ),
-
-            str(
-                teacher[
-                    "field_of_study"
-                ]
-            )
-        ])
-
-
-        semantic = util.cos_sim(
-
-            model.encode(
-                st.session_state.expectation
-            ),
-
-            model.encode(
-                teacher_profile
-            )
-
-        ).item()
-
-
-        semantic = (
-            (semantic + 1) / 2
-        ) * 30
-
-
-        total = (
-            subject_score
-            + board_score
-            + exp_score
-            + semantic
-        )
-
-        teacher_dict = (
-            teacher.to_dict()
-        )
-
-        teacher_dict["score"] = total
-
-        teacher_dict["reasons"] = {
-
-            "Subject alignment":
-            subject_score,
-
-            "Curriculum familiarity":
-            board_score,
-
-            "Experience alignment":
-            exp_score,
-
-            "Learner expectation match":
-            semantic
-        }
-
-        ranked.append(
-            teacher_dict
-        )
-
-
-    ranked = sorted(
-        ranked,
-        key=lambda x:x["score"],
-        reverse=True
-    )[:3]
-
-
-    for teacher in ranked:
-
-        teacher_name = teacher["name"]
-
-        score = int(
-            min(
-                teacher["score"],
-                100
-            )
-        )
-
-        st.markdown(
-            '<div class="teacher-card">',
-            unsafe_allow_html=True
-        )
-
-        left,right = st.columns([5,1])
-
-        with left:
-
-            st.markdown(
-                f"""
-                <div class="teacher-name">
-                👩‍🏫 {teacher_name}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                f"""
-                <div class="teacher-desc">
-                {teacher["description"]}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        with right:
-
-            st.markdown(
-                f"""
-                <div class="score">
-                {score}%
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-
-        st.markdown(
-            "### Why recommended"
-        )
-
-        for label,val in (
-            teacher["reasons"]
-            .items()
-        ):
-
-            if val > 0:
-
-                confidence = int(
-                    (val/35)*100
-                )
-
-                st.markdown(
-                    f"""
-                    <div class="reason">
-                    {confidence}% — {label}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-
-        # =================================================
-        # BOOK DEMO
-        # =================================================
-
-        with st.expander(
-            f"📅 Book Demo with {teacher_name}"
-        ):
-
-            parent_name = st.text_input(
-                "Parent Name",
-                key=f"name_{teacher_name}"
-            )
-
-            parent_email = st.text_input(
-                "Parent Email",
-                key=f"email_{teacher_name}"
-            )
-
-            selected_date = st.date_input(
-                "Preferred Date",
-                min_value=date.today(),
-                key=f"date_{teacher_name}"
-            )
-
-            selected_time = st.time_input(
-                "Preferred Time",
-                key=f"time_{teacher_name}"
-            )
-
-            already_booked = (
-                st.session_state
-                .global_booking_done
-            )
-
-            if already_booked:
-
-                st.button(
-                    "Demo Already Booked",
-                    disabled=True,
-                    key=f"disabled_{teacher_name}"
-                )
-
-            else:
-
-                if st.button(
-                    f"Confirm Demo with {teacher_name}",
-                    key=f"confirm_{teacher_name}"
-                ):
-
-                    if (
-                        not parent_name
-                        or not parent_email
-                    ):
-
-                        st.error(
-                            "Please fill all fields"
-                        )
-
-                    else:
-
-                        with st.spinner(
-                            "Booking demo..."
-                        ):
-
-                            time.sleep(2)
-
-                            success = (
-                                send_demo_email(
-                                    parent_name,
-                                    parent_email,
-                                    teacher_name,
-                                    selected_date,
-                                    selected_time
-                                )
-                            )
-
-                        if success:
-
-                            st.session_state.global_booking_done = True
-
-                            st.session_state.booking_success = True
-
-                            st.rerun()
-
-                        else:
-
-                            st.error(
-                                "Email sending failed"
-                            )
-
-        st.markdown(
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-
-# =========================================================
 # SUCCESS SECTION
 # =========================================================
 
 if st.session_state.booking_success:
 
-    st.markdown("""
+    success_html = """
     <div class="success-container">
 
         <div class="success-icon">
@@ -1174,7 +861,12 @@ if st.session_state.booking_success:
         </a>
 
     </div>
-    """, unsafe_allow_html=True)
+    """
+
+    st.markdown(
+        success_html,
+        unsafe_allow_html=True
+    )
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 

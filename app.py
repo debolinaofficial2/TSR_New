@@ -1249,17 +1249,105 @@ if st.session_state.page == "results":
 
 if st.session_state.booking_success:
 
-    st.markdown(
-        f"""
-        <div class="success-card">
+    st.markdown("""
+    <style>
 
-        <div class="success-title">
-        ✅ Demo Scheduled Successfully
+    .success-wrapper{
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:28px;
+
+    margin-top:35px;
+
+    text-align:center;
+
+    box-shadow:0px 12px 40px rgba(0,0,0,0.08);
+
+    border:2px solid #2fa4a9;
+
+    animation:fadeUp 0.7s ease;
+    }
+
+    .success-icon{
+
+    font-size:58px;
+
+    margin-bottom:10px;
+    }
+
+    .success-heading{
+
+    font-size:48px;
+
+    font-weight:800;
+
+    color:#167b7f;
+
+    margin-bottom:18px;
+    }
+
+    .success-text{
+
+    font-size:22px;
+
+    line-height:2;
+
+    color:#4b5563;
+
+    margin-top:20px;
+    }
+
+    .meet-button{
+
+    display:inline-block;
+
+    margin-top:35px;
+
+    background:#ff7a18;
+
+    color:white !important;
+
+    text-decoration:none;
+
+    padding:16px 34px;
+
+    border-radius:14px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    transition:0.3s ease;
+    }
+
+    .meet-button:hover{
+
+    background:#ff8f38;
+
+    transform:translateY(-2px);
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="success-wrapper">
+
+        <div class="success-icon">
+        ✓
         </div>
 
-        <div class="success-sub">
+        <div class="success-heading">
+        Demo Scheduled Successfully
+        </div>
 
-        Demo Scheduled:
+        <div class="success-text">
+
+        Demo Scheduled on
+
         <strong>
         {st.session_state.booked_date}
         </strong>
@@ -1273,37 +1361,36 @@ if st.session_state.booking_success:
         <br><br>
 
         Confirmed with
+
         <strong>
         {st.session_state.booked_teacher}
         </strong>
 
         </div>
 
+        <br>
+
         <a
         href="https://meet.google.com/ypj-jhkz-gta"
         target="_blank"
-        class="meet-btn"
+        class="meet-button"
         >
-
         Join Google Meet
-
         </a>
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    </div>
+    """, unsafe_allow_html=True)
 
+    st.markdown("<br>", unsafe_allow_html=True)
 
-# =========================================================
-# RESET
-# =========================================================
+    center1, center2, center3 = st.columns([2,2,2])
 
-st.divider()
+    with center2:
 
-if st.button(
-    "Start New Search"
-):
+        if st.button(
+            "Start New Search",
+            use_container_width=True
+        ):
 
-    st.session_state.clear()
-    st.rerun()
+            st.session_state.clear()
+            st.rerun()

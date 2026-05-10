@@ -1,3 +1,7 @@
+# ------------------------------------------------
+# IMPORTS
+# ------------------------------------------------
+
 import streamlit as st
 import pandas as pd
 import time
@@ -28,6 +32,12 @@ if "page" not in st.session_state:
 
 if "step" not in st.session_state:
     st.session_state.step = 1
+
+if "demo_booked" not in st.session_state:
+    st.session_state.demo_booked = {}
+
+if "show_popup" not in st.session_state:
+    st.session_state.show_popup = False
 
 
 # ------------------------------------------------
@@ -79,9 +89,7 @@ def send_demo_email(
     parent_email = parent_email.strip()
 
     if not parent_email or "@" not in parent_email:
-
         return False
-
 
     sender_email = "debolinaofficial2@gmail.com"
 
@@ -89,9 +97,7 @@ def send_demo_email(
 
     meet_link = "https://meet.google.com/ypj-jhkz-gta"
 
-
     subject = "SmartLearn Connect Demo Session Confirmation"
-
 
     body = f"""
 Hello {parent_name},
@@ -111,17 +117,13 @@ Regards,
 SmartLearn Connect
 """
 
-
     msg = MIMEMultipart()
 
     msg["From"] = sender_email
-
     msg["To"] = parent_email
-
     msg["Subject"] = subject
 
     msg.attach(MIMEText(body, "plain"))
-
 
     try:
 
@@ -158,47 +160,162 @@ SmartLearn Connect
 st.markdown("""
 <style>
 
+/* APP */
+
+.main {
+background:#f5f7fb;
+}
+
+
 /* NAVBAR */
 
 .navbar {
-background: linear-gradient(270deg,#2fa4a9,#1e7f80,#2fa4a9);
-background-size:400% 400%;
-animation: gradientMove 8s ease infinite;
+background: linear-gradient(90deg,#2fa4a9,#167b7f);
 padding:18px 40px;
-border-radius:14px;
-color:white;
-font-size:22px;
-font-weight:600;
+border-radius:16px;
 display:flex;
 justify-content:space-between;
+align-items:center;
+box-shadow:0px 10px 30px rgba(0,0,0,0.08);
+animation:navbarMove 8s ease infinite;
 }
 
-
-/* HERO TITLE */
-
-.hero-title {
-font-size:56px;
+.nav-title{
+color:white;
+font-size:30px;
 font-weight:700;
-color:#1f2937;
-animation: floatTitle 4s ease-in-out infinite;
 }
 
-.highlight {
+.nav-links{
+color:white;
+font-size:18px;
+font-weight:500;
+}
+
+
+/* HERO */
+
+.hero-container{
+background:white;
+padding:50px;
+border-radius:24px;
+margin-top:25px;
+box-shadow:0px 10px 35px rgba(0,0,0,0.08);
+overflow:hidden;
+}
+
+.hero-title{
+font-size:64px;
+font-weight:800;
+line-height:1.1;
+color:#18243d;
+animation:floatTitle 5s ease-in-out infinite;
+}
+
+.highlight{
 color:#ff7a18;
 }
 
-
-/* PANEL */
-
-.intake-panel {
-background:white;
-padding:28px;
-border-radius:18px;
-box-shadow:0px 12px 35px rgba(0,0,0,0.12);
+.hero-subtitle{
+font-size:22px;
+color:#5b6475;
+margin-top:20px;
 }
 
 
-/* PROGRESS BAR */
+/* TAGS */
+
+.tag{
+display:inline-block;
+padding:10px 20px;
+margin-right:12px;
+margin-top:20px;
+border-radius:30px;
+background:#f4f8fb;
+color:#167b7f;
+font-weight:600;
+box-shadow:0px 4px 12px rgba(0,0,0,0.05);
+}
+
+
+/* FORM PANEL */
+
+.form-panel{
+background:white;
+padding:35px;
+border-radius:22px;
+box-shadow:0px 10px 30px rgba(0,0,0,0.08);
+margin-top:25px;
+animation:fadeIn 1s ease;
+}
+
+
+/* RECOMMENDATION CARD */
+
+.recommendation-card{
+background:white;
+padding:35px;
+border-radius:24px;
+box-shadow:0px 10px 35px rgba(0,0,0,0.08);
+margin-bottom:30px;
+animation:fadeUp 0.8s ease;
+border:1px solid #eef2f7;
+}
+
+.teacher-name{
+font-size:34px;
+font-weight:700;
+color:#18243d;
+}
+
+.teacher-desc{
+font-size:17px;
+line-height:1.8;
+color:#4b5563;
+margin-top:12px;
+}
+
+.score{
+font-size:54px;
+font-weight:800;
+color:#167b7f;
+text-align:right;
+}
+
+
+/* WHY */
+
+.reason-box{
+background:#f8fbfc;
+padding:14px 18px;
+border-left:6px solid #2fa4a9;
+border-radius:12px;
+margin-bottom:12px;
+font-size:16px;
+color:#374151;
+}
+
+
+/* BUTTONS */
+
+.stButton>button{
+background:#ff7a18;
+color:white;
+font-weight:700;
+border:none;
+border-radius:12px;
+height:48px;
+padding:0px 24px;
+transition:0.3s;
+}
+
+.stButton>button:hover{
+transform:translateY(-2px);
+background:#ff8f38;
+}
+
+
+/* PROGRESS */
 
 div[data-testid="stProgress"] > div > div > div {
 background: linear-gradient(
@@ -209,107 +326,74 @@ background: linear-gradient(
 );
 background-size:200% 100%;
 animation: shimmer 2s linear infinite;
+height:18px;
+border-radius:20px;
 }
 
 
-/* RECOMMENDATION CARD */
+/* SUCCESS MODAL */
 
-.recommendation-container{
-background:#ffffff;
-padding:32px;
-border-radius:18px;
-box-shadow:0px 10px 40px rgba(0,0,0,0.08);
-margin-bottom:28px;
-animation:fadeIn 0.8s ease-in;
-}
-
-
-/* TEACHER NAME */
-
-.teacher-name{
-font-size:26px;
-font-weight:600;
-color:#1f2937;
-}
-
-
-/* SCORE */
-
-.score{
-font-size:42px;
-font-weight:700;
-color:#2fa4a9;
-text-align:right;
-}
-
-
-/* DESCRIPTION */
-
-.description{
-font-size:16px;
-color:#4b5563;
-margin-top:6px;
-}
-
-
-/* WHY SECTION */
-
-.section-title{
-font-size:18px;
-font-weight:600;
-margin-top:18px;
-margin-bottom:10px;
-color:#111827;
-}
-
-
-/* MATCH ROW */
-
-.reason-row{
-background:#f8fafc;
-border-left:5px solid #2fa4a9;
-padding:12px 16px;
-border-radius:10px;
-margin-bottom:10px;
-font-size:15px;
-color:#374151;
-}
-
-
-/* BUTTONS */
-
-.stButton>button {
-background:#ff7a18;
+.success-popup{
+background:linear-gradient(135deg,#2fa4a9,#167b7f);
+padding:28px;
+border-radius:22px;
+text-align:center;
 color:white;
-border-radius:10px;
-font-weight:600;
-height:45px;
-border:none;
+box-shadow:0px 10px 30px rgba(0,0,0,0.15);
+animation:popupAnim 0.5s ease;
+margin-top:20px;
+margin-bottom:25px;
+}
+
+.success-popup h2{
+font-size:34px;
+margin-bottom:12px;
+}
+
+.success-popup p{
+font-size:18px;
 }
 
 
 /* ANIMATIONS */
-
-@keyframes gradientMove {
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
 
 @keyframes shimmer {
 0%{background-position:200% 0;}
 100%{background-position:-200% 0;}
 }
 
-@keyframes fadeIn {
-from{opacity:0;}
-to{opacity:1;}
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+to{
+opacity:1;
+transform:translateY(0px);
+}
 }
 
-@keyframes floatTitle {
-0%{transform:translateY(0);}
-50%{transform:translateY(-6px);}
-100%{transform:translateY(0);}
+@keyframes popupAnim{
+from{
+opacity:0;
+transform:scale(0.8);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+@keyframes floatTitle{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0px);}
+}
+
+@keyframes navbarMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 </style>
@@ -322,8 +406,13 @@ to{opacity:1;}
 
 st.markdown("""
 <div class="navbar">
-<span>🎓 SmartLearn Connect</span>
-<span>Home &nbsp;&nbsp; Academic &nbsp;&nbsp; Exam Prep &nbsp;&nbsp; Mentors</span>
+<div class="nav-title">🎓 SmartLearn Connect</div>
+<div class="nav-links">
+Home &nbsp;&nbsp;&nbsp;
+Academic &nbsp;&nbsp;&nbsp;
+Exam Prep &nbsp;&nbsp;&nbsp;
+Mentors
+</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -337,11 +426,28 @@ left, right = st.columns([1.2,1])
 with left:
 
     st.markdown("""
-<div class="hero-title">
-Find the Right <span class="highlight">Tutor Match</span><br>
-for Your Child Instantly
-</div>
-""", unsafe_allow_html=True)
+    <div class="hero-container">
+
+    <div class="hero-title">
+    Find the Right
+    <span class="highlight">Tutor Match</span>
+    <br>
+    for Your Child Instantly
+    </div>
+
+    <div class="hero-subtitle">
+    AI-powered tutor recommendation across CBSE, ICSE,
+    IB, IGCSE & State Boards
+    </div>
+
+    <div class="tag">CBSE</div>
+    <div class="tag">ICSE</div>
+    <div class="tag">IB</div>
+    <div class="tag">IGCSE</div>
+    <div class="tag">State Boards</div>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 with right:
 
@@ -352,15 +458,15 @@ with right:
 
 
 # ------------------------------------------------
-# PROGRESS
+# PROGRESS LOOKUP
 # ------------------------------------------------
 
 progress_lookup = {
-    1: 0.0,
-    2: 0.2,
-    3: 0.4,
-    4: 0.6,
-    5: 0.8
+    1:0.0,
+    2:0.2,
+    3:0.4,
+    4:0.6,
+    5:0.8
 }
 
 
@@ -370,13 +476,21 @@ progress_lookup = {
 
 if st.session_state.page == "form":
 
-    progress = progress_lookup.get(st.session_state.step,0)
+    progress = progress_lookup.get(
+        st.session_state.step,
+        0
+    )
 
-    st.markdown('<div class="intake-panel">', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="form-panel">',
+        unsafe_allow_html=True
+    )
 
     st.progress(progress)
 
-    st.write(f"Profile completion: {int(progress*100)}%")
+    st.write(
+        f"Profile completion: {int(progress*100)}%"
+    )
 
 
     # STEP 1
@@ -385,14 +499,18 @@ if st.session_state.page == "form":
 
         subject = st.selectbox(
             "Select subject",
-            sorted(teachers["subject"].dropna().unique()),
+            sorted(
+                teachers["subject"].dropna().unique()
+            ),
             index=None
         )
 
         if subject:
 
             st.session_state.subject = subject
+
             st.session_state.step = 2
+
             st.rerun()
 
 
@@ -403,7 +521,10 @@ if st.session_state.page == "form":
         boards = set()
 
         for b in teachers["boards"].dropna():
-            boards.update([x.strip() for x in b.split(",")])
+
+            boards.update(
+                [x.strip() for x in b.split(",")]
+            )
 
         board = st.selectbox(
             "Select curriculum board",
@@ -414,7 +535,9 @@ if st.session_state.page == "form":
         if board:
 
             st.session_state.board = board
+
             st.session_state.step = 3
+
             st.rerun()
 
 
@@ -436,7 +559,9 @@ if st.session_state.page == "form":
         if goal:
 
             st.session_state.goal = goal
+
             st.session_state.step = 4
+
             st.rerun()
 
 
@@ -470,7 +595,9 @@ if st.session_state.page == "form":
 
             st.session_state.expectation = expectation
 
-            with st.spinner("Matching best tutors using AI engine..."):
+            with st.spinner(
+                "Matching best tutors using AI engine..."
+            ):
 
                 time.sleep(2)
 
@@ -478,7 +605,10 @@ if st.session_state.page == "form":
 
             st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
+    )
 
 
 # ------------------------------------------------
@@ -500,17 +630,31 @@ if st.session_state.page == "results":
         "experience": st.session_state.experience
     }
 
-
     ranked = []
 
 
     for _, teacher in teachers.iterrows():
 
-        subject_score = 35 if student["subject"] in teacher["subject_specialization"] else 0
+        subject_score = 35 if (
+            student["subject"]
+            in str(
+                teacher["subject_specialization"]
+            )
+        ) else 0
 
-        board_score = 20 if student["board"] in teacher["boards"] else 0
 
-        exp_score = 10 if teacher["teaching_experience_years"] >= student["experience"] else 0
+        board_score = 20 if (
+            student["board"]
+            in str(
+                teacher["boards"]
+            )
+        ) else 0
+
+
+        exp_score = 10 if (
+            teacher["teaching_experience_years"]
+            >= student["experience"]
+        ) else 0
 
 
         teacher_profile = " ".join([
@@ -521,14 +665,26 @@ if st.session_state.page == "results":
 
 
         semantic = util.cos_sim(
-            model.encode(st.session_state.expectation),
-            model.encode(teacher_profile)
+            model.encode(
+                st.session_state.expectation
+            ),
+            model.encode(
+                teacher_profile
+            )
         ).item()
 
-        semantic = ((semantic + 1) / 2) * 30
+
+        semantic = (
+            (semantic + 1) / 2
+        ) * 30
 
 
-        total = subject_score + board_score + exp_score + semantic
+        total = (
+            subject_score
+            + board_score
+            + exp_score
+            + semantic
+        )
 
 
         teacher_dict = teacher.to_dict()
@@ -538,8 +694,8 @@ if st.session_state.page == "results":
         teacher_dict["reasons"] = {
             "Subject alignment": subject_score,
             "Curriculum familiarity": board_score,
-            "Matches experience requirement": exp_score,
-            "Aligned with learner expectations": semantic
+            "Experience alignment": exp_score,
+            "Learner expectation match": semantic
         }
 
         ranked.append(teacher_dict)
@@ -554,10 +710,17 @@ if st.session_state.page == "results":
 
     for teacher in ranked:
 
-        score = int(min(teacher["score"],100))
+        teacher_name = teacher["name"]
+
+        score = int(
+            min(
+                teacher["score"],
+                100
+            )
+        )
 
         st.markdown(
-            '<div class="recommendation-container">',
+            '<div class="recommendation-card">',
             unsafe_allow_html=True
         )
 
@@ -566,114 +729,202 @@ if st.session_state.page == "results":
         with left:
 
             st.markdown(
-                f'<div class="teacher-name">👩‍🏫 {teacher["name"]}</div>',
+                f"""
+                <div class="teacher-name">
+                👩‍🏫 {teacher_name}
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
             st.markdown(
-                f'<div class="description">{teacher["description"]}</div>',
+                f"""
+                <div class="teacher-desc">
+                {teacher["description"]}
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
         with right:
 
             st.markdown(
-                f'<div class="score">{score}%</div>',
+                f"""
+                <div class="score">
+                {score}%
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
 
-        st.markdown(
-            '<div class="section-title">Why recommended</div>',
-            unsafe_allow_html=True
-        )
+        st.markdown("### Why recommended")
 
 
         for label,val in teacher["reasons"].items():
 
             if val > 0:
 
-                confidence = int((val/35)*100)
+                confidence = int(
+                    (val/35)*100
+                )
 
                 st.markdown(
-                    f'<div class="reason-row">{confidence}% — {label}</div>',
+                    f"""
+                    <div class="reason-box">
+                    {confidence}% — {label}
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
 
-        # ------------------------------------------------
+        # ----------------------------------------
         # BOOK DEMO
-        # ------------------------------------------------
+        # ----------------------------------------
 
-        with st.expander(f"📅 Book Demo with {teacher['name']}"):
+        with st.expander(
+            f"📅 Book Demo with {teacher_name}"
+        ):
 
             parent_name = st.text_input(
                 "Parent Name",
-                key=f"name_{teacher['name']}"
+                key=f"name_{teacher_name}"
             )
 
             parent_email = st.text_input(
                 "Parent Email",
-                key=f"email_{teacher['name']}"
+                key=f"email_{teacher_name}"
             )
 
             selected_date = st.date_input(
                 "Preferred Date",
-                key=f"date_{teacher['name']}"
+                key=f"date_{teacher_name}"
             )
 
             selected_time = st.time_input(
                 "Preferred Time",
-                key=f"time_{teacher['name']}"
+                key=f"time_{teacher_name}"
             )
 
 
-            if st.button(
-                f"Confirm Demo with {teacher['name']}",
-                key=f"confirm_{teacher['name']}"
-            ):
+            already_booked = (
+                teacher_name
+                in st.session_state.demo_booked
+            )
 
-                if not parent_name or not parent_email:
 
-                    st.error("Please fill all fields")
+            if already_booked:
 
-                else:
+                st.button(
+                    "Demo Already Booked",
+                    disabled=True,
+                    key=f"disabled_{teacher_name}"
+                )
 
-                    with st.spinner("Booking your demo session..."):
+            else:
 
-                        time.sleep(2)
+                if st.button(
+                    f"Confirm Demo with {teacher_name}",
+                    key=f"confirm_{teacher_name}"
+                ):
 
-                        success = send_demo_email(
-                            parent_name,
-                            parent_email,
-                            teacher['name'],
-                            selected_date,
-                            selected_time
-                        )
+                    if (
+                        not parent_name
+                        or not parent_email
+                    ):
 
-                    if success:
-
-                        st.success("Demo booked successfully!")
-
-                        st.markdown("### 📍 Google Meet Link")
-
-                        st.markdown(
-                            "[Join Google Meet](https://meet.google.com/ypj-jhkz-gta)"
+                        st.error(
+                            "Please fill all fields"
                         )
 
                     else:
 
-                        st.error("Email sending failed")
+                        with st.spinner(
+                            "Booking your demo session..."
+                        ):
+
+                            time.sleep(2)
+
+                            success = send_demo_email(
+                                parent_name,
+                                parent_email,
+                                teacher_name,
+                                selected_date,
+                                selected_time
+                            )
+
+                        if success:
+
+                            st.session_state.demo_booked[
+                                teacher_name
+                            ] = True
+
+                            st.session_state.show_popup = True
+
+                            st.rerun()
+
+                        else:
+
+                            st.error(
+                                "Email sending failed"
+                            )
 
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
 
 
-    st.divider()
+# ------------------------------------------------
+# POPUP
+# ------------------------------------------------
 
+if st.session_state.show_popup:
 
-    if st.button("Start New Search"):
+    st.markdown("""
+    <div class="success-popup">
 
-        st.session_state.clear()
+    <h2>✅ Demo Booked Successfully!</h2>
+
+    <p>
+    Demo confirmation email has been sent successfully.
+    </p>
+
+    <br>
+
+    <a href="https://meet.google.com/ypj-jhkz-gta"
+       target="_blank"
+       style="
+       background:white;
+       color:#167b7f;
+       padding:14px 24px;
+       border-radius:12px;
+       text-decoration:none;
+       font-weight:700;
+       ">
+       Join Google Meet
+    </a>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("Close Popup"):
+
+        st.session_state.show_popup = False
 
         st.rerun()
+
+
+# ------------------------------------------------
+# RESET
+# ------------------------------------------------
+
+st.divider()
+
+if st.button("Start New Search"):
+
+    st.session_state.clear()
+
+    st.rerun()

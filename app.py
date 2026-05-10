@@ -1,6 +1,6 @@
 # =========================================================
 # SMARTLEARN CONNECT
-# FINAL PROFESSIONAL VERSION
+# FINAL DISSERTATION VERSION
 # =========================================================
 
 import streamlit as st
@@ -39,8 +39,8 @@ if "page" not in st.session_state:
 if "step" not in st.session_state:
     st.session_state.step = 1
 
-if "show_popup" not in st.session_state:
-    st.session_state.show_popup = False
+if "booking_success" not in st.session_state:
+    st.session_state.booking_success = False
 
 if "global_booking_done" not in st.session_state:
     st.session_state.global_booking_done = False
@@ -86,7 +86,7 @@ model = load_model()
 
 
 # =========================================================
-# SEND EMAIL
+# EMAIL FUNCTION
 # =========================================================
 
 def send_demo_email(
@@ -292,7 +292,7 @@ def send_demo_email(
 
 
 # =========================================================
-# CSS
+# GLOBAL CSS
 # =========================================================
 
 st.markdown("""
@@ -359,7 +359,7 @@ margin-bottom:25px;
 }
 
 .hero-title{
-font-size:74px;
+font-size:72px;
 font-weight:800;
 line-height:1.1;
 color:#1f2937;
@@ -446,7 +446,7 @@ background-position:-200% 0;
 }
 
 
-/* TEACHER CARD */
+/* CARD */
 
 .teacher-card{
 background:white;
@@ -532,63 +532,47 @@ transform:translateY(-2px);
 }
 
 
-/* POPUP */
+/* SUCCESS */
 
-.popup-overlay{
-
-position:fixed;
-
-top:0;
-left:0;
-
-width:100vw;
-height:100vh;
-
-background:rgba(0,0,0,0.55);
-
-backdrop-filter:blur(8px);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-z-index:999999;
-}
-
-.popup-card{
-
-width:650px;
+.success-container{
 
 background:white;
 
-border-radius:28px;
+padding:60px;
 
-padding:55px;
+border-radius:30px;
 
 text-align:center;
 
+margin-top:40px;
+
 box-shadow:
-0px 20px 60px rgba(0,0,0,0.25);
+0px 15px 50px rgba(0,0,0,0.12);
 
 border:3px solid #2fa4a9;
 }
 
-.popup-title{
+.success-icon{
 
-font-size:42px;
+font-size:90px;
+
+margin-bottom:20px;
+}
+
+.success-title{
+
+font-size:46px;
 
 font-weight:800;
 
 color:#167b7f;
 
-margin-bottom:22px;
+margin-bottom:18px;
 }
 
-.popup-sub{
+.success-sub{
 
-font-size:20px;
+font-size:21px;
 
 line-height:1.8;
 
@@ -597,7 +581,7 @@ color:#4b5563;
 margin-bottom:35px;
 }
 
-.popup-btn{
+.meet-btn{
 
 display:inline-block;
 
@@ -607,7 +591,7 @@ color:white !important;
 
 text-decoration:none;
 
-padding:16px 34px;
+padding:18px 36px;
 
 border-radius:14px;
 
@@ -706,7 +690,7 @@ progress_lookup = {
 
 
 # =========================================================
-# FORM PAGE
+# FORM
 # =========================================================
 
 if st.session_state.page == "form":
@@ -851,123 +835,314 @@ if st.session_state.page == "form":
 
 
 # =========================================================
-# SUCCESS STATE
+# RESULTS
 # =========================================================
 
-if st.session_state.show_popup:
+if st.session_state.page == "results":
+
+    st.progress(1.0)
+
+    st.write(
+        "Profile completion: 100%"
+    )
+
+    st.markdown(
+        "## 🎯 Top 3 Recommended Teachers"
+    )
+
+    student = {
+        "subject":
+        st.session_state.subject,
+
+        "board":
+        st.session_state.board,
+
+        "experience":
+        st.session_state.experience
+    }
+
+    ranked = []
+
+    for _, teacher in teachers.iterrows():
+
+        subject_score = 35 if (
+            student["subject"]
+            in str(
+                teacher[
+                    "subject_specialization"
+                ]
+            )
+        ) else 0
+
+        board_score = 20 if (
+            student["board"]
+            in str(
+                teacher["boards"]
+            )
+        ) else 0
+
+        exp_score = 10 if (
+            teacher[
+                "teaching_experience_years"
+            ]
+            >= student["experience"]
+        ) else 0
+
+
+        teacher_profile = " ".join([
+
+            str(teacher["description"]),
+
+            str(
+                teacher[
+                    "highest_qualification"
+                ]
+            ),
+
+            str(
+                teacher[
+                    "field_of_study"
+                ]
+            )
+        ])
+
+
+        semantic = util.cos_sim(
+
+            model.encode(
+                st.session_state.expectation
+            ),
+
+            model.encode(
+                teacher_profile
+            )
+
+        ).item()
+
+
+        semantic = (
+            (semantic + 1) / 2
+        ) * 30
+
+
+        total = (
+            subject_score
+            + board_score
+            + exp_score
+            + semantic
+        )
+
+        teacher_dict = (
+            teacher.to_dict()
+        )
+
+        teacher_dict["score"] = total
+
+        teacher_dict["reasons"] = {
+
+            "Subject alignment":
+            subject_score,
+
+            "Curriculum familiarity":
+            board_score,
+
+            "Experience alignment":
+            exp_score,
+
+            "Learner expectation match":
+            semantic
+        }
+
+        ranked.append(
+            teacher_dict
+        )
+
+
+    ranked = sorted(
+        ranked,
+        key=lambda x:x["score"],
+        reverse=True
+    )[:3]
+
+
+    for teacher in ranked:
+
+        teacher_name = teacher["name"]
+
+        score = int(
+            min(
+                teacher["score"],
+                100
+            )
+        )
+
+        st.markdown(
+            '<div class="teacher-card">',
+            unsafe_allow_html=True
+        )
+
+        left,right = st.columns([5,1])
+
+        with left:
+
+            st.markdown(
+                f"""
+                <div class="teacher-name">
+                👩‍🏫 {teacher_name}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"""
+                <div class="teacher-desc">
+                {teacher["description"]}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with right:
+
+            st.markdown(
+                f"""
+                <div class="score">
+                {score}%
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+
+        st.markdown(
+            "### Why recommended"
+        )
+
+        for label,val in (
+            teacher["reasons"]
+            .items()
+        ):
+
+            if val > 0:
+
+                confidence = int(
+                    (val/35)*100
+                )
+
+                st.markdown(
+                    f"""
+                    <div class="reason">
+                    {confidence}% — {label}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+
+        # =================================================
+        # BOOK DEMO
+        # =================================================
+
+        with st.expander(
+            f"📅 Book Demo with {teacher_name}"
+        ):
+
+            parent_name = st.text_input(
+                "Parent Name",
+                key=f"name_{teacher_name}"
+            )
+
+            parent_email = st.text_input(
+                "Parent Email",
+                key=f"email_{teacher_name}"
+            )
+
+            selected_date = st.date_input(
+                "Preferred Date",
+                min_value=date.today(),
+                key=f"date_{teacher_name}"
+            )
+
+            selected_time = st.time_input(
+                "Preferred Time",
+                key=f"time_{teacher_name}"
+            )
+
+            already_booked = (
+                st.session_state
+                .global_booking_done
+            )
+
+            if already_booked:
+
+                st.button(
+                    "Demo Already Booked",
+                    disabled=True,
+                    key=f"disabled_{teacher_name}"
+                )
+
+            else:
+
+                if st.button(
+                    f"Confirm Demo with {teacher_name}",
+                    key=f"confirm_{teacher_name}"
+                ):
+
+                    if (
+                        not parent_name
+                        or not parent_email
+                    ):
+
+                        st.error(
+                            "Please fill all fields"
+                        )
+
+                    else:
+
+                        with st.spinner(
+                            "Booking demo..."
+                        ):
+
+                            time.sleep(2)
+
+                            success = (
+                                send_demo_email(
+                                    parent_name,
+                                    parent_email,
+                                    teacher_name,
+                                    selected_date,
+                                    selected_time
+                                )
+                            )
+
+                        if success:
+
+                            st.session_state.global_booking_done = True
+
+                            st.session_state.booking_success = True
+
+                            st.rerun()
+
+                        else:
+
+                            st.error(
+                                "Email sending failed"
+                            )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+
+# =========================================================
+# SUCCESS SECTION
+# =========================================================
+
+if st.session_state.booking_success:
 
     st.markdown("""
-    <style>
-
-    .success-container{
-
-        background:white;
-
-        padding:60px;
-
-        border-radius:30px;
-
-        text-align:center;
-
-        margin-top:40px;
-
-        box-shadow:
-        0px 15px 50px rgba(0,0,0,0.12);
-
-        border:3px solid #2fa4a9;
-
-        animation:fadeUp 0.6s ease;
-    }
-
-    .success-icon{
-
-        font-size:90px;
-
-        margin-bottom:20px;
-
-        animation:pulse 1.5s infinite;
-    }
-
-    .success-title{
-
-        font-size:46px;
-
-        font-weight:800;
-
-        color:#167b7f;
-
-        margin-bottom:18px;
-    }
-
-    .success-sub{
-
-        font-size:21px;
-
-        line-height:1.8;
-
-        color:#4b5563;
-
-        margin-bottom:35px;
-    }
-
-    .meet-btn{
-
-        display:inline-block;
-
-        background:#ff7a18;
-
-        color:white !important;
-
-        text-decoration:none;
-
-        padding:18px 36px;
-
-        border-radius:14px;
-
-        font-size:18px;
-
-        font-weight:700;
-
-        transition:0.3s;
-    }
-
-    .meet-btn:hover{
-
-        background:#ff8f38;
-
-        transform:translateY(-2px);
-    }
-
-    @keyframes pulse{
-
-        0%{
-            transform:scale(1);
-        }
-
-        50%{
-            transform:scale(1.08);
-        }
-
-        100%{
-            transform:scale(1);
-        }
-    }
-
-    @keyframes fadeUp{
-
-        from{
-            opacity:0;
-            transform:translateY(25px);
-        }
-
-        to{
-            opacity:1;
-            transform:translateY(0px);
-        }
-    }
-
-    </style>
-
     <div class="success-container">
 
         <div class="success-icon">

@@ -626,24 +626,24 @@ for teacher in ranked:
                 == teacher_name
             ):
 
-                success_html = f"""
+                scheduled_card = f"""
                 <div style="
                 background:#f8fbfc;
                 border:1px solid #e5e7eb;
                 border-radius:16px;
-                padding:22px;
+                padding:20px;
                 margin-top:18px;
                 ">
 
                     <div style="
                     display:flex;
-                    align-items:flex-start;
+                    align-items:center;
                     gap:14px;
                     ">
 
                         <div style="
-                        width:42px;
-                        height:42px;
+                        width:44px;
+                        height:44px;
                         border-radius:12px;
                         background:#e8faf8;
                         display:flex;
@@ -680,7 +680,7 @@ for teacher in ranked:
                             </div>
 
                             <div style="
-                            margin-top:6px;
+                            margin-top:5px;
                             font-size:16px;
                             color:#6b7280;
                             ">
@@ -700,21 +700,9 @@ for teacher in ranked:
                 """
 
                 st.markdown(
-                    success_html,
+                    scheduled_card,
                     unsafe_allow_html=True
                 )
-
-                st.markdown("<br>", unsafe_allow_html=True)
-
-                col1,col2,col3 = st.columns([1,1,1])
-
-                with col2:
-
-                    st.link_button(
-                        "Join Google Meet",
-                        "https://meet.google.com/ypj-jhkz-gta",
-                        use_container_width=True
-                    )
 
         else:
 

@@ -851,43 +851,166 @@ if st.session_state.page == "form":
 
 
 # =========================================================
-# POPUP
+# SUCCESS STATE
 # =========================================================
 
 if st.session_state.show_popup:
 
     st.markdown("""
-    <div class="popup-overlay">
+    <style>
 
-        <div class="popup-card">
+    .success-container{
 
-            <div class="popup-title">
-            ✅ Demo Booked Successfully!
-            </div>
+        background:white;
 
-            <div class="popup-sub">
+        padding:60px;
 
-            Demo confirmation email
-            has been sent successfully.
+        border-radius:30px;
 
-            <br><br>
+        text-align:center;
 
-            Your Google Meet session
-            is now ready.
+        margin-top:40px;
 
-            </div>
+        box-shadow:
+        0px 15px 50px rgba(0,0,0,0.12);
 
-            <a
-            href="https://meet.google.com/ypj-jhkz-gta"
-            target="_blank"
-            class="popup-btn"
-            >
+        border:3px solid #2fa4a9;
 
-            Join Google Meet
+        animation:fadeUp 0.6s ease;
+    }
 
-            </a>
+    .success-icon{
+
+        font-size:90px;
+
+        margin-bottom:20px;
+
+        animation:pulse 1.5s infinite;
+    }
+
+    .success-title{
+
+        font-size:46px;
+
+        font-weight:800;
+
+        color:#167b7f;
+
+        margin-bottom:18px;
+    }
+
+    .success-sub{
+
+        font-size:21px;
+
+        line-height:1.8;
+
+        color:#4b5563;
+
+        margin-bottom:35px;
+    }
+
+    .meet-btn{
+
+        display:inline-block;
+
+        background:#ff7a18;
+
+        color:white !important;
+
+        text-decoration:none;
+
+        padding:18px 36px;
+
+        border-radius:14px;
+
+        font-size:18px;
+
+        font-weight:700;
+
+        transition:0.3s;
+    }
+
+    .meet-btn:hover{
+
+        background:#ff8f38;
+
+        transform:translateY(-2px);
+    }
+
+    @keyframes pulse{
+
+        0%{
+            transform:scale(1);
+        }
+
+        50%{
+            transform:scale(1.08);
+        }
+
+        100%{
+            transform:scale(1);
+        }
+    }
+
+    @keyframes fadeUp{
+
+        from{
+            opacity:0;
+            transform:translateY(25px);
+        }
+
+        to{
+            opacity:1;
+            transform:translateY(0px);
+        }
+    }
+
+    </style>
+
+    <div class="success-container">
+
+        <div class="success-icon">
+        ✅
+        </div>
+
+        <div class="success-title">
+        Demo Session Booked Successfully
+        </div>
+
+        <div class="success-sub">
+
+        A confirmation email has been sent successfully.
+
+        <br><br>
+
+        Your Google Meet session is ready.
 
         </div>
 
+        <a
+        href="https://meet.google.com/ypj-jhkz-gta"
+        target="_blank"
+        class="meet-btn"
+        >
+
+        Join Google Meet
+
+        </a>
+
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    col1,col2,col3 = st.columns([2,1,2])
+
+    with col2:
+
+        if st.button(
+            "Start New Search"
+        ):
+
+            st.session_state.clear()
+
+            st.rerun()

@@ -1,6 +1,6 @@
 # =========================================================
 # SMARTLEARN CONNECT
-# FINAL STABLE VERSION
+# FULL FINAL WORKING CODE
 # =========================================================
 
 import streamlit as st
@@ -690,7 +690,7 @@ progress_lookup = {
 
 
 # =========================================================
-# FORM
+# FORM PAGE
 # =========================================================
 
 if st.session_state.page == "form":

@@ -1542,7 +1542,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                 <div style="
                 background:#fafafa;
-                padding:28px 160px 28px 28px;
+                padding:28px 135px 28px 28px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
@@ -1583,20 +1583,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                         ">
 
                             <div style="
-                            width:115px;
-                            height:115px;
+                            width:98px;
+                            height:98px;
                             border-radius:50%;
                             background:#0f766e;
                             display:flex;
                             flex-direction:column;
                             align-items:center;
                             justify-content:center;
-                            box-shadow:0px 10px 25px rgba(15,118,110,0.25);
+                            box-shadow:0px 6px 16px rgba(15,118,110,0.18);
                             border:5px solid #ccfbf1;
                             ">
 
                                 <div style="
-                                font-size:34px;
+                                font-size:30px;
                                 font-weight:800;
                                 color:white;
                                 line-height:1;

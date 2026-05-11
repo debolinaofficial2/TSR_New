@@ -1520,64 +1520,89 @@ if st.session_state.page == "results":
                 </div>
 
                 <div style="
-                font-size:17px;
-                line-height:2;
-                color:#4b5563;
                 background:#fafafa;
-                padding:28px;
-                border-radius:22px;
+                padding:30px;
+                border-radius:24px;
                 border-left:6px solid #2fa4a9;
-                border-top:1px solid #f1f5f9;
-                border-right:1px solid #f1f5f9;
-                border-bottom:1px solid #f1f5f9;
-                text-align:justify;
-                word-spacing:1px;
-                box-shadow:0px 4px 12px rgba(0,0,0,0.03);
-                ">
-
-                {teacher_desc}
-
-                </div>
-
-            </div>
-
-            <div style="
-            width:150px;
-            display:flex;
-            justify-content:center;
-            ">
-
-                <div style="
-                width:105px;
-                height:105px;
-                border-radius:50%;
-                background:linear-gradient(
-                135deg,
-                #ecfeff,
-                #d1fae5
-                );
-                border:6px solid #2fa4a9;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                box-shadow:0px 10px 25px rgba(47,164,169,0.15);
-                flex-shrink:0;
-                margin-top:10px;
+                border:1px solid #edf2f7;
+                box-shadow:0px 6px 20px rgba(0,0,0,0.04);
                 ">
 
                     <div style="
-                    font-size:38px;
-                    font-weight:800;
-                    color:#167b7f;
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:flex-start;
+                    gap:24px;
+                    margin-bottom:20px;
                     ">
 
-                    {score}%
+                        <div style="
+                        flex:1;
+                        font-size:17px;
+                        line-height:2;
+                        color:#4b5563;
+                        text-align:justify;
+                        ">
+
+                        {teacher_desc}
+
+                        </div>
+
+                        <div style="
+                        min-width:120px;
+                        ">
+
+                            <div style="
+                            width:110px;
+                            height:110px;
+                            border-radius:24px;
+                            background:linear-gradient(
+                            135deg,
+                            #14b8a6,
+                            #0ea5e9
+                            );
+                            display:flex;
+                            flex-direction:column;
+                            align-items:center;
+                            justify-content:center;
+                            box-shadow:0px 12px 25px rgba(20,184,166,0.20);
+                            ">
+
+                                <div style="
+                                font-size:36px;
+                                font-weight:800;
+                                color:white;
+                                line-height:1;
+                                ">
+
+                                {score}%
+
+                                </div>
+
+                                <div style="
+                                margin-top:8px;
+                                font-size:11px;
+                                letter-spacing:1px;
+                                color:white;
+                                font-weight:700;
+                                text-transform:uppercase;
+                                ">
+
+                                Match
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
-            </div>
+                {teacher_desc}
+
+                </div>
 
         </div>
         """
@@ -1597,50 +1622,6 @@ if st.session_state.page == "results":
             height=dynamic_height,
             scrolling=False
         )
-
-        with right:
-
-            score_html = f"""
-            <div style="
-            display:flex;
-            justify-content:flex-end;
-            ">
-
-                <div style="
-                width:110px;
-                height:110px;
-                border-radius:50%;
-                background:linear-gradient(
-                135deg,
-                #ecfeff,
-                #d1fae5
-                );
-                border:6px solid #2fa4a9;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                box-shadow:0px 10px 25px rgba(47,164,169,0.15);
-                ">
-
-                    <div style="
-                    font-size:36px;
-                    font-weight:800;
-                    color:#167b7f;
-                    ">
-
-                    {score}%
-
-                    </div>
-
-                </div>
-
-            </div>
-            """
-
-            components.html(
-                score_html,
-                height=130
-            )
 
         recommendation_items = []
 

@@ -1196,43 +1196,71 @@ if st.session_state.page == "results":
         )
 
     # ==========================================
+    # SORT ALL TEACHERS
+    # ==========================================
+
+    ranked = sorted(
+        ranked,
+        key=lambda x: x["final_score"],
+        reverse=True
+    )
+
+    # ==========================================
     # STRICT FILTER
     # ==========================================
 
     filtered_ranked = [
-
         r for r in ranked
-
         if r["final_score"] >= 80
     ]
 
     # ==========================================
-    # FALLBACK FILTER
+    # ENOUGH MATCHES
     # ==========================================
 
-    if len(filtered_ranked) < 3:
+    if len(filtered_ranked) >= 3:
 
-        filtered_ranked = [
-
-            r for r in ranked
-
-            if r["final_score"] >= 70
-        ]
+        ranked = filtered_ranked[:3]
 
     # ==========================================
-    # FINAL SORT
+    # FEWER THAN 3 MATCHES
     # ==========================================
 
-    ranked = sorted(
+    else:
 
-        filtered_ranked,
+        ranked = filtered_ranked
 
-        key=lambda x:
-        x["final_score"],
+        st.warning(
+            f"Only {len(filtered_ranked)} strong tutor matches were found based on your requirements."
+        )
 
-        reverse=True
+        st.markdown(
+            """
+            <div style="
+            font-size:16px;
+            color:#4b5563;
+            margin-bottom:14px;
+            font-family:'Poppins',sans-serif;
+            ">
+            You may also explore additional near-match tutors.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-    )[:3]
+        if st.button("Show Additional Tutors"):
+
+            additional_needed = 3 - len(filtered_ranked)
+
+            additional_tutors = [
+                r for r in ranked
+                if r not in filtered_ranked
+            ][:additional_needed]
+
+            ranked = (
+                filtered_ranked
+                + additional_tutors
+            )
 
     st.markdown(f"""
     <h1 style="

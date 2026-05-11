@@ -1542,26 +1542,6 @@ if st.session_state.page == "results":
             </div>
             """, unsafe_allow_html=True)
 
-        st.markdown("""
-        <div style="
-        margin-top:10px;
-        margin-bottom:18px;
-        ">
-
-            <div style="
-            font-size:22px;
-            font-weight:700;
-            color:#374151;
-            margin-bottom:16px;
-            ">
-
-            Why Recommended
-
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
-
         recommendation_items = []
 
         if teacher["subject_score"] > 0:
@@ -1576,7 +1556,7 @@ if st.session_state.page == "results":
                 ("🏫", "Curriculum Compatibility")
             )
 
-        if teacher["experience_score"] > 0:
+        if teacher["exp_score"] > 0:
 
             recommendation_items.append(
                 ("⭐", "Experience Match")
@@ -1589,6 +1569,21 @@ if st.session_state.page == "results":
             )
 
         recommendation_html = """
+        <div style="
+        font-family:'Source Sans Pro', sans-serif;
+        ">
+
+        <div style="
+        font-size:22px;
+        font-weight:700;
+        color:#374151;
+        margin-bottom:16px;
+        ">
+
+        Why Recommended
+
+        </div>
+
         <div style="
         display:grid;
         grid-template-columns:1fr 1fr;
@@ -1638,11 +1633,11 @@ if st.session_state.page == "results":
             </div>
             """
 
-        recommendation_html += "</div>"
+        recommendation_html += "</div></div>"
 
         components.html(
             recommendation_html,
-            height=160
+            height=170
         )
 
         if teacher[

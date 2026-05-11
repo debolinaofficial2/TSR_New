@@ -106,6 +106,154 @@ model = load_model()
 # =========================================================
 # EMAIL FUNCTION
 # =========================================================
+def send_academic_buddy_alert():
+
+    try:
+
+        sender_email = (
+            "debolinaofficial2@gmail.com"
+        )
+
+        sender_password = (
+            st.secrets["EMAIL_PASSWORD"]
+        )
+
+        academic_buddy_email = (
+            "debolinabhanjaofficial@gmail.com"
+        )
+
+        msg = MIMEMultipart("alternative")
+
+        msg["From"] = sender_email
+
+        msg["To"] = academic_buddy_email
+
+        msg["Subject"] = (
+            "No Exact Tutor Match Found"
+        )
+
+        html_body = f"""
+        <html>
+
+        <body style="
+        font-family:Arial;
+        background:#f5f7fb;
+        padding:30px;
+        ">
+
+        <div style="
+        max-width:650px;
+        margin:auto;
+        background:white;
+        border-radius:20px;
+        overflow:hidden;
+        ">
+
+            <div style="
+            background:linear-gradient(
+            90deg,
+            #f59e0b,
+            #d97706
+            );
+            padding:30px;
+            text-align:center;
+            color:white;
+            ">
+
+                <h1>
+                Academic Buddy Escalation
+                </h1>
+
+            </div>
+
+            <div style="padding:35px;">
+
+                <h2>
+                No Exact Match Found
+                </h2>
+
+                <p style="
+                font-size:17px;
+                line-height:1.8;
+                ">
+
+                A learner request requires manual academic review.
+
+                </p>
+
+                <div style="
+                background:#f8fbfc;
+                border-radius:16px;
+                padding:24px;
+                margin-top:25px;
+                ">
+
+                    <p>
+                    <strong>Subject:</strong>
+                    {st.session_state.subject}
+                    </p>
+
+                    <p>
+                    <strong>Board:</strong>
+                    {st.session_state.board}
+                    </p>
+
+                    <p>
+                    <strong>Goal:</strong>
+                    {st.session_state.goal}
+                    </p>
+
+                    <p>
+                    <strong>Expected Experience:</strong>
+                    {st.session_state.experience} years
+                    </p>
+
+                    <p>
+                    <strong>Learner Expectations:</strong>
+                    <br><br>
+                    {st.session_state.expectation}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        </body>
+        </html>
+        """
+
+        msg.attach(
+            MIMEText(
+                html_body,
+                "html"
+            )
+        )
+
+        server = smtplib.SMTP(
+            "smtp.gmail.com",
+            587
+        )
+
+        server.starttls()
+
+        server.login(
+            sender_email,
+            sender_password
+        )
+
+        server.sendmail(
+            sender_email,
+            academic_buddy_email,
+            msg.as_string()
+        )
+
+        server.quit()
+
+    except Exception as e:
+
+        print(e)
 
 def send_demo_email(
     parent_name,
@@ -136,6 +284,8 @@ def send_demo_email(
         msg["From"] = sender_email
 
         msg["To"] = parent_email
+
+        msg["Cc"] = "debolinabhanjaofficial@gmail.com"
 
         msg["Subject"] = (
             "SmartLearn Connect Demo Confirmation"
@@ -288,9 +438,16 @@ def send_demo_email(
             sender_password
         )
 
+        recipients = [
+
+            parent_email,
+
+            "debolinabhanjaofficial@gmail.com"
+        ]
+
         server.sendmail(
             sender_email,
-            [parent_email],
+            recipients,
             msg.as_string()
         )
 
@@ -1009,29 +1166,29 @@ if st.session_state.page == "results":
             teacher_dict
         )
 
-        # ==========================================
-        # STRICT FILTER
-        # ==========================================
+    # ==========================================
+    # STRICT FILTER
+    # ==========================================
+
+    filtered_ranked = [
+
+        r for r in ranked
+
+        if r["final_score"] >= 90
+    ]
+
+    # ==========================================
+    # FALLBACK FILTER
+    # ==========================================
+
+    if len(filtered_ranked) < 3:
 
         filtered_ranked = [
 
             r for r in ranked
 
-            if r["final_score"] >= 90
+            if r["final_score"] >= 88
         ]
-
-        # ==========================================
-        # FALLBACK FILTER
-        # ==========================================
-
-        if len(filtered_ranked) < 3:
-
-            filtered_ranked = [
-
-                r for r in ranked
-
-                if r["final_score"] >= 88
-            ]
 
     # ==========================================
     # FINAL SORT
@@ -1053,6 +1210,14 @@ if st.session_state.page == "results":
     # ==========================================
 
     if len(ranked) == 0:
+
+        if "academic_alert_sent" not in st.session_state:
+
+            send_academic_buddy_alert()
+
+            st.session_state[
+                "academic_alert_sent"
+            ] = True
 
         no_match_html = """
         <div style="
@@ -1271,12 +1436,12 @@ if st.session_state.page == "results":
                 ):
 
                     parent_name = st.text_input(
-                        "Parent Name",
+                        "Parent/Child Name",
                         key=f"name_{teacher_name}"
                     )
 
                     parent_email = st.text_input(
-                        "Parent Email",
+                        "Parent/Child Email",
                         key=f"email_{teacher_name}"
                     )
 

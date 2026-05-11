@@ -1245,9 +1245,7 @@ if st.session_state.page == "results":
     style="
     margin-right:12px;
     color:#0f766e;
-    "></i>
-
-    Top {len(ranked)} Recommended Teachers
+    "></i> Top {len(ranked)} Recommended Teachers
 
     </h1>
     """, unsafe_allow_html=True)

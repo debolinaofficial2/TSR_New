@@ -1611,16 +1611,17 @@ if st.session_state.page == "results":
 
         desc_length = len(teacher_desc)
 
-        dynamic_height = 300
+        if desc_length < 350:
+            dynamic_height = 220
 
-        if desc_length > 350:
+        elif desc_length < 550:
+            dynamic_height = 255
+
+        elif desc_length < 750:
+            dynamic_height = 290
+
+        else:
             dynamic_height = 340
-
-        if desc_length > 550:
-            dynamic_height = 390
-
-        if desc_length > 750:
-            dynamic_height = 440
 
         components.html(
             top_section,

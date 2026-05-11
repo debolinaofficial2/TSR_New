@@ -1549,8 +1549,11 @@ if st.session_state.page == "results":
                         <div style="
                         position:absolute;
                         right:36px;
-                        top:50%;
-                        transform:translateY(-50%);
+                        top:32px;
+                        bottom:32px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
                         ">
 
                             <div style="

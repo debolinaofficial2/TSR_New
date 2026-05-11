@@ -1538,7 +1538,7 @@ if st.session_state.page == "results":
                         line-height:2;
                         color:#4b5563;
                         text-align:justify;
-                        padding-right:135px;
+                        padding-right:150px;
                         min-height:unset;
                         display:block;
                         ">
@@ -1549,8 +1549,7 @@ if st.session_state.page == "results":
 
                         <div style="
                         position:absolute;
-                        top:54%;
-                        right:28px;
+                        top:50%;
                         transform:translateY(-50%);
                         ">
 

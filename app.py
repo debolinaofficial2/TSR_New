@@ -1009,10 +1009,29 @@ if st.session_state.page == "results":
             teacher_dict
         )
 
-        ranked = [
+        # ==========================================
+        # STRICT FILTER
+        # ==========================================
+
+        filtered_ranked = [
+
             r for r in ranked
+
             if r["final_score"] >= 80
         ]
+
+        # ==========================================
+        # FALLBACK FILTER
+        # ==========================================
+
+        if len(filtered_ranked) < 3:
+
+            filtered_ranked = [
+
+                r for r in ranked
+
+                if r["final_score"] >= 70
+            ]
 
     ranked = sorted(
 

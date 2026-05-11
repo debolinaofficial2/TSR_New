@@ -1142,7 +1142,7 @@ if st.session_state.page == "results":
 
         ])
 
-        semantic = util.cos_sim(
+        semantic_raw = util.cos_sim(
 
             model.encode(
                 st.session_state.expectation
@@ -1154,9 +1154,23 @@ if st.session_state.page == "results":
 
         ).item()
 
-        semantic = (
-            (semantic + 1) / 2
-        ) * 35
+        # Normalize similarity
+        semantic_normalized = (
+            (semantic_raw + 1) / 2
+        )
+
+        # Strict semantic filtering
+        if semantic_normalized >= 0.72:
+
+            semantic = semantic_normalized * 35
+
+        elif semantic_normalized >= 0.60:
+
+            semantic = semantic_normalized * 18
+
+        else:
+
+            semantic = 0
 
         total_score = (
 

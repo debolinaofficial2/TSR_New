@@ -609,12 +609,11 @@ background:#ff8f38;
 /* TEACHER CARD */
 
 .teacher-card{
-background:#fbfdff;
-padding:35px;
-border-radius:24px;
-box-shadow:0px 12px 35px rgba(0,0,0,0.08);
-margin-bottom:35px;
-animation:fadeUp 0.8s ease;
+background:rgba(255,255,255,0.75);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.6);
+border-radius:28px;
+box-shadow:0 10px 30px rgba(0,0,0,0.04);
 }
 
 .teacher-name{
@@ -626,10 +625,10 @@ font-family:'Poppins',sans-serif;
 
 .teacher-desc{
 font-size:17px;
-line-height:1.8;
-margin-top:15px;
+line-height:1.9;
+font-weight:500;
 color:#4b5563;
-font-family:'Poppins',sans-serif;
+max-width:92%;
 }
 
 .score{

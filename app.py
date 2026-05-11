@@ -1582,10 +1582,15 @@ if st.session_state.page == "results":
         </div>
         """
 
-        dynamic_height = 260
+        desc_length = len(teacher_desc)
 
-        if len(teacher_desc) > 650:
-            dynamic_height = 320
+        dynamic_height = 340
+
+        if desc_length > 450:
+            dynamic_height = 380
+
+        if desc_length > 700:
+            dynamic_height = 430
 
         components.html(
             top_section,

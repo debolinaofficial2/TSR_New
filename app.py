@@ -1426,64 +1426,65 @@ if st.session_state.page == "results":
             unsafe_allow_html=True
         )
 
-        left,right = st.columns([5,1])
+        qualification = teacher.get(
+            "highest_qualification",
+            "Experienced Educator"
+        )
 
-        with left:
+        experience = teacher.get(
+            "teaching_experience_years",
+            "N/A"
+        )
 
-            st.markdown(f"""
-            <div class="teacher-name">
+        field = teacher.get(
+            "field_of_study",
+            "Academic Mentoring"
+        )
 
-            👩‍🏫 {teacher_name}
+        teacher_desc = teacher.get(
+            "description",
+            ""
+        )
 
-            </div>
-            """, unsafe_allow_html=True)
+        top_section = f"""
+        <div style="
+        display:flex;
+        gap:35px;
+        align-items:flex-start;
+        margin-top:10px;
+        margin-bottom:25px;
+        font-family:'Source Sans Pro', sans-serif;
+        ">
 
-            teacher_desc = teacher.get(
-                "description",
-                ""
-            )
-
-            short_desc = (
-                teacher_desc[:320] + "..."
-                if len(teacher_desc) > 320
-                else teacher_desc
-            )
-
-            qualification = teacher.get(
-                "highest_qualification",
-                "Experienced Educator"
-            )
-
-            experience = teacher.get(
-                "teaching_experience_years",
-                "N/A"
-            )
-
-            field = teacher.get(
-                "field_of_study",
-                "Academic Mentoring"
-            )
-
-            teacher_html = f"""
             <div style="
-            margin-top:18px;
-            font-family:'Source Sans Pro', sans-serif;
+            flex:1;
             ">
+
+                <div style="
+                font-size:34px;
+                font-weight:800;
+                color:#1f2937;
+                margin-bottom:22px;
+                ">
+
+                👩‍🏫 {teacher_name}
+
+                </div>
 
                 <div style="
                 display:flex;
                 flex-wrap:wrap;
-                gap:10px;
-                margin-bottom:18px;
+                gap:12px;
+                margin-bottom:24px;
                 ">
 
                     <div style="
-                    background:#f0fdfa;
-                    color:#167b7f;
-                    padding:8px 14px;
+                    background:#ecfeff;
+                    color:#0f766e;
+                    padding:10px 18px;
                     border-radius:30px;
                     font-size:14px;
-                    font-weight:600;
+                    font-weight:700;
                     ">
 
                     {qualification}
@@ -1493,10 +1494,10 @@ if st.session_state.page == "results":
                     <div style="
                     background:#f8fafc;
                     color:#475569;
-                    padding:8px 14px;
+                    padding:10px 18px;
                     border-radius:30px;
                     font-size:14px;
-                    font-weight:600;
+                    font-weight:700;
                     ">
 
                     {experience} Years Experience
@@ -1506,10 +1507,10 @@ if st.session_state.page == "results":
                     <div style="
                     background:#fff7ed;
                     color:#ea580c;
-                    padding:8px 14px;
+                    padding:10px 18px;
                     border-radius:30px;
                     font-size:14px;
-                    font-weight:600;
+                    font-weight:700;
                     ">
 
                     {field}
@@ -1523,11 +1524,15 @@ if st.session_state.page == "results":
                 line-height:2;
                 color:#4b5563;
                 background:#fafafa;
-                padding:24px;
-                border-radius:18px;
-                border:1px solid #f1f5f9;
+                padding:28px;
+                border-radius:22px;
+                border-left:6px solid #2fa4a9;
+                border-top:1px solid #f1f5f9;
+                border-right:1px solid #f1f5f9;
+                border-bottom:1px solid #f1f5f9;
                 text-align:justify;
                 word-spacing:1px;
+                box-shadow:0px 4px 12px rgba(0,0,0,0.03);
                 ">
 
                 {teacher_desc}
@@ -1535,12 +1540,58 @@ if st.session_state.page == "results":
                 </div>
 
             </div>
-            """
 
-            components.html(
-                teacher_html,
-                height=230
-            )
+            <div style="
+            width:150px;
+            display:flex;
+            justify-content:center;
+            ">
+
+                <div style="
+                width:120px;
+                height:120px;
+                border-radius:50%;
+                background:linear-gradient(
+                135deg,
+                #ecfeff,
+                #d1fae5
+                );
+                border:6px solid #2fa4a9;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                box-shadow:0px 10px 25px rgba(47,164,169,0.15);
+                flex-shrink:0;
+                margin-top:10px;
+                ">
+
+                    <div style="
+                    font-size:38px;
+                    font-weight:800;
+                    color:#167b7f;
+                    ">
+
+                    {score}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        """
+
+        dynamic_height = 420
+
+        if len(teacher_desc) > 650:
+            dynamic_height = 520
+
+        components.html(
+            top_section,
+            height=dynamic_height,
+            scrolling=False
+        )
 
         with right:
 

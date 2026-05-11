@@ -602,7 +602,7 @@ background:#ff8f38;
 /* TEACHER CARD */
 
 .teacher-card{
-background:white;
+background:#fbfdff;
 padding:35px;
 border-radius:24px;
 box-shadow:0px 12px 35px rgba(0,0,0,0.08);
@@ -1451,8 +1451,8 @@ if st.session_state.page == "results":
         display:flex;
         gap:20px;
         align-items:flex-start;
-        margin-top:10px;
-        margin-bottom:25px;
+        margin-top:0px;
+        margin-bottom:12px;
         font-family:'Source Sans Pro', sans-serif;
         ">
 
@@ -1548,8 +1548,8 @@ if st.session_state.page == "results":
             ">
 
                 <div style="
-                width:120px;
-                height:120px;
+                width:105px;
+                height:105px;
                 border-radius:50%;
                 background:linear-gradient(
                 135deg,
@@ -1697,7 +1697,7 @@ if st.session_state.page == "results":
             recommendation_html += f"""
             <div style="
             background:#f8fbfc;
-            border:1px solid #edf2f7;
+            border:1px solid #e2e8f0;
             border-radius:16px;
             padding:12px 16px;
             display:flex;

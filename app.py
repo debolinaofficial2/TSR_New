@@ -1115,232 +1115,237 @@ if st.session_state.page == "results":
             </div>
             """, unsafe_allow_html=True)
 
-        with st.expander(
+            with st.expander(
             f"📅 Book Demo with {teacher_name}"
         ):
 
-            parent_name = st.text_input(
-                "Parent Name",
-                key=f"name_{teacher_name}"
-            )
-
-            parent_email = st.text_input(
-                "Parent Email",
-                key=f"email_{teacher_name}"
-            )
-
-            selected_date = st.date_input(
-
-                "Preferred Date",
-
-                min_value=(
-                    date.today()
-                    + timedelta(days=1)
-                ),
-
-                key=f"date_{teacher_name}"
-            )
-
-            selected_time = st.selectbox(
-
-                "Preferred Time",
-
-                [
-                    "10:00 AM",
-                    "12:00 PM",
-                    "03:00 PM",
-                    "05:00 PM",
-                    "07:00 PM"
-                ],
-
-                key=f"time_{teacher_name}"
-            )
-
-            already_booked = (
-                st.session_state
-                .global_booking_done
-            )
-
-            if already_booked:
-
-                st.button(
-
-                    "Demo Already Booked",
-
-                    disabled=True,
-
-                    key=f"disabled_{teacher_name}"
-                )
-
-                if (
-                    st.session_state.booked_teacher
-                    == teacher_name
+                with st.form(
+                    key=f"demo_form_{teacher_name}"
                 ):
 
-                    scheduled_card = f"""
-                    <div style="
-                    background:#f8fbfc;
-                    border:1px solid #e5e7eb;
-                    border-radius:16px;
-                    padding:20px;
-                    margin-top:18px;
-                    font-family:'Source Sans Pro', sans-serif;
-                    ">
-
-                        <div style="
-                        display:flex;
-                        align-items:center;
-                        gap:14px;
-                        ">
-
-                            <div style="
-                            width:44px;
-                            height:44px;
-                            border-radius:12px;
-                            background:#e8faf8;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            font-size:22px;
-                            color:#167b7f;
-                            flex-shrink:0;
-                            ">
-
-                            📅
-
-                            </div>
-
-                            <div>
-
-                                <div style="
-                                font-size:24px;
-                                font-weight:700;
-                                color:#374151;
-                                line-height:1.3;
-                                ">
-
-                                Demo Scheduled:
-                                <span style="
-                                color:#4b5563;
-                                font-weight:600;
-                                ">
-
-                                {st.session_state.booked_date}
-
-                                at
-
-                                {st.session_state.booked_time}
-
-                                </span>
-
-                                </div>
-
-                                <div style="
-                                margin-top:6px;
-                                font-size:17px;
-                                color:#6b7280;
-                                ">
-
-                                Confirmed with
-                                <strong>
-                                {st.session_state.booked_teacher}
-                                </strong>
-
-                                </div>
-
-                                <div style="
-                                margin-top:6px;
-                                font-size:15px;
-                                color:#9ca3af;
-                                ">
-
-                                Confirmation email sent successfully.
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                    """
-
-                    st.components.v1.html(
-                        scheduled_card,
-                        height=120
+                    parent_name = st.text_input(
+                        "Parent Name",
+                        key=f"name_{teacher_name}"
                     )
 
-            else:
+                    parent_email = st.text_input(
+                        "Parent Email",
+                        key=f"email_{teacher_name}"
+                    )
 
-                if st.button(
+                    selected_date = st.date_input(
 
-                    f"Confirm Demo with {teacher_name}",
+                        "Preferred Date",
 
-                    key=f"confirm_{teacher_name}"
-                ):
+                        min_value=(
+                            date.today()
+                            + timedelta(days=1)
+                        ),
 
-                    if (
-                        not parent_name
-                        or not parent_email
-                    ):
+                        key=f"date_{teacher_name}"
+                    )
 
-                        st.error(
-                            "Please fill all fields"
+                    selected_time = st.selectbox(
+
+                        "Preferred Time",
+
+                        [
+                            "10:00 AM",
+                            "12:00 PM",
+                            "03:00 PM",
+                            "05:00 PM",
+                            "07:00 PM"
+                        ],
+
+                        key=f"time_{teacher_name}"
+                    )
+
+                    already_booked = (
+                        st.session_state
+                        .global_booking_done
+                    )
+
+                    # =====================================================
+                    # ALREADY BOOKED
+                    # =====================================================
+
+                    if already_booked:
+
+                        st.form_submit_button(
+                            "Demo Already Booked",
+                            disabled=True
                         )
+
+                        if (
+                            st.session_state.booked_teacher
+                            == teacher_name
+                        ):
+
+                            scheduled_card = f"""
+                            <div style="
+                            background:#f8fbfc;
+                            border:1px solid #e5e7eb;
+                            border-radius:16px;
+                            padding:20px;
+                            margin-top:18px;
+                            font-family:'Source Sans Pro', sans-serif;
+                            ">
+
+                                <div style="
+                                display:flex;
+                                align-items:center;
+                                gap:14px;
+                                ">
+
+                                    <div style="
+                                    width:44px;
+                                    height:44px;
+                                    border-radius:12px;
+                                    background:#e8faf8;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    font-size:22px;
+                                    color:#167b7f;
+                                    flex-shrink:0;
+                                    ">
+
+                                    📅
+
+                                    </div>
+
+                                    <div>
+
+                                        <div style="
+                                        font-size:24px;
+                                        font-weight:700;
+                                        color:#374151;
+                                        line-height:1.3;
+                                        ">
+
+                                        Demo Scheduled:
+                                        <span style="
+                                        color:#4b5563;
+                                        font-weight:600;
+                                        ">
+
+                                        {st.session_state.booked_date}
+
+                                        at
+
+                                        {st.session_state.booked_time}
+
+                                        </span>
+
+                                        </div>
+
+                                        <div style="
+                                        margin-top:6px;
+                                        font-size:17px;
+                                        color:#6b7280;
+                                        ">
+
+                                        Confirmed with
+                                        <strong>
+                                        {st.session_state.booked_teacher}
+                                        </strong>
+
+                                        </div>
+
+                                        <div style="
+                                        margin-top:6px;
+                                        font-size:15px;
+                                        color:#9ca3af;
+                                        ">
+
+                                        Confirmation email sent successfully.
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            """
+
+                            st.markdown(
+                                scheduled_card,
+                                unsafe_allow_html=True
+                            )
+
+                    # =====================================================
+                    # NEW BOOKING
+                    # =====================================================
 
                     else:
 
-                        with st.spinner(
-                            "Booking demo..."
-                        ):
+                        submitted = st.form_submit_button(
+                            f"Confirm Demo with {teacher_name}"
+                        )
 
-                            time.sleep(2)
+                        if submitted:
 
-                            success = (
-                                send_demo_email(
-                                    parent_name,
-                                    parent_email,
-                                    teacher_name,
-                                    selected_date,
-                                    selected_time
+                            parent_name = parent_name.strip()
+
+                            parent_email = parent_email.strip()
+
+                            if (
+                                parent_name == ""
+                                or parent_email == ""
+                            ):
+
+                                st.error(
+                                    "Please fill all fields"
                                 )
-                            )
 
-                        if success:
+                            else:
 
-                            st.session_state[
-                                "global_booking_done"
-                            ] = True
+                                with st.spinner(
+                                    "Booking demo..."
+                                ):
 
-                            st.session_state[
-                                "booking_success"
-                            ] = True
+                                    time.sleep(2)
 
-                            st.session_state[
-                                "booked_teacher"
-                            ] = teacher_name
+                                    success = (
+                                        send_demo_email(
+                                            parent_name,
+                                            parent_email,
+                                            teacher_name,
+                                            selected_date,
+                                            selected_time
+                                        )
+                                    )
 
-                            st.session_state[
-                                "booked_date"
-                            ] = selected_date
+                                if success:
 
-                            st.session_state[
-                                "booked_time"
-                            ] = selected_time
+                                    st.session_state[
+                                        "global_booking_done"
+                                    ] = True
 
-                            st.rerun()
+                                    st.session_state[
+                                        "booking_success"
+                                    ] = True
 
-                        else:
+                                    st.session_state[
+                                        "booked_teacher"
+                                    ] = teacher_name
 
-                            st.error(
-                                "Email sending failed"
-                            )
+                                    st.session_state[
+                                        "booked_date"
+                                    ] = selected_date
 
-        st.markdown(
-            '</div>',
-            unsafe_allow_html=True
-        )
+                                    st.session_state[
+                                        "booked_time"
+                                    ] = selected_time
 
+                                    st.rerun()
+
+                                else:
+
+                                    st.error(
+                                        "Email sending failed"
+                                    )
 
 
 # =========================================================

@@ -214,6 +214,16 @@ def send_academic_buddy_alert():
                     {st.session_state.expectation}
                     </p>
 
+                    <p>
+                    <strong>Parent Name:</strong>
+                    {st.session_state.parent_name}
+                    </p>
+
+                    <p>
+                    <strong>Parent Email:</strong>
+                    {st.session_state.parent_email}
+                    </p>
+
                 </div>
 
             </div>
@@ -1313,6 +1323,53 @@ if st.session_state.page == "results":
             no_match_html,
             height=340
         )
+
+        st.markdown("### Connect with Academic Buddy")
+
+        with st.form("academic_buddy_form"):
+
+            parent_name = st.text_input(
+                "Parent/Child Name"
+            )
+
+            parent_email = st.text_input(
+                "Parent/Child Email"
+            )
+
+            submitted = st.form_submit_button(
+                "Request Academic Buddy Support"
+            )
+
+            if submitted:
+
+                parent_name = parent_name.strip()
+
+                parent_email = parent_email.strip()
+
+                if (
+                    parent_name == ""
+                    or parent_email == ""
+                ):
+
+                    st.error(
+                        "Please fill all fields"
+                    )
+
+                else:
+
+                    st.session_state[
+                        "parent_name"
+                    ] = parent_name
+
+                    st.session_state[
+                        "parent_email"
+                    ] = parent_email
+
+                    send_academic_buddy_alert()
+
+                    st.success(
+                        "Academic Buddy has been notified successfully."
+                    )
 
         st.markdown("<br><br>", unsafe_allow_html=True)
 

@@ -1542,13 +1542,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                 <div style="
                 background:#fafafa;
-                padding:28px 170px 28px 28px;
+                padding:26px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
                 box-shadow:0px 6px 20px rgba(0,0,0,0.04);
-                position:relative;
-                min-height:auto;
+
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:28px;
                 ">
 
                     <div style="

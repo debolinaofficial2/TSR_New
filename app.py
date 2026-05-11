@@ -1454,9 +1454,10 @@ if st.session_state.page == "results":
                 "Academic Mentoring"
             )
 
-            st.markdown(f"""
+            teacher_html = f"""
             <div style="
             margin-top:18px;
+            font-family:'Source Sans Pro', sans-serif;
             ">
 
                 <div style="
@@ -1522,7 +1523,12 @@ if st.session_state.page == "results":
                 </div>
 
             </div>
-            """, unsafe_allow_html=True)
+            """
+
+            components.html(
+                teacher_html,
+                height=230
+            )
 
         with right:
 

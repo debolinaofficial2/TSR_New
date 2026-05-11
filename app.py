@@ -1298,7 +1298,7 @@ if st.session_state.page == "results":
 
     filtered_ranked = [
         r for r in ranked
-        if r["final_score"] >= 80
+        if r["final_score"] >= 70
     ]
 
     # ==========================================

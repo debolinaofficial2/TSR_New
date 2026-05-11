@@ -1054,13 +1054,14 @@ if st.session_state.page == "results":
 
     if len(ranked) == 0:
 
-        st.markdown("""
+        no_match_html = """
         <div style="
         background:#fffdf8;
         border:1px solid #f4dfb3;
         border-radius:18px;
         overflow:hidden;
         margin-top:25px;
+        font-family:'Source Sans Pro', sans-serif;
         ">
 
             <div style="
@@ -1141,7 +1142,12 @@ if st.session_state.page == "results":
             </div>
 
         </div>
-        """, unsafe_allow_html=True)
+        """
+
+        components.html(
+            no_match_html,
+            height=340
+        )
 
         st.stop()
 

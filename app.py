@@ -721,7 +721,13 @@ st.markdown("""
 <div class="navbar">
 
 <div class="nav-title">
-🎓 SmartLearn Connect
+<i class="fa-solid fa-graduation-cap"
+style="
+margin-right:12px;
+color:white;
+"></i>
+
+SmartLearn Connect
 </div>
 
 <div class="nav-links">

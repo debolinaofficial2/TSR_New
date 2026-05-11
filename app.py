@@ -1119,26 +1119,41 @@ if st.session_state.page == "results":
 
         teacher_profile = " ".join([
 
-            str(
-                teacher.get(
-                    "description",
-                    ""
-                )
-            ),
+            # Core profile
+            str(teacher.get("description", "")),
+            str(teacher.get("highest_qualification", "")),
+            str(teacher.get("field_of_study", "")),
+            str(teacher.get("subject_specialization", "")),
 
-            str(
-                teacher.get(
-                    "highest_qualification",
-                    ""
-                )
-            ),
+            # Teaching capabilities
+            "Conceptual Teaching"
+            if str(teacher.get("conceptual_teaching", "")).lower() == "yes"
+            else "",
 
-            str(
-                teacher.get(
-                    "field_of_study",
-                    ""
-                )
-            )
+            "Exam Oriented Teaching"
+            if str(teacher.get("exam_oriented", "")).lower() == "yes"
+            else "",
+
+            "Assignment Support"
+            if str(teacher.get("assignment_support", "")).lower() == "yes"
+            else "",
+
+            "Project Guidance"
+            if str(teacher.get("project_guidance", "")).lower() == "yes"
+            else "",
+
+            "Research Guidance"
+            if str(teacher.get("research_guidance", "")).lower() == "yes"
+            else "",
+
+            # Research strength
+            f"{teacher.get('research_experience_years', 0)} years research experience",
+
+            f"{teacher.get('publications_count', 0)} publications",
+
+            f"{teacher.get('certifications_count', 0)} certifications",
+
+            f"{teacher.get('awards_count', 0)} awards"
 
         ])
 
@@ -1163,6 +1178,62 @@ if st.session_state.page == "results":
         if semantic_normalized >= 0.72:
 
             semantic = semantic_normalized * 35
+
+            expectation_lower = (
+                st.session_state.expectation.lower()
+            )
+
+            # Research expectation penalty
+            if (
+                "research" in expectation_lower
+                and str(
+                    teacher.get(
+                        "research_guidance",
+                        ""
+                    )
+                ).lower() != "yes"
+            ):
+
+                semantic *= 0.55
+
+            # Project guidance penalty
+            if (
+                "project" in expectation_lower
+                and str(
+                    teacher.get(
+                        "project_guidance",
+                        ""
+                    )
+                ).lower() != "yes"
+            ):
+
+                semantic *= 0.65
+
+            # Exam-oriented penalty
+            if (
+                "exam" in expectation_lower
+                and str(
+                    teacher.get(
+                        "exam_oriented",
+                        ""
+                    )
+                ).lower() != "yes"
+            ):
+
+                semantic *= 0.7
+
+            # Assignment support penalty
+            if (
+                "assignment" in expectation_lower
+                and str(
+                    teacher.get(
+                        "assignment_support",
+                        ""
+                    )
+                ).lower() != "yes"
+            ):
+
+                semantic *= 0.7
 
         elif semantic_normalized >= 0.60:
 

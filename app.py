@@ -1544,12 +1544,10 @@ if st.session_state.page == "results":
 
         with right:
 
-            st.markdown(f"""
+            score_html = f"""
             <div style="
             display:flex;
             justify-content:flex-end;
-            align-items:flex-start;
-            height:100%;
             ">
 
                 <div style="
@@ -1581,7 +1579,12 @@ if st.session_state.page == "results":
                 </div>
 
             </div>
-            """, unsafe_allow_html=True)
+            """
+
+            components.html(
+                score_html,
+                height=130
+            )
 
         recommendation_items = []
 

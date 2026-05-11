@@ -1542,8 +1542,107 @@ if st.session_state.page == "results":
             </div>
             """, unsafe_allow_html=True)
 
-        st.markdown(
-            "### Why recommended"
+        st.markdown("""
+        <div style="
+        margin-top:10px;
+        margin-bottom:18px;
+        ">
+
+            <div style="
+            font-size:22px;
+            font-weight:700;
+            color:#374151;
+            margin-bottom:16px;
+            ">
+
+            Why Recommended
+
+            </div>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        recommendation_items = []
+
+        if teacher["subject_score"] > 0:
+
+            recommendation_items.append(
+                ("📘", "Subject Alignment")
+            )
+
+        if teacher["board_score"] > 0:
+
+            recommendation_items.append(
+                ("🏫", "Curriculum Compatibility")
+            )
+
+        if teacher["experience_score"] > 0:
+
+            recommendation_items.append(
+                ("⭐", "Experience Match")
+            )
+
+        if teacher["semantic_score"] > 0:
+
+            recommendation_items.append(
+                ("🧠", "Learner Expectation Match")
+            )
+
+        recommendation_html = """
+        <div style="
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:14px;
+        margin-bottom:24px;
+        ">
+        """
+
+        for icon, label in recommendation_items:
+
+            recommendation_html += f"""
+            <div style="
+            background:#f8fbfc;
+            border:1px solid #edf2f7;
+            border-radius:16px;
+            padding:16px 18px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            ">
+
+                <div style="
+                width:38px;
+                height:38px;
+                border-radius:12px;
+                background:#e8faf8;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:18px;
+                ">
+
+                {icon}
+
+                </div>
+
+                <div style="
+                font-size:16px;
+                font-weight:600;
+                color:#374151;
+                ">
+
+                {label}
+
+                </div>
+
+            </div>
+            """
+
+        recommendation_html += "</div>"
+
+        components.html(
+            recommendation_html,
+            height=160
         )
 
         if teacher[

@@ -1510,15 +1510,17 @@ if st.session_state.page == "results":
 
                 <div style="
                 font-size:17px;
-                line-height:1.9;
+                line-height:2;
                 color:#4b5563;
                 background:#fafafa;
-                padding:20px;
+                padding:24px;
                 border-radius:18px;
                 border:1px solid #f1f5f9;
+                text-align:justify;
+                word-spacing:1px;
                 ">
 
-                {short_desc}
+                {teacher_desc}
 
                 </div>
 

@@ -1070,14 +1070,21 @@ if st.session_state.page == "results":
         "Profile completion: 100%"
     )
 
-    st.markdown("""
+    st.markdown(f"""
     <h1 style="
     font-size:52px;
     font-weight:800;
     color:#1f2937;
     margin-top:20px;
     ">
-    <i class="fa-solid fa-bullseye"></i> Top 3 Recommended Teachers
+    <i class="fa-solid fa-bullseye"
+    style="
+    margin-right:12px;
+    color:#0f766e;
+    "></i>
+
+    Top {len(ranked)} Recommended Teachers
+
     </h1>
     """, unsafe_allow_html=True)
 

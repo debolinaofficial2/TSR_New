@@ -1470,6 +1470,7 @@ if st.session_state.page == "results":
                 font-weight:800;
                 color:#1f2937;
                 margin-bottom:22px;
+                font-family:'Inter',sans-serif;
                 ">
 
                 👩‍🏫 {teacher_name}

@@ -1070,24 +1070,6 @@ if st.session_state.page == "results":
         "Profile completion: 100%"
     )
 
-    st.markdown(f"""
-    <h1 style="
-    font-size:52px;
-    font-weight:800;
-    color:#1f2937;
-    margin-top:20px;
-    ">
-    <i class="fa-solid fa-bullseye"
-    style="
-    margin-right:12px;
-    color:#0f766e;
-    "></i>
-
-    Top {len(ranked)} Recommended Teachers
-
-    </h1>
-    """, unsafe_allow_html=True)
-
     ranked = []
 
     for _,teacher in teachers.iterrows():
@@ -1251,6 +1233,24 @@ if st.session_state.page == "results":
         reverse=True
 
     )[:3]
+
+    st.markdown(f"""
+    <h1 style="
+    font-size:52px;
+    font-weight:800;
+    color:#1f2937;
+    margin-top:20px;
+    ">
+    <i class="fa-solid fa-bullseye"
+    style="
+    margin-right:12px;
+    color:#0f766e;
+    "></i>
+
+    Top {len(ranked)} Recommended Teachers
+
+    </h1>
+    """, unsafe_allow_html=True)
 
     # ==========================================
     # NO MATCH FOUND

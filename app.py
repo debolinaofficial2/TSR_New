@@ -1448,13 +1448,8 @@ if st.session_state.page == "results":
 
         top_section = f"""
         <div style="
-        display:grid;
-        grid-template-columns:1fr 140px;
-        gap:28px;
-        align-items:center;
-        margin-top:0px;
-        margin-bottom:12px;
-        font-family:'Source Sans Pro', sans-serif;
+        position:relative;
+        margin-bottom:20px;
         ">
 
             <div style="
@@ -1543,6 +1538,7 @@ if st.session_state.page == "results":
                         line-height:2;
                         color:#4b5563;
                         text-align:justify;
+                        padding-right:170px;
                         ">
 
                         {teacher_desc}
@@ -1550,9 +1546,9 @@ if st.session_state.page == "results":
                         </div>
 
                         <div style="
-                        display:flex;
-                        justify-content:center;
-                        align-items:center;
+                        position:absolute;
+                        top:18px;
+                        right:18px;
                         ">
 
                             <div style="

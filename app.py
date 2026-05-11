@@ -1640,47 +1640,7 @@ if st.session_state.page == "results":
             height=170
         )
 
-        if teacher[
-            "subject_score"
-        ] > 0:
-
-            st.markdown("""
-            <div class="reason">
-            ✅ Subject Alignment
-            </div>
-            """, unsafe_allow_html=True)
-
-        if teacher[
-            "board_score"
-        ] > 0:
-
-            st.markdown("""
-            <div class="reason">
-            ✅ Curriculum Compatibility
-            </div>
-            """, unsafe_allow_html=True)
-
-        if teacher[
-            "exp_score"
-        ] > 0:
-
-            st.markdown("""
-            <div class="reason">
-            ✅ Experience Match
-            </div>
-            """, unsafe_allow_html=True)
-
-        if teacher[
-            "semantic_score"
-        ] > 0:
-
-            st.markdown("""
-            <div class="reason">
-            ✅ Learner Expectation Match
-            </div>
-            """, unsafe_allow_html=True)
-
-            with st.expander(
+        with st.expander(
             f"📅 Book Demo with {teacher_name}"
         ):
 

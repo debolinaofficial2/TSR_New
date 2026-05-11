@@ -1538,14 +1538,11 @@ if st.session_state.page == "results":
                     ">
 
                         <div style="
-                        flex:1;
                         font-size:17px;
                         line-height:2;
                         color:#4b5563;
                         text-align:justify;
-                        padding-right:150px;
-                        min-height:unset;
-                        display:block;
+                        width:100%;
                         ">
 
                         {teacher_desc}
@@ -1553,7 +1550,8 @@ if st.session_state.page == "results":
                         </div>
 
                         <div style="
-                        position:relative;
+                        position:absolute;
+                        right:28px;
                         top:50%;
                         transform:translateY(-50%);
                         ">

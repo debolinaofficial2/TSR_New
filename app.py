@@ -1017,7 +1017,7 @@ if st.session_state.page == "results":
 
             r for r in ranked
 
-            if r["final_score"] >= 80
+            if r["final_score"] >= 90
         ]
 
         # ==========================================
@@ -1030,12 +1030,16 @@ if st.session_state.page == "results":
 
                 r for r in ranked
 
-                if r["final_score"] >= 70
+                if r["final_score"] >= 88
             ]
+
+    # ==========================================
+    # FINAL SORT
+    # ==========================================
 
     ranked = sorted(
 
-        ranked,
+        filtered_ranked,
 
         key=lambda x:
         x["final_score"],
@@ -1043,6 +1047,103 @@ if st.session_state.page == "results":
         reverse=True
 
     )[:3]
+
+    # ==========================================
+    # NO MATCH FOUND
+    # ==========================================
+
+    if len(ranked) == 0:
+
+        st.markdown("""
+        <div style="
+        background:#fffdf8;
+        border:1px solid #f4dfb3;
+        border-radius:18px;
+        overflow:hidden;
+        margin-top:25px;
+        ">
+
+            <div style="
+            background:#fff7e6;
+            padding:20px 24px;
+            border-bottom:1px solid #f4ead2;
+            ">
+
+                <div style="
+                font-size:30px;
+                font-weight:700;
+                color:#374151;
+                display:flex;
+                align-items:center;
+                gap:12px;
+                ">
+
+                ⚠️ No Exact Match Found
+
+                </div>
+
+            </div>
+
+            <div style="
+            padding:28px;
+            ">
+
+                <div style="
+                font-size:20px;
+                color:#4b5563;
+                line-height:1.8;
+                ">
+
+                We are reviewing your request to ensure the best pedagogical alignment.
+
+                <br><br>
+
+                Your query has been escalated to an Academic Buddy and will be resolved within 12 working hours.
+
+                </div>
+
+                <div style="
+                margin-top:24px;
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:14px;
+                padding:18px;
+                ">
+
+                    <div style="
+                    font-size:22px;
+                    font-weight:700;
+                    color:#4b5563;
+                    ">
+
+                    🔄 Status:
+                    <span style="color:#374151;">
+
+                    Under Priority Review
+
+                    </span>
+
+                    </div>
+
+                    <div style="
+                    margin-top:8px;
+                    font-size:16px;
+                    color:#6b7280;
+                    ">
+
+                    Reference ID:
+                    LC-2026-0425
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.stop()
 
     for teacher in ranked:
 

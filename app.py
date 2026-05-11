@@ -1205,6 +1205,8 @@ if st.session_state.page == "results":
         reverse=True
     )
 
+    all_ranked = ranked.copy()
+
     # ==========================================
     # STRICT FILTER
     # ==========================================
@@ -1262,7 +1264,7 @@ if st.session_state.page == "results":
             additional_needed = 3 - len(filtered_ranked)
 
             additional_tutors = [
-                r for r in ranked
+                r for r in all_ranked
                 if r not in filtered_ranked
             ][:additional_needed]
 

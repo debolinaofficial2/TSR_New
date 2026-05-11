@@ -476,6 +476,16 @@ st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<script src="https://unpkg.com/lucide@latest"></script>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<script>
+lucide.createIcons();
+</script>
+""", unsafe_allow_html=True)
+
 # =========================================================
 # CSS
 # =========================================================
@@ -483,6 +493,15 @@ st.markdown("""
 
 st.markdown("""
 <style>
+
+[data-lucide]{
+width:28px;
+height:28px;
+stroke-width:2.5;
+color:#0f766e;
+vertical-align:middle;
+margin-right:10px;
+}
             
 body{
 font-family:'Poppins';

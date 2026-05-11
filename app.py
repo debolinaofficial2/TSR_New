@@ -1575,11 +1575,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                         <div style="
                         position:absolute;
                         right:36px;
-                        top:0;
-                        bottom:0;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
+                        top:50%;
+                        transform:translateY(-50%);
                         ">
 
                             <div style="

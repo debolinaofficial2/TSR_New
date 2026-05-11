@@ -1538,7 +1538,10 @@ if st.session_state.page == "results":
                         line-height:2;
                         color:#4b5563;
                         text-align:justify;
-                        padding-right:170px;
+                        padding-right:150px;
+                        min-height:160px;
+                        display:flex;
+                        align-items:center;
                         ">
 
                         {teacher_desc}
@@ -1547,13 +1550,14 @@ if st.session_state.page == "results":
 
                         <div style="
                         position:absolute;
-                        top:18px;
-                        right:18px;
+                        top:50%;
+                        right:28px;
+                        transform:translateY(-50%);
                         ">
 
                             <div style="
-                            width:110px;
-                            height:110px;
+                            width:96px;
+                            height:96px;
                             border-radius:24px;
                             background:linear-gradient(
                             135deg,

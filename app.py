@@ -1443,21 +1443,24 @@ if st.session_state.page == "results":
             height=340
         )
 
-        st.markdown("### Connect with Academic Buddy")
+        with st.expander(
+            "Connect with Academic Buddy",
+            expanded=True
+        ):
 
-        with st.form("academic_buddy_form"):
+            with st.form("academic_buddy_form"):
 
-            parent_name = st.text_input(
-                "Parent/Child Name"
-            )
+                parent_name = st.text_input(
+                    "Parent/Child Name"
+                )
 
-            parent_email = st.text_input(
-                "Parent/Child Email"
-            )
+                parent_email = st.text_input(
+                    "Parent/Child Email"
+                )
 
-            submitted = st.form_submit_button(
-                "Request Academic Buddy Support"
-            )
+                submitted = st.form_submit_button(
+                    "Request Academic Buddy Support"
+                )
 
             if submitted:
 

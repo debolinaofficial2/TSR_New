@@ -474,16 +474,7 @@ def send_demo_email(
 
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<script src="https://unpkg.com/lucide@latest"></script>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<script>
-lucide.createIcons();
-</script>
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 """, unsafe_allow_html=True)
 
 # =========================================================
@@ -493,16 +484,7 @@ lucide.createIcons();
 
 st.markdown("""
 <style>
-
-[data-lucide]{
-width:28px;
-height:28px;
-stroke-width:2.5;
-color:#0f766e;
-vertical-align:middle;
-margin-right:10px;
-}
-            
+       
 body{
 font-family:'Poppins';
 }
@@ -1491,7 +1473,21 @@ if st.session_state.page == "results":
                 font-family:'Poppins',sans-serif;
                 ">
 
-                <i data-lucide="graduation-cap"></i> {teacher_name}
+                <div style="
+                display:flex;
+                align-items:center;
+                gap:14px;
+                ">
+
+                <i class="fa-solid fa-chalkboard-user"
+                style="
+                color:#0f766e;
+                font-size:30px;
+                "></i>
+
+                <span>{teacher_name}</span>
+
+                </div>
 
                 </div>
 

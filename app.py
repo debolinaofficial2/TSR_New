@@ -1517,7 +1517,7 @@ if st.session_state.page == "results":
 
                 <div style="
                 background:#fafafa;
-                padding:24px 190px 24px 26px;
+                padding:32px 220px 32px 32px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
@@ -1549,16 +1549,16 @@ if st.session_state.page == "results":
                         <div style="
                         position:absolute;
                         right:36px;
-                        top:32px;
-                        bottom:32px;
+                        top:0;
+                        bottom:0;
                         display:flex;
                         align-items:center;
                         justify-content:center;
                         ">
 
                             <div style="
-                            width:120px;
-                            height:120px;
+                            width:108px;
+                            height:108px;
                             border-radius:28px;
                             background:linear-gradient(
                             135deg,
@@ -1573,7 +1573,7 @@ if st.session_state.page == "results":
                             ">
 
                                 <div style="
-                                font-size:36px;
+                                font-size:32px;
                                 font-weight:800;
                                 color:white;
                                 line-height:1;

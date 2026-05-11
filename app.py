@@ -477,6 +477,7 @@ def send_demo_email(
 # CSS
 # =========================================================
 
+
 st.markdown("""
 <style>
 
@@ -1028,6 +1029,15 @@ if st.session_state.page == "form":
         unsafe_allow_html=True
     )
 
+    st.markdown("""
+    <hr style="
+    margin-top:30px;
+    margin-bottom:30px;
+    border:none;
+    border-top:1px solid #e5e7eb;
+    ">
+    """, unsafe_allow_html=True)
+
 
 # =========================================================
 # RESULTS PAGE
@@ -1535,9 +1545,40 @@ if st.session_state.page == "results":
         with right:
 
             st.markdown(f"""
-            <div class="score">
+            <div style="
+            display:flex;
+            justify-content:flex-end;
+            align-items:flex-start;
+            height:100%;
+            ">
 
-            {score}%
+                <div style="
+                width:110px;
+                height:110px;
+                border-radius:50%;
+                background:linear-gradient(
+                135deg,
+                #ecfeff,
+                #d1fae5
+                );
+                border:6px solid #2fa4a9;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                box-shadow:0px 10px 25px rgba(47,164,169,0.15);
+                ">
+
+                    <div style="
+                    font-size:36px;
+                    font-weight:800;
+                    color:#167b7f;
+                    ">
+
+                    {score}%
+
+                    </div>
+
+                </div>
 
             </div>
             """, unsafe_allow_html=True)
@@ -1588,7 +1629,7 @@ if st.session_state.page == "results":
         display:grid;
         grid-template-columns:1fr 1fr;
         gap:14px;
-        margin-bottom:24px;
+        margin-bottom:8px;
         ">
         """
 

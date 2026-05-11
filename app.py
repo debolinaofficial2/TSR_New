@@ -1203,7 +1203,7 @@ if st.session_state.page == "results":
 
         r for r in ranked
 
-        if r["final_score"] >= 80
+        if r["final_score"] >= 99
     ]
 
     # ==========================================
@@ -1216,7 +1216,7 @@ if st.session_state.page == "results":
 
             r for r in ranked
 
-            if r["final_score"] >= 70
+            if r["final_score"] >= 96
         ]
 
     # ==========================================
@@ -1271,98 +1271,164 @@ if st.session_state.page == "results":
 
         no_match_html = f"""
         <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
         <div style="
-        background:#fffdf8;
-        border:1px solid #f4dfb3;
-        border-radius:18px;
-        overflow:hidden;
+        background:#fafafa;
+        padding:32px;
+        border-radius:24px;
+        border:1px solid #e5e7eb;
+        box-shadow:0px 6px 20px rgba(0,0,0,0.04);
         margin-top:25px;
-        font-family:'Poppins', sans-serif;
+        font-family:'Poppins',sans-serif;
         ">
 
+            <!-- Header -->
             <div style="
-            background:#fff7e6;
-            padding:20px 24px;
-            border-bottom:1px solid #f4ead2;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:24px;
             ">
 
                 <div style="
-                font-size:30px;
-                font-weight:700;
-                color:#374151;
+                width:58px;
+                height:58px;
+                border-radius:50%;
+                background:#ccfbf1;
                 display:flex;
                 align-items:center;
-                gap:12px;
+                justify-content:center;
+                font-size:28px;
+                color:#0f766e;
                 ">
 
-                <i class="fa-solid fa-triangle-exclamation"
-                style="
-                margin-right:12px;
-                color:#d97706;
-                "></i>
+                <i class="fa-solid fa-user-clock"></i>
 
-                No Exact Match Found
+                </div>
+
+                <div>
+
+                    <div style="
+                    font-size:34px;
+                    font-weight:800;
+                    color:#1f2937;
+                    line-height:1.2;
+                    ">
+
+                    No Exact Match Found
+
+                    </div>
+
+                    <div style="
+                    font-size:15px;
+                    color:#6b7280;
+                    margin-top:4px;
+                    ">
+
+                    We are reviewing your request for the best pedagogical alignment
+
+                    </div>
 
                 </div>
 
             </div>
 
+            <!-- Main Content -->
             <div style="
-            padding:28px;
+            background:white;
+            border-radius:18px;
+            padding:24px;
+            border:1px solid #edf2f7;
             ">
 
                 <div style="
-                font-size:20px;
-                color:#4b5563;
+                font-size:17px;
                 line-height:1.8;
+                color:#4b5563;
                 ">
 
-                We are reviewing your request to ensure the best pedagogical alignment.
-
-                <br><br>
-
-                Your query need to be escalated to an Academic Buddy and it will be resolved within 12 working hours.
+                Your query requires escalation to an 
+                <span style="
+                color:#0f766e;
+                font-weight:700;
+                ">
+                Academic Buddy
+                </span>
+                and will be resolved within 
+                <span style="
+                font-weight:700;
+                color:#1f2937;
+                ">
+                12 working hours
+                </span>.
 
                 </div>
 
+                <!-- Status Box -->
                 <div style="
-                margin-top:24px;
-                background:white;
-                border:1px solid #e5e7eb;
-                border-radius:14px;
-                padding:18px;
+                margin-top:22px;
+                background:#f8fafc;
+                border-radius:16px;
+                padding:18px 20px;
+                border:1px solid #e2e8f0;
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                flex-wrap:wrap;
+                gap:12px;
                 ">
 
-                    <div style="
-                    font-size:22px;
-                    font-weight:700;
-                    color:#4b5563;
-                    ">
+                    <div>
 
-                    <i class="fa-solid fa-rotate"
-                    style="
-                    margin-right:10px;
-                    color:#f59e0b;
-                    "></i>
+                        <div style="
+                        font-size:22px;
+                        font-weight:700;
+                        color:#374151;
+                        display:flex;
+                        align-items:center;
+                        gap:10px;
+                        ">
 
-                    Status:
-                    <span style="color:#374151;">
+                        <i class="fa-solid fa-rotate"
+                        style="
+                        color:#f59e0b;
+                        "></i>
 
-                    Under Priority Review
+                        Status: Under Priority Review
 
-                    </span>
+                        </div>
+
+                        <div style="
+                        margin-top:6px;
+                        color:#6b7280;
+                        font-size:15px;
+                        ">
+
+                        Reference ID:
+                        {reference_id}
+
+                        </div>
 
                     </div>
 
+                    <!-- Status Circle -->
                     <div style="
-                    margin-top:8px;
-                    font-size:16px;
-                    color:#6b7280;
+                    width:90px;
+                    height:90px;
+                    border-radius:50%;
+                    background:#0f766e;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:white;
+                    font-size:13px;
+                    font-weight:700;
+                    text-align:center;
+                    border:5px solid #ccfbf1;
                     ">
 
-                    Reference ID:
-                    {reference_id}
+                    Pending<br>Review
 
                     </div>
 
@@ -1372,7 +1438,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         </div>
         """
-
         components.html(
             no_match_html,
             height=340

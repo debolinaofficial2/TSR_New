@@ -507,7 +507,7 @@ background:linear-gradient(
 #2fa4a9,
 #167b7f
 );
-padding:20px 40px;
+padding:16px 32px;
 border-radius:20px;
 display:flex;
 justify-content:space-between;
@@ -517,7 +517,7 @@ box-shadow:0px 10px 35px rgba(0,0,0,0.08);
 }
 
 .nav-title{
-font-size:34px;
+font-size:24px;
 font-weight:800;
 color:white;
 }
@@ -532,7 +532,7 @@ color:white;
 
 .hero{
 background:white;
-padding:42px;
+padding:34px;
 border-radius:30px;
 box-shadow:0px 12px 40px rgba(0,0,0,0.08);
 margin-bottom:25px;
@@ -542,7 +542,7 @@ animation:fadeUp 1s ease;
 .hero-title{
 font-size:58px;
 font-weight:800;
-line-height:1.1;
+line-height:1.2;
 color:#1f2937;
 }
 

@@ -473,7 +473,7 @@ def send_demo_email(
         return False
 
 st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 """, unsafe_allow_html=True)
 
 # =========================================================
@@ -484,8 +484,8 @@ st.markdown("""
 st.markdown("""
 <style>
             
-*{
-font-family:'Poppins',sans-serif;
+body{
+font-family:'Poppins';
 }
 
 .main{

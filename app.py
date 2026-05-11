@@ -725,9 +725,7 @@ st.markdown("""
 style="
 margin-right:12px;
 color:white;
-"></i>
-
-SmartLearn Connect
+"></i> SmartLearn Connect
 </div>
 
 <div class="nav-links">

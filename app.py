@@ -1248,7 +1248,16 @@ if st.session_state.page == "results":
             unsafe_allow_html=True
         )
 
+        # Default state
+        if "show_extra_tutors" not in st.session_state:
+            st.session_state.show_extra_tutors = False
+
         if st.button("Show Additional Tutors"):
+
+            st.session_state.show_extra_tutors = True
+
+        # If user clicked button
+        if st.session_state.show_extra_tutors:
 
             additional_needed = 3 - len(filtered_ranked)
 

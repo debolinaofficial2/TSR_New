@@ -1730,7 +1730,11 @@ if st.session_state.page == "results":
                 font-size:18px;
                 ">
 
-                {icon}
+                <i class="fa-solid {icon}"
+                style="
+                color:#0f766e;
+                font-size:16px;
+                "></i>
 
                 </div>
 

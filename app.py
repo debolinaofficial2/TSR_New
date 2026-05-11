@@ -1661,7 +1661,7 @@ if st.session_state.page == "results":
         if teacher["subject_score"] > 0:
 
             recommendation_items.append(
-                ("📘", "Subject Alignment")
+                ("fa-book-open", "Subject Alignment"),
             )
 
         if teacher["board_score"] > 0:

@@ -1149,6 +1149,22 @@ if st.session_state.page == "results":
             height=340
         )
 
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
+        col1,col2,col3 = st.columns([2,2,2])
+
+        with col2:
+
+            if st.button(
+                "Start New Search",
+                use_container_width=True,
+                key="restart_no_match"
+            ):
+
+                st.session_state.clear()
+
+                st.rerun()
+
         st.stop()
 
     for teacher in ranked:

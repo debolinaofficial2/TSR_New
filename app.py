@@ -11,7 +11,8 @@ import streamlit.components.v1 as components
 
 from datetime import (
     date,
-    timedelta
+    timedelta,
+    datetime
 )
 
 from sentence_transformers import (
@@ -1229,7 +1230,12 @@ if st.session_state.page == "results":
                 "academic_alert_sent"
             ] = True
 
-        no_match_html = """
+        reference_id = (
+            "LC-"
+            + datetime.now().strftime("%Y%m%d-%H%M%S")
+        )
+
+        no_match_html = f"""
         <div style="
         background:#fffdf8;
         border:1px solid #f4dfb3;
@@ -1274,7 +1280,7 @@ if st.session_state.page == "results":
 
                 <br><br>
 
-                Your query has been escalated to an Academic Buddy and will be resolved within 12 working hours.
+                Your query need to be escalated to an Academic Buddy and it will be resolved within 12 working hours.
 
                 </div>
 
@@ -1308,7 +1314,7 @@ if st.session_state.page == "results":
                     ">
 
                     Reference ID:
-                    LC-2026-0425
+                    {reference_id}
 
                     </div>
 

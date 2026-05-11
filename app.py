@@ -1542,7 +1542,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                 <div style="
                 background:#fafafa;
-                padding:28px 135px 28px 28px;
+                padding:28px 170px 28px 28px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;

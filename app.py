@@ -1567,17 +1567,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                     </div>
 
-                    <!-- Score Circle -->
                     <div style="
-                    flex-shrink:0;
                     display:flex;
-                    align-items:center;
-                    justify-content:center;
+                    justify-content:flex-end;
+                    margin-bottom:18px;
                     ">
 
                         <div style="
-                        width:98px;
-                        height:98px;
+                        width:88px;
+                        height:88px;
                         border-radius:50%;
                         background:#0f766e;
                         display:flex;
@@ -1589,7 +1587,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                         ">
 
                             <div style="
-                            font-size:30px;
+                            font-size:28px;
                             font-weight:800;
                             color:white;
                             line-height:1;
@@ -1602,7 +1600,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                             <div style="
                             margin-top:6px;
-                            font-size:11px;
+                            font-size:10px;
                             letter-spacing:1px;
                             color:#ccfbf1;
                             font-weight:700;

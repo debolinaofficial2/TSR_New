@@ -532,7 +532,7 @@ color:white;
 
 .hero{
 background:white;
-padding:55px;
+padding:42px;
 border-radius:30px;
 box-shadow:0px 12px 40px rgba(0,0,0,0.08);
 margin-bottom:25px;
@@ -540,7 +540,7 @@ animation:fadeUp 1s ease;
 }
 
 .hero-title{
-font-size:72px;
+font-size:58px;
 font-weight:800;
 line-height:1.1;
 color:#1f2937;
@@ -743,7 +743,7 @@ Mentors
 # HERO
 # =========================================================
 
-left,right = st.columns([1.2,1])
+left,right = st.columns([1.55,0.95])
 
 with left:
 
@@ -782,6 +782,19 @@ with left:
     """, unsafe_allow_html=True)
 
 with right:
+
+    st.markdown("""
+    <style>
+
+    [data-testid="stImage"] img{
+
+        border-radius:28px;
+        max-height:460px;
+        object-fit:cover;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
 
     st.image(
         "https://images.unsplash.com/photo-1588072432836-e10032774350",

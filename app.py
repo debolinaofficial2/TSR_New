@@ -1449,7 +1449,7 @@ if st.session_state.page == "results":
         top_section = f"""
         <div style="
         display:flex;
-        gap:35px;
+        gap:20px;
         align-items:flex-start;
         margin-top:10px;
         margin-bottom:25px;
@@ -1457,7 +1457,7 @@ if st.session_state.page == "results":
         ">
 
             <div style="
-            flex:1;
+            flex:0.88;
             ">
 
                 <div style="
@@ -1582,10 +1582,10 @@ if st.session_state.page == "results":
         </div>
         """
 
-        dynamic_height = 420
+        dynamic_height = 260
 
         if len(teacher_desc) > 650:
-            dynamic_height = 520
+            dynamic_height = 320
 
         components.html(
             top_section,
@@ -1694,15 +1694,15 @@ if st.session_state.page == "results":
             background:#f8fbfc;
             border:1px solid #edf2f7;
             border-radius:16px;
-            padding:16px 18px;
+            padding:12px 16px;
             display:flex;
             align-items:center;
             gap:12px;
             ">
 
                 <div style="
-                width:38px;
-                height:38px;
+                width:34px;
+                height:34px;
                 border-radius:12px;
                 background:#e8faf8;
                 display:flex;
@@ -1734,11 +1734,11 @@ if st.session_state.page == "results":
             recommendation_items
         )
 
-        dynamic_height = 140
+        dynamic_height = 170
 
         if card_count > 2:
 
-            dynamic_height = 260
+            dynamic_height = 190
 
         components.html(
             recommendation_html,

@@ -1542,7 +1542,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                 <div style="
                 background:#fafafa;
-                padding:28px 190px 28px 28px;
+                padding:28px 160px 28px 28px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
@@ -1583,23 +1583,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                         ">
 
                             <div style="
-                            width:108px;
-                            height:108px;
-                            border-radius:28px;
-                            background:linear-gradient(
-                            135deg,
-                            #14b8a6,
-                            #0ea5e9
-                            );
+                            width:115px;
+                            height:115px;
+                            border-radius:50%;
+                            background:#0f766e;
                             display:flex;
                             flex-direction:column;
                             align-items:center;
                             justify-content:center;
-                            box-shadow:0px 12px 25px rgba(20,184,166,0.20);
+                            box-shadow:0px 10px 25px rgba(15,118,110,0.25);
+                            border:5px solid #ccfbf1;
                             ">
 
                                 <div style="
-                                font-size:32px;
+                                font-size:34px;
                                 font-weight:800;
                                 color:white;
                                 line-height:1;
@@ -1611,10 +1608,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                                 </div>
 
                                 <div style="
-                                margin-top:8px;
+                                margin-top:6px;
                                 font-size:11px;
                                 letter-spacing:1px;
-                                color:white;
+                                color:#ccfbf1;
                                 font-weight:700;
                                 text-transform:uppercase;
                                 font-family:'Poppins',sans-serif;

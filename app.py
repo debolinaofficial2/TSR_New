@@ -1517,16 +1517,13 @@ if st.session_state.page == "results":
 
                 <div style="
                 background:#fafafa;
-                padding:30px;
-                padding-right:170px;
+                padding:26px 170px 26px 26px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
                 box-shadow:0px 6px 20px rgba(0,0,0,0.04);
                 position:relative;
-                min-height:220px;
-                display:flex;
-                align-items:center;
+                min-height:auto;
                 ">
 
                     <div style="
@@ -1611,13 +1608,13 @@ if st.session_state.page == "results":
 
         desc_length = len(teacher_desc)
 
-        dynamic_height = 340
+        dynamic_height = 250
 
         if desc_length > 450:
-            dynamic_height = 380
+            dynamic_height = 290
 
         if desc_length > 700:
-            dynamic_height = 430
+            dynamic_height = 340
 
         components.html(
             top_section,

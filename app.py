@@ -1310,10 +1310,10 @@ if st.session_state.page == "results":
         ranked = filtered_ranked[:3]
 
     # ==========================================
-    # FEWER THAN 3 MATCHES
+    # PARTIAL MATCHES
     # ==========================================
 
-    else:
+    elif len(filtered_ranked) > 0:
 
         ranked = filtered_ranked
 
@@ -1335,28 +1335,40 @@ if st.session_state.page == "results":
             unsafe_allow_html=True
         )
 
-        # Default state
         if "show_extra_tutors" not in st.session_state:
+
             st.session_state.show_extra_tutors = False
 
         if st.button("Show Additional Tutors"):
 
             st.session_state.show_extra_tutors = True
 
-        # If user clicked button
         if st.session_state.show_extra_tutors:
 
-            additional_needed = 3 - len(filtered_ranked)
+            additional_needed = (
+                3 - len(filtered_ranked)
+            )
 
             additional_tutors = [
+
                 r for r in all_ranked
+
                 if r not in filtered_ranked
+
             ][:additional_needed]
 
             ranked = (
                 filtered_ranked
                 + additional_tutors
             )
+
+    # ==========================================
+    # NO MATCHES
+    # ==========================================
+
+    else:
+
+        ranked = []
 
     st.markdown(f"""
     <h1 style="

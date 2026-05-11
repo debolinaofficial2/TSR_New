@@ -1524,7 +1524,7 @@ if st.session_state.page == "results":
                 border:1px solid #edf2f7;
                 box-shadow:0px 6px 20px rgba(0,0,0,0.04);
                 position:relative;
-                min-height:180px;
+                min-height:220px;
                 display:flex;
                 align-items:center;
                 ">
@@ -1557,9 +1557,9 @@ if st.session_state.page == "results":
                         ">
 
                             <div style="
-                            width:96px;
-                            height:96px;
-                            border-radius:24px;
+                            width:120px;
+                            height:120px;
+                            border-radius:28px;
                             background:linear-gradient(
                             135deg,
                             #14b8a6,

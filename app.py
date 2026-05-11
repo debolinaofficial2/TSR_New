@@ -73,7 +73,7 @@ for k,v in defaults.items():
 def load_data():
 
     df = pd.read_excel(
-        "TSR.xlsx"
+        "TSR_New.xlsx"
     )
 
     df.columns = (

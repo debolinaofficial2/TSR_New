@@ -1067,7 +1067,7 @@ if st.session_state.page == "results":
     color:#1f2937;
     margin-top:20px;
     ">
-    🎯 Top 3 Recommended Teachers
+    <i class="fa-solid fa-bullseye"></i> Top 3 Recommended Teachers
     </h1>
     """, unsafe_allow_html=True)
 
@@ -1482,10 +1482,9 @@ if st.session_state.page == "results":
                 <i class="fa-solid fa-chalkboard-user"
                 style="
                 color:#0f766e;
-                font-size:30px;
+                margin-right:10px;
                 "></i>
-
-                <span>{teacher_name}</span>
+                {teacher_name}
 
                 </div>
 

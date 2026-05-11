@@ -1547,79 +1547,70 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
                 box-shadow:0px 6px 20px rgba(0,0,0,0.04);
-
                 display:flex;
                 justify-content:space-between;
                 align-items:center;
                 gap:28px;
                 ">
 
+                    <!-- Description -->
                     <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:flex-start;
-                    gap:24px;
-                    margin-bottom:20px;
+                    flex:1;
+                    font-size:17px;
+                    line-height:1.75;
+                    color:#4b5563;
+                    text-align:justify;
+                    font-family:'Poppins',sans-serif;
                     ">
-
-                        <div style="
-                        font-size:17px;
-                        line-height:1.75;
-                        color:#4b5563;
-                        text-align:justify;
-                        width:100%;
-                        font-family:'Poppins',sans-serif;
-                        ">
 
                         {teacher_desc}
 
-                        </div>
+                    </div>
+
+                    <!-- Score Circle -->
+                    <div style="
+                    flex-shrink:0;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    ">
 
                         <div style="
-                        position:absolute;
-                        right:36px;
-                        top:50%;
-                        transform:translateY(-50%);
+                        width:98px;
+                        height:98px;
+                        border-radius:50%;
+                        background:#0f766e;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                        justify-content:center;
+                        box-shadow:0px 6px 16px rgba(15,118,110,0.18);
+                        border:5px solid #ccfbf1;
                         ">
 
                             <div style="
-                            width:98px;
-                            height:98px;
-                            border-radius:50%;
-                            background:#0f766e;
-                            display:flex;
-                            flex-direction:column;
-                            align-items:center;
-                            justify-content:center;
-                            box-shadow:0px 6px 16px rgba(15,118,110,0.18);
-                            border:5px solid #ccfbf1;
+                            font-size:30px;
+                            font-weight:800;
+                            color:white;
+                            line-height:1;
+                            font-family:'Poppins',sans-serif;
                             ">
-
-                                <div style="
-                                font-size:30px;
-                                font-weight:800;
-                                color:white;
-                                line-height:1;
-                                font-family:'Poppins',sans-serif;
-                                ">
 
                                 {score}%
 
-                                </div>
+                            </div>
 
-                                <div style="
-                                margin-top:6px;
-                                font-size:11px;
-                                letter-spacing:1px;
-                                color:#ccfbf1;
-                                font-weight:700;
-                                text-transform:uppercase;
-                                font-family:'Poppins',sans-serif;
-                                ">
+                            <div style="
+                            margin-top:6px;
+                            font-size:11px;
+                            letter-spacing:1px;
+                            color:#ccfbf1;
+                            font-weight:700;
+                            text-transform:uppercase;
+                            font-family:'Poppins',sans-serif;
+                            ">
 
                                 Match
-
-                                </div>
 
                             </div>
 

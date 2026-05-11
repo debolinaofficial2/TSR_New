@@ -1269,9 +1269,9 @@ if st.session_state.page == "results":
                             </div>
                             """
 
-                            st.markdown(
-                                scheduled_card,
-                                unsafe_allow_html=True
+                            components.html(
+                            scheduled_card,
+                            height=135
                             )
 
                     # =====================================================

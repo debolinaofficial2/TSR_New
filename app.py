@@ -1518,10 +1518,15 @@ if st.session_state.page == "results":
                 <div style="
                 background:#fafafa;
                 padding:30px;
+                padding-right:170px;
                 border-radius:24px;
                 border-left:6px solid #2fa4a9;
                 border:1px solid #edf2f7;
                 box-shadow:0px 6px 20px rgba(0,0,0,0.04);
+                position:relative;
+                min-height:180px;
+                display:flex;
+                align-items:center;
                 ">
 
                     <div style="
@@ -1548,7 +1553,7 @@ if st.session_state.page == "results":
                         </div>
 
                         <div style="
-                        position:absolute;
+                        position:relative;
                         top:50%;
                         transform:translateY(-50%);
                         ">

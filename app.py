@@ -1635,9 +1635,20 @@ if st.session_state.page == "results":
 
         recommendation_html += "</div></div>"
 
+        card_count = len(
+            recommendation_items
+        )
+
+        dynamic_height = 140
+
+        if card_count > 2:
+
+            dynamic_height = 260
+
         components.html(
             recommendation_html,
-            height=170
+            height=dynamic_height,
+            scrolling=False
         )
 
         with st.expander(

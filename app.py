@@ -472,6 +472,9 @@ def send_demo_email(
 
         return False
 
+st.markdown("""
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+""", unsafe_allow_html=True)
 
 # =========================================================
 # CSS
@@ -480,6 +483,10 @@ def send_demo_email(
 
 st.markdown("""
 <style>
+            
+*{
+font-family:'Inter',sans-serif;
+}
 
 .main{
 background:#f5f7fb;
@@ -614,6 +621,7 @@ animation:fadeUp 0.8s ease;
 font-size:36px;
 font-weight:800;
 color:#1f2937;
+font-family:'Inter',sans-serif;
 }
 
 .teacher-desc{
@@ -621,6 +629,7 @@ font-size:17px;
 line-height:1.8;
 margin-top:15px;
 color:#4b5563;
+font-family:'Inter',sans-serif;
 }
 
 .score{
@@ -1252,7 +1261,7 @@ if st.session_state.page == "results":
         border-radius:18px;
         overflow:hidden;
         margin-top:25px;
-        font-family:'Source Sans Pro', sans-serif;
+        font-family:'Inter', sans-serif;
         ">
 
             <div style="
@@ -1540,6 +1549,7 @@ if st.session_state.page == "results":
                         color:#4b5563;
                         text-align:justify;
                         width:100%;
+                        font-family:'Inter',sans-serif;
                         ">
 
                         {teacher_desc}
@@ -1577,6 +1587,7 @@ if st.session_state.page == "results":
                                 font-weight:800;
                                 color:white;
                                 line-height:1;
+                                font-family:'Inter',sans-serif;
                                 ">
 
                                 {score}%
@@ -1590,6 +1601,7 @@ if st.session_state.page == "results":
                                 color:white;
                                 font-weight:700;
                                 text-transform:uppercase;
+                                font-family:'Inter',sans-serif;
                                 ">
 
                                 Match
@@ -1657,7 +1669,7 @@ if st.session_state.page == "results":
 
         recommendation_html = """
         <div style="
-        font-family:'Source Sans Pro', sans-serif;
+        font-family:'Inter', sans-serif;
         ">
 
         <div style="
@@ -1711,6 +1723,7 @@ if st.session_state.page == "results":
                 font-size:16px;
                 font-weight:600;
                 color:#374151;
+                font-family:'Inter',sans-serif;
                 ">
 
                 {label}
@@ -1811,7 +1824,7 @@ if st.session_state.page == "results":
                             border-radius:16px;
                             padding:20px;
                             margin-top:18px;
-                            font-family:'Source Sans Pro', sans-serif;
+                            font-family:'Inter', sans-serif;
                             ">
 
                                 <div style="
@@ -1843,6 +1856,7 @@ if st.session_state.page == "results":
                                         font-size:24px;
                                         font-weight:700;
                                         color:#374151;
+                                        font-family:'Inter',sans-serif;
                                         line-height:1.3;
                                         ">
 

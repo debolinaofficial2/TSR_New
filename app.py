@@ -1448,16 +1448,17 @@ if st.session_state.page == "results":
 
         top_section = f"""
         <div style="
-        display:flex;
-        gap:20px;
-        align-items:flex-start;
+        display:grid;
+        grid-template-columns:1fr 140px;
+        gap:28px;
+        align-items:center;
         margin-top:0px;
         margin-bottom:12px;
         font-family:'Source Sans Pro', sans-serif;
         ">
 
             <div style="
-            flex:0.88;
+            width:100%;
             ">
 
                 <div style="
@@ -1549,7 +1550,9 @@ if st.session_state.page == "results":
                         </div>
 
                         <div style="
-                        min-width:120px;
+                        display:flex;
+                        justify-content:center;
+                        align-items:center;
                         ">
 
                             <div style="
@@ -1600,9 +1603,7 @@ if st.session_state.page == "results":
 
                 </div>
 
-                {teacher_desc}
-
-                </div>
+            </div>
 
         </div>
         """

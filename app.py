@@ -1428,10 +1428,98 @@ if st.session_state.page == "results":
             </div>
             """, unsafe_allow_html=True)
 
-            st.markdown(f"""
-            <div class="teacher-desc">
+            teacher_desc = teacher.get(
+                "description",
+                ""
+            )
 
-            {teacher.get('description','')}
+            short_desc = (
+                teacher_desc[:320] + "..."
+                if len(teacher_desc) > 320
+                else teacher_desc
+            )
+
+            qualification = teacher.get(
+                "highest_qualification",
+                "Experienced Educator"
+            )
+
+            experience = teacher.get(
+                "teaching_experience_years",
+                "N/A"
+            )
+
+            field = teacher.get(
+                "field_of_study",
+                "Academic Mentoring"
+            )
+
+            st.markdown(f"""
+            <div style="
+            margin-top:18px;
+            ">
+
+                <div style="
+                display:flex;
+                flex-wrap:wrap;
+                gap:10px;
+                margin-bottom:18px;
+                ">
+
+                    <div style="
+                    background:#f0fdfa;
+                    color:#167b7f;
+                    padding:8px 14px;
+                    border-radius:30px;
+                    font-size:14px;
+                    font-weight:600;
+                    ">
+
+                    {qualification}
+
+                    </div>
+
+                    <div style="
+                    background:#f8fafc;
+                    color:#475569;
+                    padding:8px 14px;
+                    border-radius:30px;
+                    font-size:14px;
+                    font-weight:600;
+                    ">
+
+                    {experience} Years Experience
+
+                    </div>
+
+                    <div style="
+                    background:#fff7ed;
+                    color:#ea580c;
+                    padding:8px 14px;
+                    border-radius:30px;
+                    font-size:14px;
+                    font-weight:600;
+                    ">
+
+                    {field}
+
+                    </div>
+
+                </div>
+
+                <div style="
+                font-size:17px;
+                line-height:1.9;
+                color:#4b5563;
+                background:#fafafa;
+                padding:20px;
+                border-radius:18px;
+                border:1px solid #f1f5f9;
+                ">
+
+                {short_desc}
+
+                </div>
 
             </div>
             """, unsafe_allow_html=True)

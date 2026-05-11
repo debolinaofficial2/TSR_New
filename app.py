@@ -1203,7 +1203,7 @@ if st.session_state.page == "results":
 
         r for r in ranked
 
-        if r["final_score"] >= 99
+        if r["final_score"] >= 80
     ]
 
     # ==========================================
@@ -1216,7 +1216,7 @@ if st.session_state.page == "results":
 
             r for r in ranked
 
-            if r["final_score"] >= 96
+            if r["final_score"] >= 70
         ]
 
     # ==========================================

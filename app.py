@@ -1472,7 +1472,7 @@ if st.session_state.page == "results":
                 font-family:'Poppins',sans-serif;
                 ">
 
-                👩‍🏫 {teacher_name}
+                <i data-lucide="graduation-cap"></i> {teacher_name}
 
                 </div>
 

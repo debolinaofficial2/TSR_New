@@ -332,7 +332,13 @@ def send_demo_email(
             ">
 
                 <h1>
-                🎓 SmartLearn Connect
+                <i class="fa-solid fa-graduation-cap"
+                style="
+                margin-right:12px;
+                color:white;
+                "></i>
+
+                SmartLearn Connect
                 </h1>
 
                 <p>
@@ -820,7 +826,7 @@ if st.session_state.page == "form":
 
         if st.session_state.step > 1:
 
-            if st.button("⬅ Back"):
+            if st.button("← Back"):
 
                 st.session_state.step -= 1
                 st.rerun()
@@ -1255,6 +1261,8 @@ if st.session_state.page == "results":
         )
 
         no_match_html = f"""
+        <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <div style="
         background:#fffdf8;
         border:1px solid #f4dfb3;
@@ -1279,7 +1287,13 @@ if st.session_state.page == "results":
                 gap:12px;
                 ">
 
-                ⚠️ No Exact Match Found
+                <i class="fa-solid fa-triangle-exclamation"
+                style="
+                margin-right:12px;
+                color:#d97706;
+                "></i>
+
+                No Exact Match Found
 
                 </div>
 
@@ -1317,7 +1331,13 @@ if st.session_state.page == "results":
                     color:#4b5563;
                     ">
 
-                    🔄 Status:
+                    <i class="fa-solid fa-rotate"
+                    style="
+                    margin-right:10px;
+                    color:#f59e0b;
+                    "></i>
+
+                    Status:
                     <span style="color:#374151;">
 
                     Under Priority Review
@@ -1759,7 +1779,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         )
 
         with st.expander(
-            f"📅 Book Demo with {teacher_name}"
+            f"Book Demo with {teacher_name}"
         ):
 
                 with st.form(
@@ -1825,6 +1845,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                         ):
 
                             scheduled_card = f"""
+                            <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
                             <div style="
                             background:#f8fbfc;
                             border:1px solid #e5e7eb;
@@ -1853,7 +1875,24 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                                     flex-shrink:0;
                                     ">
 
-                                    📅
+                                    <div style="
+                                    width:44px;
+                                    height:44px;
+                                    border-radius:12px;
+                                    background:#e8faf8;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    flex-shrink:0;
+                                    ">
+
+                                    <i class="fa-solid fa-calendar-check"
+                                    style="
+                                    color:#167b7f;
+                                    font-size:20px;
+                                    "></i>
+
+                                    </div>
 
                                     </div>
 

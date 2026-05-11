@@ -1667,19 +1667,19 @@ if st.session_state.page == "results":
         if teacher["board_score"] > 0:
 
             recommendation_items.append(
-                ("🏫", "Curriculum Compatibility")
+                ("fa-school", "Curriculum Compatibility")
             )
 
         if teacher["exp_score"] > 0:
 
             recommendation_items.append(
-                ("⭐", "Experience Match")
+                ("fa-star", "Experience Match")
             )
 
         if teacher["semantic_score"] > 0:
 
             recommendation_items.append(
-                ("🧠", "Learner Expectation Match")
+                ("fa-brain", "Learner Expectation Match")
             )
 
         recommendation_html = """
